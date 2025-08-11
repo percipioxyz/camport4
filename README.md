@@ -1,4 +1,4 @@
-# Percipio Camera Software Development Kit 4.0
+# Percipio Camera Software Development Kit
 
 This software development kit provides C/C++ API and sample applications to control and capture images from Percipio camera.
 The samples demonstrate how to get depth image, 3D point cloud , color and ir image from the depth camera.
@@ -11,19 +11,18 @@ Please refer to [https://doc.percipio.xyz/cam/latest/index.html](https://doc.per
 
 ## SDK Files
 ```
-+---Doc                      SDK API Documents
-+---include                  C header file
-+---lib                      dynamic link library for multi-platform
++---Doc                 SDK API Documents
++---include             C header file
++---lib                 dynamic link library for multi-platform
 |   +---linux
 |   \---win
-|       +---driver           windows device driver 
-|       \---hostapp          pre-built sample executables
+|       +---driver      windows device driver 
+|       \---hostapp     pre-built sample executables
 \---sample
-    +---cloud_viewer         point cloud render and show dependencies
-    +---common               common API and image data wrapper code for sample_v1 and sample_v2
-    +---sample_v1            old sample application source code on orignal API
-    +---sample_v2            new sample application source code easier to use, This is recommended if you want to set up a new project
-    \---sample_genicam_sfnc  new sample application source code base on new genicam sfnc camera
+    +---cloud_viewer    point cloud render and show dependencies
+    +---common          common API and image data wrapper code for sample_v1 and sample_v2
+    +---sample_v1       old sample application source code on orignal API
+    \---sample_v2       new sample application source code easier to use, This is recommended if you want to set up a new project
 
 ```
 

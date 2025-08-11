@@ -149,6 +149,7 @@ var a00008 =
     [ "TY_VECT_3F", "a00008.html#a07d8d7f9a43ae16487211c77677a0918", null ],
     [ "TY_VERSION_INFO", "a00008.html#a3261a1daca90e826049f7c735a4cdf6c", null ],
     [ "TY_VISIBILITY_TYPE", "a00008.html#a44b3c86d826f73b860ed2990fc722c9c", null ],
+    [ "TYLensOpticalType", "a00008.html#aa3d01acbae38e9ce54b8f415c62bd1d1", null ],
     [ "TYPixFmt", "a00008.html#a3bf15c718545922e70683b0b4220eb19", null ],
     [ "TYPixFmtList", "a00008.html#a38bf130eccc397e86235be0ed01413e7", null ],
     [ "TY_PATTERN_SINE_TYPE", "a00008.html#a06fc87d81c62e9abb8790b6e5713c55ba0a7b971942c571dd61b4c4f8ef78b845", null ],
@@ -222,12 +223,6 @@ var a00008 =
       [ "TY_FLOAT_SCALE_UNIT", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a3e7ed0feee291fd25e8c7d66bc270d5d", null ],
       [ "TY_ENUM_TRIGGER_POL", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a3fb92b22db4f01daa1bacdc8048ba954", null ],
       [ "TY_INT_FRAME_PER_TRIGGER", "a00008.html#a6ad12f8e99a29828f93af6916a846f38af323a74de002972f3d0201cdb5f53f09", null ],
-      [ "TY_ENUM_USER_SET_DEFAULT", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a28ca6144d1006e19daff027d33f5b9a6", null ],
-      [ "TY_ENUM_USER_SET_CURRENT", "a00008.html#a6ad12f8e99a29828f93af6916a846f38af6df6d514c155ed792c22274326a980f", null ],
-      [ "TY_ENUM_USER_SET_SELECTOR", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a29382002c2302f8064fed5ff503e3b23", null ],
-      [ "TY_CMD_USER_SET_LOAD", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a3c5f6c1c65a7a7199576ec73a5815177", null ],
-      [ "TY_CMD_USER_SET_SAVE", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a8c77f328ddd1cba0287c1924ec187f08", null ],
-      [ "TY_STRING_USER_SET_DESCRIPTION", "a00008.html#a6ad12f8e99a29828f93af6916a846f38abb07e181568ffed80540a653438924f4", null ],
       [ "TY_STRUCT_TRIGGER_PARAM", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a6555890aacdb59f65594437d2a259696", null ],
       [ "TY_STRUCT_TRIGGER_PARAM_EX", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a65844cc45bdfe609a54cc1e0b9f3f4d8", null ],
       [ "TY_STRUCT_TRIGGER_TIMER_LIST", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a4952064fc4b6a2404c9b2a9515004d39", null ],
@@ -344,10 +339,10 @@ var a00008 =
       [ "TY_BOOL_TOF_ANTI_INTERFERENCE", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a9f9a69dac5043961461ce9780e531ac6", null ],
       [ "TY_INT_TOF_ANTI_SUNLIGHT_INDEX", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a49ab608765b0631210032a58d5d8f908", null ],
       [ "TY_INT_MAX_SPECKLE_SIZE", "a00008.html#a6ad12f8e99a29828f93af6916a846f38ad41aba0ae7aad78e0b087411118c3e8f", null ],
-      [ "TY_INT_MAX_SPECKLE_DIFF", "a00008.html#a6ad12f8e99a29828f93af6916a846f38ab88c8aee78f4f44c8012d3ffd3daa711", null ]
+      [ "TY_INT_MAX_SPECKLE_DIFF", "a00008.html#a6ad12f8e99a29828f93af6916a846f38ab88c8aee78f4f44c8012d3ffd3daa711", null ],
+      [ "TY_ENUM_LENS_OPTICAL_TYPE", "a00008.html#a6ad12f8e99a29828f93af6916a846f38a412c8ff3739873a392bd6b1b31b0360e", null ]
     ] ],
     [ "TY_FEATURE_TYPE_LIST", "a00008.html#a25479e6e00062dbe67883c12b8d352e5", [
-      [ "TY_FEATURE_CMD", "a00008.html#a25479e6e00062dbe67883c12b8d352e5a4565d805f00a3970e077d40f7f79563d", null ],
       [ "TY_FEATURE_INT", "a00008.html#a25479e6e00062dbe67883c12b8d352e5a35d94e44f38ea0c3e6060ed7c6ba569f", null ],
       [ "TY_FEATURE_FLOAT", "a00008.html#a25479e6e00062dbe67883c12b8d352e5aa1c7013200e0e565bcfa2ec3c02b75bf", null ],
       [ "TY_FEATURE_ENUM", "a00008.html#a25479e6e00062dbe67883c12b8d352e5acc38e06e8e29131bd8dc173062523a82", null ],
@@ -567,6 +562,10 @@ var a00008 =
       [ "EXPERT", "a00008.html#abb6d080acad726103c1c689577ce551ba3c5f9667f106427a088b5a79da8ac616", null ],
       [ "GURU", "a00008.html#abb6d080acad726103c1c689577ce551ba19263b5afaf267311bb7535a2e82665b", null ],
       [ "INVLISIBLE", "a00008.html#abb6d080acad726103c1c689577ce551ba84bf443e5a726cc58f8fef22e25dc596", null ]
+    ] ],
+    [ "TYLensOpticalType", "a00008.html#a75dd8800700da322e1cb3ae0f7df823f", [
+      [ "STANDARD_LENS", "a00008.html#a75dd8800700da322e1cb3ae0f7df823fa068dbb5be9ca5004aa2a4409d2107900", null ],
+      [ "FISHEYE_LENS", "a00008.html#a75dd8800700da322e1cb3ae0f7df823fadf5165be28b3ede58274cd7a6a6279b2", null ]
     ] ],
     [ "TYPixFmtList", "a00008.html#a8a9674954d36ad55778cf1633835e06f", [
       [ "TYPixelFormatMono8", "a00008.html#a8a9674954d36ad55778cf1633835e06fab08bf9d8c68f0ac6ae7d50452d4848e1", null ],

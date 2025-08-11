@@ -361,6 +361,9 @@ typedef enum <a class="el" href="a00008.html#afbdeaa73f2870f94cbf4dc79ec79d2ca">
 <tr class="memitem:a2c00601e6c3bc6ba3169180bcbe89cc5"><td class="memItemLeft" align="right" valign="top"><a id="a2c00601e6c3bc6ba3169180bcbe89cc5"></a>
 typedef uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>TY_STREAM_ASYNC_MODE</b></td></tr>
 <tr class="separator:a2c00601e6c3bc6ba3169180bcbe89cc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3d01acbae38e9ce54b8f415c62bd1d1"><td class="memItemLeft" align="right" valign="top"><a id="aa3d01acbae38e9ce54b8f415c62bd1d1"></a>
+typedef enum TYLensOpticalType&#160;</td><td class="memItemRight" valign="bottom"><b>TYLensOpticalType</b></td></tr>
+<tr class="separator:aa3d01acbae38e9ce54b8f415c62bd1d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38bf130eccc397e86235be0ed01413e7"><td class="memItemLeft" align="right" valign="top"><a id="a38bf130eccc397e86235be0ed01413e7"></a>
 typedef enum <a class="el" href="a00008.html#a8a9674954d36ad55778cf1633835e06f">TYPixFmtList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a38bf130eccc397e86235be0ed01413e7">TYPixFmtList</a></td></tr>
 <tr class="memdesc:a38bf130eccc397e86235be0ed01413e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">pixel format definitions <br /></td></tr>
@@ -630,13 +633,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="separator:ae317b3bb707cfaf8e48a4c4736928360"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25479e6e00062dbe67883c12b8d352e5"><td class="memItemLeft" align="right" valign="top"><a id="a25479e6e00062dbe67883c12b8d352e5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a25479e6e00062dbe67883c12b8d352e5">TY_FEATURE_TYPE_LIST</a> : uint32_t { <br />
-&#160;&#160;<b>TY_FEATURE_CMD</b> = 0x0000, 
-<b>TY_FEATURE_INT</b> = 0x1000, 
+&#160;&#160;<b>TY_FEATURE_INT</b> = 0x1000, 
 <b>TY_FEATURE_FLOAT</b> = 0X2000, 
 <b>TY_FEATURE_ENUM</b> = 0x3000, 
+<b>TY_FEATURE_BOOL</b> = 0x4000, 
 <br />
-&#160;&#160;<b>TY_FEATURE_BOOL</b> = 0x4000, 
-<b>TY_FEATURE_STRING</b> = 0x5000, 
+&#160;&#160;<b>TY_FEATURE_STRING</b> = 0x5000, 
 <b>TY_FEATURE_BYTEARRAY</b> = 0x6000, 
 <b>TY_FEATURE_STRUCT</b> = 0x7000
 <br />
@@ -680,159 +682,153 @@ Enumerations</h2></td></tr>
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a3fb92b22db4f01daa1bacdc8048ba954">TY_ENUM_TRIGGER_POL</a> = 0x0201 | TY_FEATURE_ENUM, 
 <br />
 &#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38af323a74de002972f3d0201cdb5f53f09">TY_INT_FRAME_PER_TRIGGER</a> = 0x0202 | TY_FEATURE_INT, 
-<b>TY_ENUM_USER_SET_DEFAULT</b> = 0x0301 | TY_FEATURE_ENUM, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38af6df6d514c155ed792c22274326a980f">TY_ENUM_USER_SET_CURRENT</a> = 0x0304 | TY_FEATURE_ENUM, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a29382002c2302f8064fed5ff503e3b23">TY_ENUM_USER_SET_SELECTOR</a> = 0x0302 | TY_FEATURE_ENUM, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a3c5f6c1c65a7a7199576ec73a5815177">TY_CMD_USER_SET_LOAD</a> = 0x0305 | TY_FEATURE_CMD, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8c77f328ddd1cba0287c1924ec187f08">TY_CMD_USER_SET_SAVE</a> = 0x0303 | TY_FEATURE_CMD, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38abb07e181568ffed80540a653438924f4">TY_STRING_USER_SET_DESCRIPTION</a> = 0x0306 | TY_FEATURE_STRING, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a6555890aacdb59f65594437d2a259696">TY_STRUCT_TRIGGER_PARAM</a> = 0x0523 | TY_FEATURE_STRUCT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a65844cc45bdfe609a54cc1e0b9f3f4d8">TY_STRUCT_TRIGGER_PARAM_EX</a> = 0x0525 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a65844cc45bdfe609a54cc1e0b9f3f4d8">TY_STRUCT_TRIGGER_PARAM_EX</a> = 0x0525 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a4952064fc4b6a2404c9b2a9515004d39">TY_STRUCT_TRIGGER_TIMER_LIST</a> = 0x0526 | TY_FEATURE_STRUCT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38afeb01282c205876013c087add7f75bdc">TY_STRUCT_TRIGGER_TIMER_PERIOD</a> = 0x0527 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38afeb01282c205876013c087add7f75bdc">TY_STRUCT_TRIGGER_TIMER_PERIOD</a> = 0x0527 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a58674f119f443456b08f7532cc411995">TY_BOOL_KEEP_ALIVE_ONOFF</a> = 0x0203 | TY_FEATURE_BOOL, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aca08314da8146be2239c8fd8b8608d5a">TY_INT_KEEP_ALIVE_TIMEOUT</a> = 0x0204 | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aca08314da8146be2239c8fd8b8608d5a">TY_INT_KEEP_ALIVE_TIMEOUT</a> = 0x0204 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a2dc1f5f6ff5abaf97a0b9a41040f6d0c">TY_BOOL_CMOS_SYNC</a> = 0x0205 | TY_FEATURE_BOOL, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ab9cafffcac1298fe0d3c175300f49b1e">TY_INT_TRIGGER_DELAY_US</a> = 0x0206 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ab9cafffcac1298fe0d3c175300f49b1e">TY_INT_TRIGGER_DELAY_US</a> = 0x0206 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a760b29bf21e57a45dbbcb3b745e68cfe">TY_BOOL_TRIGGER_OUT_IO</a> = 0x0207 | TY_FEATURE_BOOL, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aa9e38f8e3474121523cba4097a4ae271">TY_INT_TRIGGER_DURATION_US</a> = 0x0208 | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aa9e38f8e3474121523cba4097a4ae271">TY_INT_TRIGGER_DURATION_US</a> = 0x0208 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a1c5eb0221113b2c7608dad10b37bc1d6">TY_ENUM_STREAM_ASYNC</a> = 0x0209 | TY_FEATURE_ENUM, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a4b0d37a5d86dbceb5dafc969f34c5e75">TY_INT_CAPTURE_TIME_US</a> = 0x0210 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a4b0d37a5d86dbceb5dafc969f34c5e75">TY_INT_CAPTURE_TIME_US</a> = 0x0210 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a875b4071e18cd7d24a7787948d3d2a9c">TY_ENUM_TIME_SYNC_TYPE</a> = 0x0211 | TY_FEATURE_ENUM, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ae6aaffcd1b0533cbb68b86571fe3492a">TY_BOOL_TIME_SYNC_READY</a> = 0x0212 | TY_FEATURE_BOOL, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ae6aaffcd1b0533cbb68b86571fe3492a">TY_BOOL_TIME_SYNC_READY</a> = 0x0212 | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aaf995682a4e4360c512d27ba9f88df08">TY_BOOL_IR_FLASHLIGHT</a> = 0x0213 | TY_FEATURE_BOOL, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a4c569ea68af01e088951a897756e169e">TY_INT_IR_FLASHLIGHT_INTENSITY</a> = 0x0214 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a4c569ea68af01e088951a897756e169e">TY_INT_IR_FLASHLIGHT_INTENSITY</a> = 0x0214 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38af25c894042dd1583b5ec16cf99f1eb12">TY_STRUCT_DO0_WORKMODE</a> = 0x0215 | TY_FEATURE_STRUCT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ae4623b126cdb378020ae7b911d391941">TY_STRUCT_DI0_WORKMODE</a> = 0x0216 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ae4623b126cdb378020ae7b911d391941">TY_STRUCT_DI0_WORKMODE</a> = 0x0216 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad20c34d9e6ddc8d2fa1612e9e3edf295">TY_STRUCT_DO1_WORKMODE</a> = 0x0217 | TY_FEATURE_STRUCT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ac7a96d5eb7dcffc81b68e87690c469ad">TY_STRUCT_DI1_WORKMODE</a> = 0x0218 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ac7a96d5eb7dcffc81b68e87690c469ad">TY_STRUCT_DI1_WORKMODE</a> = 0x0218 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ae8233f9dfd48c8c358097c14f59f6f3c">TY_STRUCT_DO2_WORKMODE</a> = 0x0219 | TY_FEATURE_STRUCT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aba6c782effd3a974a104ade473923d95">TY_STRUCT_DI2_WORKMODE</a> = 0x0220 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aba6c782effd3a974a104ade473923d95">TY_STRUCT_DI2_WORKMODE</a> = 0x0220 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a596bd0a4b1407d286619818b7bdfaec0">TY_BOOL_RGB_FLASHLIGHT</a> = 0x0221 | TY_FEATURE_BOOL, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a81d51539094b47fc989e7b65d9646f89">TY_INT_RGB_FLASHLIGHT_INTENSITY</a> = 0x0222 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a81d51539094b47fc989e7b65d9646f89">TY_INT_RGB_FLASHLIGHT_INTENSITY</a> = 0x0222 | TY_FEATURE_INT, 
 <b>TY_ENUM_CONFIG_MODE</b> = 0x0221 | TY_FEATURE_ENUM, 
-<br />
-&#160;&#160;<b>TY_ENUM_TEMPERATURE_ID</b> = 0x0223 | TY_FEATURE_ENUM, 
+<b>TY_ENUM_TEMPERATURE_ID</b> = 0x0223 | TY_FEATURE_ENUM, 
 <b>TY_STRUCT_TEMPERATURE</b> = 0x0224 | TY_FEATURE_STRUCT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a7111399fbe52bfec363fbcc3a84165db">TY_BOOL_AUTO_EXPOSURE</a> = 0x0300 | TY_FEATURE_BOOL, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a7111399fbe52bfec363fbcc3a84165db">TY_BOOL_AUTO_EXPOSURE</a> = 0x0300 | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a800000a3782afc0c64a37494bd95968a">TY_INT_EXPOSURE_TIME</a> = 0x0301 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a2dddfa2f8000896f88ff2835675f9a6d">TY_BOOL_AUTO_GAIN</a> = 0x0302 | TY_FEATURE_BOOL, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a2dddfa2f8000896f88ff2835675f9a6d">TY_BOOL_AUTO_GAIN</a> = 0x0302 | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38af5848aa7ee4ab4356fa00ac3b73800d6">TY_INT_GAIN</a> = 0x0303 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad49dbc7de890a43620c6848d241b0720">TY_BOOL_AUTO_AWB</a> = 0x0304 | TY_FEATURE_BOOL, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad49dbc7de890a43620c6848d241b0720">TY_BOOL_AUTO_AWB</a> = 0x0304 | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aa93143eafabddc82a4285efc0ec564ba">TY_STRUCT_AEC_ROI</a> = 0x0305 | TY_FEATURE_STRUCT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a11a0bd5be71b003409539efd7cd85c79">TY_INT_TOF_HDR_RATIO</a> = 0x0306 | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a11a0bd5be71b003409539efd7cd85c79">TY_INT_TOF_HDR_RATIO</a> = 0x0306 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a1168c4d611889e1cf6805e76e353514a">TY_INT_TOF_JITTER_THRESHOLD</a> = 0x0307 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a7c516f6ea911fdd2a0aedbcb5374e1bd">TY_FLOAT_EXPOSURE_TIME_US</a> = 0x0308 | TY_FEATURE_FLOAT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a7c516f6ea911fdd2a0aedbcb5374e1bd">TY_FLOAT_EXPOSURE_TIME_US</a> = 0x0308 | TY_FEATURE_FLOAT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a39f1bae0a509f8b917f3d2e46ac66446">TY_INT_LASER_POWER</a> = 0x0500 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a9e728970d3b6c1ba088891834f2d733e">TY_BOOL_LASER_AUTO_CTRL</a> = 0x0501 | TY_FEATURE_BOOL, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a9e728970d3b6c1ba088891834f2d733e">TY_BOOL_LASER_AUTO_CTRL</a> = 0x0501 | TY_FEATURE_BOOL, 
 <b>TY_STRUCT_LASER_PATTERN</b> = 0x0502 | TY_FEATURE_STRUCT, 
-<b>TY_INT_LASER_CAM_TRIG_POS</b> = 0x0503 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<b>TY_INT_LASER_CAM_TRIG_POS</b> = 0x0503 | TY_FEATURE_INT, 
 <b>TY_INT_LASER_CAM_TRIG_LEN</b> = 0x0504 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<b>TY_INT_LASER_LUT_TRIG_POS</b> = 0x0505 | TY_FEATURE_INT, 
+<b>TY_INT_LASER_LUT_TRIG_POS</b> = 0x0505 | TY_FEATURE_INT, 
 <b>TY_INT_LASER_LUT_NUM</b> = 0x0506 | TY_FEATURE_INT, 
-<b>TY_INT_LASER_PATTERN_OFFSET</b> = 0x0507 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<b>TY_INT_LASER_PATTERN_OFFSET</b> = 0x0507 | TY_FEATURE_INT, 
 <b>TY_INT_LASER_MIRROR_NUM</b> = 0x0508 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<b>TY_INT_LASER_MIRROR_SEL</b> = 0x0509 | TY_FEATURE_INT, 
+<b>TY_INT_LASER_MIRROR_SEL</b> = 0x0509 | TY_FEATURE_INT, 
 <b>TY_INT_LASER_LUT_IDX</b> = 0x050a | TY_FEATURE_INT, 
-<b>TY_INT_LASER_FACET_IDX</b> = 0x050b | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<b>TY_INT_LASER_FACET_IDX</b> = 0x050b | TY_FEATURE_INT, 
 <b>TY_INT_LASER_FACET_POS</b> = 0x050c | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<b>TY_INT_LASER_MODE</b> = 0x050d | TY_FEATURE_INT, 
+<b>TY_INT_LASER_MODE</b> = 0x050d | TY_FEATURE_INT, 
 <b>TY_INT_CONST_DRV_DUTY</b> = 0x050e | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a2b688c6c016a4c33dad32e3bd1090642">TY_STRUCT_LASER_ENABLE_BY_IDX</a> = 0x0530 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a2b688c6c016a4c33dad32e3bd1090642">TY_STRUCT_LASER_ENABLE_BY_IDX</a> = 0x0530 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a51981d20ac997650f46686e9a7d7a0a6">TY_STRUCT_LASER_POWER_BY_IDX</a> = 0x0531 | TY_FEATURE_STRUCT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a619cf24b19bb7b6f2392591960c9871f">TY_STRUCT_FLOOD_ENABLE_BY_IDX</a> = 0x0532 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a619cf24b19bb7b6f2392591960c9871f">TY_STRUCT_FLOOD_ENABLE_BY_IDX</a> = 0x0532 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a1247fcd01faa4e052e23cdd8eb085edb">TY_STRUCT_FLOOD_POWER_BY_IDX</a> = 0x0533 | TY_FEATURE_STRUCT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad8ba7a8ff19ca5e5e16baecfd7f90d7c">TY_BOOL_UNDISTORTION</a> = 0x0510 | TY_FEATURE_BOOL, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad8ba7a8ff19ca5e5e16baecfd7f90d7c">TY_BOOL_UNDISTORTION</a> = 0x0510 | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a96c9a2085babbc7c27efa45a019b9bcd">TY_BOOL_BRIGHTNESS_HISTOGRAM</a> = 0x0511 | TY_FEATURE_BOOL, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aa33c31670b3fedc298f957654b9a8825">TY_BOOL_DEPTH_POSTPROC</a> = 0x0512 | TY_FEATURE_BOOL, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aa33c31670b3fedc298f957654b9a8825">TY_BOOL_DEPTH_POSTPROC</a> = 0x0512 | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38af959400781d55f751ad6d9b433713b45">TY_INT_R_GAIN</a> = 0x0520 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad62bbcbda253a1dab4fdf7b694039839">TY_INT_G_GAIN</a> = 0x0521 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad62bbcbda253a1dab4fdf7b694039839">TY_INT_G_GAIN</a> = 0x0521 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aebd176e36456383af154c2bf12c94683">TY_INT_B_GAIN</a> = 0x0522 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38accb42916dcece10e84d7b701d2b852f0">TY_INT_ANALOG_GAIN</a> = 0x0524 | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38accb42916dcece10e84d7b701d2b852f0">TY_INT_ANALOG_GAIN</a> = 0x0524 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a893e47e74f056b2fd1df01e31cc3385c">TY_BOOL_HDR</a> = 0x0525 | TY_FEATURE_BOOL, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a3bcb7ab3cd2b38502e51aec190877eff">TY_BYTEARRAY_HDR_PARAMETER</a> = 0x0526 | TY_FEATURE_BYTEARRAY, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a3bcb7ab3cd2b38502e51aec190877eff">TY_BYTEARRAY_HDR_PARAMETER</a> = 0x0526 | TY_FEATURE_BYTEARRAY, 
 <b>TY_INT_AE_TARGET_Y</b> = 0x0527 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a1a00d0a48d1d0fabd6b1cab88c8644d6">TY_BOOL_IMU_DATA_ONOFF</a> = 0x0600 | TY_FEATURE_BOOL, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a1a00d0a48d1d0fabd6b1cab88c8644d6">TY_BOOL_IMU_DATA_ONOFF</a> = 0x0600 | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a5fd4b63f15738888f3bea3c05c57c86a">TY_STRUCT_IMU_ACC_BIAS</a> = 0x0601 | TY_FEATURE_STRUCT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad9dd45a95abc65d29f6891da82c78b19">TY_STRUCT_IMU_ACC_MISALIGNMENT</a> = 0x0602 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad9dd45a95abc65d29f6891da82c78b19">TY_STRUCT_IMU_ACC_MISALIGNMENT</a> = 0x0602 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a709515a4703e046df427a134b4150739">TY_STRUCT_IMU_ACC_SCALE</a> = 0x0603 | TY_FEATURE_STRUCT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aa54e2b1fe67c7f62526c46c56085e861">TY_STRUCT_IMU_GYRO_BIAS</a> = 0x0604 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aa54e2b1fe67c7f62526c46c56085e861">TY_STRUCT_IMU_GYRO_BIAS</a> = 0x0604 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aad34f1411250194e8b26720dff097bcc">TY_STRUCT_IMU_GYRO_MISALIGNMENT</a> = 0x0605 | TY_FEATURE_STRUCT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38af45bde4f39fea3d09c66ab4992b32a2b">TY_STRUCT_IMU_GYRO_SCALE</a> = 0x0606 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38af45bde4f39fea3d09c66ab4992b32a2b">TY_STRUCT_IMU_GYRO_SCALE</a> = 0x0606 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ae33e38bebeafd77380de3847e3b920d3">TY_STRUCT_IMU_CAM_TO_IMU</a> = 0x0607 | TY_FEATURE_STRUCT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38afd5cfe7fc79587f99dd05f8121132f15">TY_ENUM_IMU_FPS</a> = 0x0608 | TY_FEATURE_ENUM, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38afd5cfe7fc79587f99dd05f8121132f15">TY_ENUM_IMU_FPS</a> = 0x0608 | TY_FEATURE_ENUM, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8ef6c5fc1b778eaa402ee387616ccbed">TY_INT_SGBM_IMAGE_NUM</a> = 0x0610 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8293025d1e10f29c67b701f04085ea40">TY_INT_SGBM_DISPARITY_NUM</a> = 0x0611 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8293025d1e10f29c67b701f04085ea40">TY_INT_SGBM_DISPARITY_NUM</a> = 0x0611 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a9d19fb43548bdafb1b5b27a29f6ea2de">TY_INT_SGBM_DISPARITY_OFFSET</a> = 0x0612 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ace3758412be71871db99a9c7e15fd026">TY_INT_SGBM_MATCH_WIN_HEIGHT</a> = 0x0613 | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ace3758412be71871db99a9c7e15fd026">TY_INT_SGBM_MATCH_WIN_HEIGHT</a> = 0x0613 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a453167fe58e716d71f9fee8570203d5a">TY_INT_SGBM_SEMI_PARAM_P1</a> = 0x0614 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38afa765bb83ce4ca7fcf9869aa847ca2b8">TY_INT_SGBM_SEMI_PARAM_P2</a> = 0x0615 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38afa765bb83ce4ca7fcf9869aa847ca2b8">TY_INT_SGBM_SEMI_PARAM_P2</a> = 0x0615 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a6e633d2181bc7f7bd87d93ac72d106cf">TY_INT_SGBM_UNIQUE_FACTOR</a> = 0x0616 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8ad683bd571a9f6153b5a2064e731792">TY_INT_SGBM_UNIQUE_ABSDIFF</a> = 0x0617 | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8ad683bd571a9f6153b5a2064e731792">TY_INT_SGBM_UNIQUE_ABSDIFF</a> = 0x0617 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a3f3e59016942e1e1ba31e1e1932f954c">TY_INT_SGBM_UNIQUE_MAX_COST</a> = 0x0618 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ac6ac106d15fea1053a3fb74fa7a7032b">TY_BOOL_SGBM_HFILTER_HALF_WIN</a> = 0x0619 | TY_FEATURE_BOOL, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ac6ac106d15fea1053a3fb74fa7a7032b">TY_BOOL_SGBM_HFILTER_HALF_WIN</a> = 0x0619 | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a49f130e6c6792e659230eb3d77d5f1fd">TY_INT_SGBM_MATCH_WIN_WIDTH</a> = 0x061A | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38af53bb8b57c3a43f82959a14339c6595a">TY_BOOL_SGBM_MEDFILTER</a> = 0x061B | TY_FEATURE_BOOL, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38af53bb8b57c3a43f82959a14339c6595a">TY_BOOL_SGBM_MEDFILTER</a> = 0x061B | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a15850f72d27efecbaedb524d4f9ae43b">TY_BOOL_SGBM_LRC</a> = 0x061C | TY_FEATURE_BOOL, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8d6df081f211a0b0c839dd4c970be688">TY_INT_SGBM_LRC_DIFF</a> = 0x061D | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8d6df081f211a0b0c839dd4c970be688">TY_INT_SGBM_LRC_DIFF</a> = 0x061D | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad24a625f9d60c054f95d1bfaef8a452c">TY_INT_SGBM_MEDFILTER_THRESH</a> = 0x061E | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a00822fb988a032c1ffe9d75c272d9c01">TY_INT_SGBM_SEMI_PARAM_P1_SCALE</a> = 0x061F | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a00822fb988a032c1ffe9d75c272d9c01">TY_INT_SGBM_SEMI_PARAM_P1_SCALE</a> = 0x061F | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38af2528e72db1f55d8780fb2434f801caa">TY_INT_SGPM_PHASE_NUM</a> = 0x0620 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38adf425905d30c58356c114fee6c70b8db">TY_INT_SGPM_NORMAL_PHASE_SCALE</a> = 0x0621 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38adf425905d30c58356c114fee6c70b8db">TY_INT_SGPM_NORMAL_PHASE_SCALE</a> = 0x0621 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a2c8c3e9541f7e261dc29853bd046e516">TY_INT_SGPM_NORMAL_PHASE_OFFSET</a> = 0x0622 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a72376db4bf791de9bcb541c93a9e9ca6">TY_INT_SGPM_REF_PHASE_SCALE</a> = 0x0623 | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a72376db4bf791de9bcb541c93a9e9ca6">TY_INT_SGPM_REF_PHASE_SCALE</a> = 0x0623 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a7d38b13db399967f8c802178992efc9c">TY_INT_SGPM_REF_PHASE_OFFSET</a> = 0x0624 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a5db81ae6ddc26979daf6c6ac6d19c150">TY_FLOAT_SGPM_EPI_HS</a> = 0x0625 | TY_FEATURE_FLOAT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a5db81ae6ddc26979daf6c6ac6d19c150">TY_FLOAT_SGPM_EPI_HS</a> = 0x0625 | TY_FEATURE_FLOAT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38afac1299db9379d26c83c9597f5e00fc7">TY_INT_SGPM_EPI_HF</a> = 0x0626 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aaf8c2b98d602a20a573a7ba0ff5d096f">TY_BOOL_SGPM_EPI_EN</a> = 0x0627 | TY_FEATURE_BOOL, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38aaf8c2b98d602a20a573a7ba0ff5d096f">TY_BOOL_SGPM_EPI_EN</a> = 0x0627 | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ac4d967266c6a182d6862dd0c66ea02d1">TY_INT_SGPM_EPI_CH0</a> = 0x0628 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a006c470d5ed10329c3d364664c74dc9f">TY_INT_SGPM_EPI_CH1</a> = 0x0629 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a006c470d5ed10329c3d364664c74dc9f">TY_INT_SGPM_EPI_CH1</a> = 0x0629 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a0bca1a9cbfd4e6274744c889418c5994">TY_INT_SGPM_EPI_THRESH</a> = 0x062A | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a4f8ab09fd6163b561f21a0b383cc7c40">TY_BOOL_SGPM_ORDER_FILTER_EN</a> = 0x062B | TY_FEATURE_BOOL, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a4f8ab09fd6163b561f21a0b383cc7c40">TY_BOOL_SGPM_ORDER_FILTER_EN</a> = 0x062B | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a47e043ae81e880b29dc310e5f5e5f2ad">TY_INT_SGPM_ORDER_FILTER_CHN</a> = 0x062C | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ab84ad0517bcf4621dff0f230b134b7e1">TY_INT_DEPTH_MIN_MM</a> = 0x062D | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ab84ad0517bcf4621dff0f230b134b7e1">TY_INT_DEPTH_MIN_MM</a> = 0x062D | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a9eaf64e358597bbe2e3eec37c1147abc">TY_INT_DEPTH_MAX_MM</a> = 0x062E | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a91986d7b1ed1a39b9b58d79a1ca934db">TY_INT_SGBM_TEXTURE_OFFSET</a> = 0x062F | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a91986d7b1ed1a39b9b58d79a1ca934db">TY_INT_SGBM_TEXTURE_OFFSET</a> = 0x062F | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ac5bc2e9963e2d581cc7a2d6ab4f556a9">TY_INT_SGBM_TEXTURE_THRESH</a> = 0x0630 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8f67c2513520fa2abd1bbc7c4a41841c">TY_STRUCT_PHC_GROUP_ATTR</a> = 0x0710 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8f67c2513520fa2abd1bbc7c4a41841c">TY_STRUCT_PHC_GROUP_ATTR</a> = 0x0710 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a8ad70c3fe5e66af2d82ca3ccc1c9dda1">TY_ENUM_DEPTH_QUALITY</a> = 0x0900 | TY_FEATURE_ENUM, 
-<br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a3b5eba50d43b4f0112b475df4056ce30">TY_INT_FILTER_THRESHOLD</a> = 0x0901 | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a3b5eba50d43b4f0112b475df4056ce30">TY_INT_FILTER_THRESHOLD</a> = 0x0901 | TY_FEATURE_INT, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a7249b83e4cbe52e1f18e75453c2f1e7a">TY_INT_TOF_CHANNEL</a> = 0x0902 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a07c25e03e8dc286cb837fb1a8921e8b6">TY_INT_TOF_MODULATION_THRESHOLD</a> = 0x0903 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a567f2ae9c42ca97e9880419d2400ff28">TY_STRUCT_TOF_FREQ</a> = 0x0904 | TY_FEATURE_STRUCT, 
 <br />
-&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a9f9a69dac5043961461ce9780e531ac6">TY_BOOL_TOF_ANTI_INTERFERENCE</a> = 0x0905 | TY_FEATURE_BOOL, 
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a07c25e03e8dc286cb837fb1a8921e8b6">TY_INT_TOF_MODULATION_THRESHOLD</a> = 0x0903 | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a567f2ae9c42ca97e9880419d2400ff28">TY_STRUCT_TOF_FREQ</a> = 0x0904 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a9f9a69dac5043961461ce9780e531ac6">TY_BOOL_TOF_ANTI_INTERFERENCE</a> = 0x0905 | TY_FEATURE_BOOL, 
 <a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a49ab608765b0631210032a58d5d8f908">TY_INT_TOF_ANTI_SUNLIGHT_INDEX</a> = 0x0906 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad41aba0ae7aad78e0b087411118c3e8f">TY_INT_MAX_SPECKLE_SIZE</a> = 0x0907 | TY_FEATURE_INT, 
-<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ab88c8aee78f4f44c8012d3ffd3daa711">TY_INT_MAX_SPECKLE_DIFF</a> = 0x0908 | TY_FEATURE_INT
+<br />
+&#160;&#160;<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ad41aba0ae7aad78e0b087411118c3e8f">TY_INT_MAX_SPECKLE_SIZE</a> = 0x0907 | TY_FEATURE_INT, 
+<a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ab88c8aee78f4f44c8012d3ffd3daa711">TY_INT_MAX_SPECKLE_DIFF</a> = 0x0908 | TY_FEATURE_INT, 
+<b>TY_ENUM_LENS_OPTICAL_TYPE</b> = 0x0909 | TY_FEATURE_ENUM
 <br />
  }</td></tr>
 <tr class="memdesc:a6ad12f8e99a29828f93af6916a846f38"><td class="mdescLeft">&#160;</td><td class="mdescRight">feature for component definitions  <a href="a00008.html#a6ad12f8e99a29828f93af6916a846f38">More...</a><br /></td></tr>
@@ -884,6 +880,10 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:afbdeaa73f2870f94cbf4dc79ec79d2ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">stream async mode <br /></td></tr>
 <tr class="separator:afbdeaa73f2870f94cbf4dc79ec79d2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75dd8800700da322e1cb3ae0f7df823f"><td class="memItemLeft" align="right" valign="top"><a id="a75dd8800700da322e1cb3ae0f7df823f"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TYLensOpticalType</b> : uint32_t { <b>STANDARD_LENS</b> = 0, 
+<b>FISHEYE_LENS</b> = 1
+ }</td></tr>
+<tr class="separator:a75dd8800700da322e1cb3ae0f7df823f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a9674954d36ad55778cf1633835e06f"><td class="memItemLeft" align="right" valign="top"><a id="a8a9674954d36ad55778cf1633835e06f"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a8a9674954d36ad55778cf1633835e06f">TYPixFmtList</a> : uint32_t { <br />
 &#160;&#160;<b>TYPixelFormatMono8</b> = 0x01080001, 
 <b>TYPixelFormatBayerGBRG8</b> = 0x0108000A, 
@@ -1251,7 +1251,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TEMPERATURE_ID_
 <div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2048x1536), \</div>
 <div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 240x96)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00637">637</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00620">620</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
 
 </div>
 </div>
@@ -1580,7 +1580,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TEMPERATURE_ID_
 <p>feature unique id </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00008.html#a6ad12f8e99a29828f93af6916a846f38" title="feature for component definitions">TY_FEATURE_ID_LIST</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00399">399</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00377">377</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
 
 </div>
 </div>
@@ -1746,7 +1746,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TEMPERATURE_ID_
 </div><div class="memdoc">
 <p>Indicate a feature is readable or writable </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ae788feabfa82b2ff3a3e3a5c8c75601c" title="Get feature info.">TYGetFeatureInfo</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00453">453</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00431">431</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
 
 </div>
 </div>
@@ -1844,20 +1844,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TEMPERATURE_ID_
 </td></tr>
 <tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38af323a74de002972f3d0201cdb5f53f09"></a>TY_INT_FRAME_PER_TRIGGER&#160;</td><td class="fielddoc"><p>Number of frames captured per trigger. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38af6df6d514c155ed792c22274326a980f"></a>TY_ENUM_USER_SET_CURRENT&#160;</td><td class="fielddoc"><p>Set the configuration set to be used as the default startup set. Write &amp; Read </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38a29382002c2302f8064fed5ff503e3b23"></a>TY_ENUM_USER_SET_SELECTOR&#160;</td><td class="fielddoc"><p>UserSetSelector. </p>
-<p>Indicates the currently active user configuration profile. Read Only </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38a3c5f6c1c65a7a7199576ec73a5815177"></a>TY_CMD_USER_SET_LOAD&#160;</td><td class="fielddoc"><p>Selects the configuration set to load, save, or configure. Write &amp; Read </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38a8c77f328ddd1cba0287c1924ec187f08"></a>TY_CMD_USER_SET_SAVE&#160;</td><td class="fielddoc"><p>Stores the selected configuration in the camera's volatile memory and sets it as the temporary active configuration. Write Only </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38abb07e181568ffed80540a653438924f4"></a>TY_STRING_USER_SET_DESCRIPTION&#160;</td><td class="fielddoc"><p>Saves the active configuration set to the chosen user set(set by TY_ENUM_USER_SET_SELECTOR). Write Only </p>
-</td></tr>
 <tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38a6555890aacdb59f65594437d2a259696"></a>TY_STRUCT_TRIGGER_PARAM&#160;</td><td class="fielddoc"><p>param of trigger, see <a class="el" href="a00101.html">TY_TRIGGER_PARAM</a> </p>
-<p>Description of the selected User Set content. Write &amp; Read <br  />
- </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38a65844cc45bdfe609a54cc1e0b9f3f4d8"></a>TY_STRUCT_TRIGGER_PARAM_EX&#160;</td><td class="fielddoc"><p>param of trigger, see <a class="el" href="a00105.html">TY_TRIGGER_PARAM_EX</a> </p>
 </td></tr>
@@ -2060,7 +2047,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TEMPERATURE_ID_
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00211">211</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00210">210</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
 
 </div>
 </div>
@@ -2077,7 +2064,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TEMPERATURE_ID_
 </div><div class="memdoc">
 <p>Interface type definition </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ac8015a333965f280d5ae4d26e7a15ddb" title="Get interface info list.">TYGetInterfaceList</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00440">440</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00418">418</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
 
 </div>
 </div>
@@ -2094,7 +2081,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TEMPERATURE_ID_
 </div><div class="memdoc">
 <p>Pixel size type definitions to define the pixel size in bits </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="a00008.html#ab4fa1d00f4fa00ce09115ba621aedc9a" title="pixel format definitions">TY_PIXEL_FORMAT_LIST</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00545">545</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00528">528</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
 
 </div>
 </div>
@@ -2168,7 +2155,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TEMPERATURE_ID_
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00563">563</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00546">546</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
 
 </div>
 </div>
@@ -2232,7 +2219,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TEMPERATURE_ID_
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00607">607</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00590">590</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
 
 </div>
 </div>
@@ -2265,19 +2252,19 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TEMPERATURE_ID_
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00708">708</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00691">691</a> of file <a class="el" href="a00008_source.html">TYDefs.h</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aa00229_html"><div class="ttname"><a href="a00229.html">TY_CAMERA_ROTATION</a></div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l01316">TYDefs.h:1316</a></div></div>
+<div class="ttc" id="aa00229_html"><div class="ttname"><a href="a00229.html">TY_CAMERA_ROTATION</a></div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l01299">TYDefs.h:1299</a></div></div>
 <div class="ttc" id="aa00002_html_ad4320c38038341657f9e759147db0639"><div class="ttname"><a href="a00002.html#ad4320c38038341657f9e759147db0639">TYGetStruct</a></div><div class="ttdeci">TY_CAPI TYGetStruct(TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, void *pStruct, uint32_t structSize)</div><div class="ttdoc">Get value of struct.</div></div>
-<div class="ttc" id="aa00008_html_a6ad12f8e99a29828f93af6916a846f38ab08047f1a0a9163d57d11eb9d15ccd7a"><div class="ttname"><a href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ab08047f1a0a9163d57d11eb9d15ccd7a">TY_STRUCT_CAM_INTRINSIC</a></div><div class="ttdeci">@ TY_STRUCT_CAM_INTRINSIC</div><div class="ttdoc">see TY_CAMERA_INTRINSIC</div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00213">TYDefs.h:213</a></div></div>
-<div class="ttc" id="aa00008_html_a6ad12f8e99a29828f93af6916a846f38a9e09cfdcd4618eef97e4a3aef8a8177f"><div class="ttname"><a href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a9e09cfdcd4618eef97e4a3aef8a8177f">TY_STRUCT_CAM_DISTORTION</a></div><div class="ttdeci">@ TY_STRUCT_CAM_DISTORTION</div><div class="ttdoc">see TY_CAMERA_DISTORTION</div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00217">TYDefs.h:217</a></div></div>
-<div class="ttc" id="aa00089_html"><div class="ttname"><a href="a00089.html">TY_CAMERA_EXTRINSIC</a></div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00958">TYDefs.h:958</a></div></div>
-<div class="ttc" id="aa00093_html"><div class="ttname"><a href="a00093.html">TY_CAMERA_DISTORTION</a></div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00970">TYDefs.h:970</a></div></div>
-<div class="ttc" id="aa00085_html"><div class="ttname"><a href="a00085.html">TY_CAMERA_INTRINSIC</a></div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00940">TYDefs.h:940</a></div></div>
+<div class="ttc" id="aa00008_html_a6ad12f8e99a29828f93af6916a846f38ab08047f1a0a9163d57d11eb9d15ccd7a"><div class="ttname"><a href="a00008.html#a6ad12f8e99a29828f93af6916a846f38ab08047f1a0a9163d57d11eb9d15ccd7a">TY_STRUCT_CAM_INTRINSIC</a></div><div class="ttdeci">@ TY_STRUCT_CAM_INTRINSIC</div><div class="ttdoc">see TY_CAMERA_INTRINSIC</div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00212">TYDefs.h:212</a></div></div>
+<div class="ttc" id="aa00008_html_a6ad12f8e99a29828f93af6916a846f38a9e09cfdcd4618eef97e4a3aef8a8177f"><div class="ttname"><a href="a00008.html#a6ad12f8e99a29828f93af6916a846f38a9e09cfdcd4618eef97e4a3aef8a8177f">TY_STRUCT_CAM_DISTORTION</a></div><div class="ttdeci">@ TY_STRUCT_CAM_DISTORTION</div><div class="ttdoc">see TY_CAMERA_DISTORTION</div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00216">TYDefs.h:216</a></div></div>
+<div class="ttc" id="aa00089_html"><div class="ttname"><a href="a00089.html">TY_CAMERA_EXTRINSIC</a></div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00941">TYDefs.h:941</a></div></div>
+<div class="ttc" id="aa00093_html"><div class="ttname"><a href="a00093.html">TY_CAMERA_DISTORTION</a></div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00953">TYDefs.h:953</a></div></div>
+<div class="ttc" id="aa00085_html"><div class="ttname"><a href="a00085.html">TY_CAMERA_INTRINSIC</a></div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00923">TYDefs.h:923</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
