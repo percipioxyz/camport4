@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['modelname_20',['modelName',['../a00053.html#a49556f137e2273207ffca6ca1570de8c',1,'TY_DEVICE_BASE_INFO']]]
+  ['jpeg_90',['JPEG',['../a00470.html#a6b7f79fbafc21a8d0e33881db8805af3a96f4d8a8c2070cf7bdd2236a48eae07a',1,'TYFeatureList.h']]]
 ];

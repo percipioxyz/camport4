@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
         std::cout << "The default user set(" << val << ") is protected and cannot be modified." << std::endl;
       } else {
         char desc[200];
-        sprintf(desc, "Custom_%d", i - 8);
+        sprintf(desc, "Custom_%zd", i - 8);
         // Set Description of the selected User Set content
         ASSERT_OK(TYStringSetValue(hDevice, "UserSetDescription", desc));
 

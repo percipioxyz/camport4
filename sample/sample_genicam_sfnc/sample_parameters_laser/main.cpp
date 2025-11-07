@@ -1,4 +1,5 @@
 #include "../common/common.hpp"
+#include "TYFeatureList.h"
 
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
@@ -42,7 +43,7 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYOpenInterface(selectedDev.iface.id, &hIface) );
     ASSERT_OK( TYOpenDevice(hIface, selectedDev.id, &hDevice) );
 
-    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", "Range"));
+    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", TYGetSourceSelectorName(SRC_SEL_DEPTH)));
     ASSERT_OK(TYBooleanSetValue(hDevice, "ComponentEnable", true));
     
     ASSERT_OK(TYEnumSetString(hDevice, "LightControllerSelector", "LightController0"));
@@ -51,10 +52,10 @@ int main(int argc, char* argv[])
     ASSERT_OK(TYIntegerGetMin(hDevice, "LightBrightness", &m_min));
     ASSERT_OK(TYIntegerGetMax(hDevice, "LightBrightness", &m_max));
     ASSERT_OK(TYIntegerGetStep(hDevice, "LightBrightness", &m_step));
-    LOGD("Laser power range value : %lld - %lld", m_min, m_max);
+    LOGD("Laser power range value : %" PRId64 "- %" PRId64 "", m_min, m_max);
 
     int64_t m_val = 80;
-    LOGD("Laser power set value : %lld", m_val);
+    LOGD("Laser power set value : %" PRId64 "", m_val);
     ASSERT_OK(TYIntegerSetValue(hDevice, "LightBrightness", m_val));
     
     LOGD("Prepare image buffer");

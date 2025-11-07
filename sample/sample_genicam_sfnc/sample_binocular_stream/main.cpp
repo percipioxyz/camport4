@@ -1,4 +1,5 @@
 #include "../common/common.hpp"
+#include "TYFeatureList.h"
 
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
@@ -42,16 +43,16 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYOpenInterface(selectedDev.iface.id, &hIface) );
     ASSERT_OK( TYOpenDevice(hIface, selectedDev.id, &hDevice) );
 
-    //disable range
-    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", "Range"));
+    //disable depth 
+    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", TYGetSourceSelectorName(SRC_SEL_DEPTH)));
     ASSERT_OK(TYBooleanSetValue(hDevice, "ComponentEnable", false));
 
     //enable left cam
-    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", "BinocularLeft"));
+    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", TYGetSourceSelectorName(SRC_SEL_LEFT)));
     ASSERT_OK(TYBooleanSetValue(hDevice, "ComponentEnable", true));
 
     //enable right cam
-    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", "BinocularRight"));
+    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", TYGetSourceSelectorName(SRC_SEL_RIGHT)));
     ASSERT_OK(TYBooleanSetValue(hDevice, "ComponentEnable", true));
 
     //If range is not enabled, the laser will automatically turn off by default，needs to be manually turned on
@@ -60,7 +61,7 @@ int main(int argc, char* argv[])
     ASSERT_OK(TYBooleanSetValue(hDevice, "LightEnable", true));
     
     int64_t m_val = 80;
-    LOGD("Laser power set value : %lld", m_val);
+    LOGD("Laser power set value : %" PRId64 "", m_val);
     ASSERT_OK(TYIntegerSetValue(hDevice, "LightBrightness", m_val));
     
     LOGD("Prepare image buffer");

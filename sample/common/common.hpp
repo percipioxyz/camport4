@@ -14,7 +14,6 @@
 #include <opencv2/opencv.hpp>
 #include "DepthRender.hpp"
 #include "MatViewer.hpp"
-#include "DepthInpainter.hpp"
 #endif
 
 #include "TYThread.hpp"

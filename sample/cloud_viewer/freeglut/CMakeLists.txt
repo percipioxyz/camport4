@@ -1,4 +1,8 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8 FATAL_ERROR)
+if(${CMAKE_VERSION} VERSION_LESS "3.5")
+    cmake_minimum_required(VERSION 2.8.8 FATAL_ERROR)
+else() # to avoid errors reported by CMake 4.0 and above versions
+    cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+endif()
 PROJECT(freeglut)
 
 # for multiarch LIBDIR support (requires cmake>=2.8.8)
@@ -236,8 +240,8 @@ IF(WIN32)
     IF(MSVC)
         SET( CMAKE_DEBUG_POSTFIX "d" )
         set(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS} /NODEFAULTLIB:atlthunk.lib /NODEFAULTLIB:msvcrt.lib /NODEFAULTLIB:msvcrtd.lib")
-        set(CMAKE_STATIC_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:libcmtd.lib")
-        set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS_RELEASE} /NODEFAULTLIB:libcmt.lib")
+        set(CMAKE_STATIC_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:libcmt.lib")
+        set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS_RELEASE} /NODEFAULTLIB:libcmtd.lib")
     ENDIF(MSVC)
     
     # enable the use of Win2000 APIs (needed for really old compilers like MSVC6)

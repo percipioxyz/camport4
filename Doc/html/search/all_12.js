@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['z_5fstream_5fs_369',['z_stream_s',['../a00245.html',1,'']]]
+  ['valid_5fsize_730',['valid_size',['../a00739.html#a07ba18afdbaf51bfa57407eee61e25e8',1,'TY_BYTEARRAY_ATTR']]],
+  ['validcount_731',['validCount',['../a00875.html#a8e3a508ddd5eec680fc5c114dd297fe3',1,'TY_FRAME_DATA']]]
 ];

@@ -448,8 +448,8 @@ typedef uint8_t TY_STREAM_ASYNC_MODE;
 
 typedef enum TYLensOpticalType : uint32_t
 {
-    STANDARD_LENS = 0,
-    FISHEYE_LENS = 1,
+    TY_LENS_PINHOLE = 0,
+    TY_LENS_FISHEYE = 1,
 } TYLensOpticalType;
 
 ///pixel format definitions
@@ -777,6 +777,18 @@ typedef enum TY_LOG_LEVEL_LIST{
   TY_LOG_LEVEL_NEVER    = 9,
 }TY_LOG_LEVEL_LIST;
 typedef int32_t TY_LOG_LEVEL;
+
+typedef enum TY_LOG_TYPE_LIST {
+   TY_LOG_TYPE_STD,
+   TY_LOG_TYPE_FILE,
+   TY_LOG_TYPE_SERVER,
+}TY_LOG_TYPE_LIST;
+typedef int32_t TY_LOG_TYPE;
+typedef enum TY_SERVER_TYPE_LIST{
+  TY_SERVER_TYPE_UDP,
+  TY_SERVER_TYPE_TCP,
+}TY_SERVER_TYPE_LIST;
+typedef int32_t TY_SERVER_TYPE;
 
 #pragma pack(1)
 

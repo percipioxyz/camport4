@@ -1,4 +1,5 @@
 #include "../common/common.hpp"
+#include "TYFeatureList.h"
 
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
@@ -45,7 +46,7 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYOpenInterface(selectedDev.iface.id, &hIface) );
     ASSERT_OK( TYOpenDevice(hIface, selectedDev.id, &hDevice) );
 
-    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", "Range"));
+    ASSERT_OK(TYEnumSetValue(hDevice, "SourceSelector", SRC_SEL_DEPTH));
     ASSERT_OK(TYBooleanSetValue(hDevice, "ComponentEnable", true));
     
     ASSERT_OK(TYIntegerSetValue(hDevice, "DepthRangeMin", 500));

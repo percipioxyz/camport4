@@ -10,6 +10,12 @@
 #include "TYApi.h"
 #include "TYCoordinateMapper.h"
 
+///@brief  Get current library version.
+///@param  [out] version       Version infomation to be filled.
+///@retval TY_STATUS_OK                     Succeed.
+///@retval TY_STATUS_NULL_POINTER           TYGetImageAlgorithmVersion called with NULL pointer
+TY_CAPI TYGetImageAlgorithmVersion(TY_VERSION_INFO* version);
+
 /// @brief Image processing acceleration switch
 /// @param  [in] en          Enable image process acceleration switch
 TY_CAPI TYImageProcesAcceEnable(bool en);
@@ -26,9 +32,24 @@ TY_CAPI TYUndistortImage (const TY_CAMERA_CALIB_INFO *srcCalibInfo
         , const TY_IMAGE_DATA *srcImage
         , const TY_CAMERA_INTRINSIC *cameraNewIntrinsic
         , TY_IMAGE_DATA *dstImage
-        , const TYLensOpticalType type = STANDARD_LENS
+        , const TYLensOpticalType type = TY_LENS_PINHOLE
         );
 
+/// @brief Do image undistortion, only support TY_PIXEL_FORMAT_MONO ,TY_PIXEL_FORMAT_RGB,TY_PIXEL_FORMAT_BGR.
+/// @param  [in]  srcCalibInfo          Image calibration data.
+/// @param  [in]  srcImage              Source image.
+/// @param  [in]  cameraRotation        Camera rotation parameter for image orientation adjustment.
+/// @param  [in]  cameraNewIntrinsic    Expected new image intrinsic, will use srcCalibInfo for new image intrinsic if set to NULL.
+/// @param  [out] dstImage              Output image.
+/// @retval TY_STATUS_OK        Succeed.
+/// @retval TY_STATUS_NULL_POINTER      Any srcCalibInfo, srcImage, dstImage, srcImage->buffer, dstImage->buffer is NULL.
+/// @retval TY_STATUS_INVALID_PARAMETER Invalid srcImage->width, srcImage->height, dstImage->width, dstImage->height or unsupported pixel format.
+TY_CAPI TYUndistortImage2 (const TY_CAMERA_CALIB_INFO *calib_info,
+    const TY_IMAGE_DATA *srcImage,
+    const TY_CAMERA_ROTATION *cameraRotation,
+    const TY_CAMERA_INTRINSIC *cameraNewIntrinsic,
+    TY_IMAGE_DATA *dstImage,
+    const TYLensOpticalType type = TY_LENS_PINHOLE);
 
 // -----------------------------------------------------------
 struct DepthSpeckleFilterParameters {
@@ -49,6 +70,24 @@ TY_CAPI TYDepthSpeckleFilter (TY_IMAGE_DATA* depthImage
         , const DepthSpeckleFilterParameters* param
         );
 
+// -----------------------------------------------------------
+struct DepthInpainterParameters {
+    int kernel_size;    //Inpainting kernel size, determines the neighborhood range for repair. Valid range: 1 to 30.
+    int max_internal_hole; //Maximum internal hole size, holes smaller than this will be filled. Valid range: 3 to 30000.
+};
+
+///<default parameter value definition
+#define DepthInpainterParameters_Initializer {5, 50}
+
+/// @brief Repair invalid pixels in depth image, filling small holes.
+/// @param  [in,out]  depth             Depth image to be processed.
+/// @param  [in]      param             Algorithm parameters.
+/// @retval TY_STATUS_OK                Success.
+/// @retval TY_STATUS_NULL_POINTER      depth, param or depth->buffer is NULL.
+/// @retval TY_STATUS_INVALID_PARAMETER param->kernel_size or param->kernel_size out of range
+TY_CAPI TYDepthImageInpainter(TY_IMAGE_DATA* depth
+        , const DepthInpainterParameters* param
+        );
 
 // -----------------------------------------------------------
 struct DepthEnhenceParameters{

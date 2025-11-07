@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYOpenDevice(hIface, selectedDev.id, &hDevice) );
 
     //Intensity / BinocularLeft / BinocularRight
-    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", "Intensity"));
+    ASSERT_OK(TYEnumSetString(hDevice, "SourceSelector", "Texture"));
     ASSERT_OK(TYBooleanSetValue(hDevice, "ComponentEnable", true));
     
     uint32_t m_FmtCnt = 0;

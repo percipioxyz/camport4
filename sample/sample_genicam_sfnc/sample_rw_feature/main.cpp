@@ -48,7 +48,7 @@ void write_feat(TY_DEV_HANDLE hDevice, const std::string &feat,
     }
     case Integer:{
         int64_t _v = atoi(val.c_str());
-        printf("%s %lld\n", val.c_str(), _v);
+        printf("%s %" PRId64 "\n", val.c_str(), _v);
         ret = TYIntegerSetValue(hDevice, feat.c_str(), _v);
         break;
     }

@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
     //It changes automatically when the user executes the command UserSetSave
     int64_t current = 0;
     ASSERT_OK(TYIntegerGetValue(hDevice, "UserSetCurrent", &current));
-    LOGD("UserSetCurrent = %d", current);
+    LOGD("UserSetCurrent = %" PRId64 "", current);
 
 
     //Get the name/description of the selected User Set(Use : UserSetSelector)

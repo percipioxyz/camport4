@@ -1,4 +1,8 @@
-cmake_minimum_required(VERSION 2.8)
+if(${CMAKE_VERSION} VERSION_LESS "3.5")
+    cmake_minimum_required(VERSION 2.8)
+else() # to avoid errors reported by CMake 4.0 and above versions
+    cmake_minimum_required(VERSION 3.5)
+endif()
 
 set(ALL_SAMPLES
   sample_stream
@@ -11,6 +15,9 @@ set(ALL_SAMPLES
   sample_userset_ctl
   sample_trigger
   sample_ForceDeviceIP
+  sample_get_rw_api
+  sample_speckleFilter
+  sample_file_iostream
   )
 
 set(UserSetCtrlSample
@@ -21,64 +28,6 @@ set(UserSetCtrlSample
     UserSetControl/sample_UserSetSave
     UserSetControl/sample_UserSetSelector
 )
-
-if (MSVC)
-    option(OpenCV_STATIC "Using static opencv" OFF)
-endif()
-
-if (NOT TARGET tycam) 
-    #only build samples 
-    option (OpenCV_STATIC OFF)
-    set(INCLUDE_PATH ../../include)
-    include_directories(${INCLUDE_PATH})
-    set(ABSOLUTE_TYCAM_LIB tycam)
-    add_library(${ABSOLUTE_TYCAM_LIB} SHARED IMPORTED)
-    if (MSVC)#for windows
-        if(CMAKE_CL_64) #x64
-            set_property(TARGET ${ABSOLUTE_TYCAM_LIB} PROPERTY IMPORTED_LOCATION ${LIB_ROOT_PATH}/x64/tycam.dll)
-            set_property(TARGET ${ABSOLUTE_TYCAM_LIB} PROPERTY IMPORTED_IMPLIB  ${LIB_ROOT_PATH}/x64/tycam.lib)
-        else()
-            set_property(TARGET ${ABSOLUTE_TYCAM_LIB} PROPERTY IMPORTED_LOCATION ${LIB_ROOT_PATH}/x86/tycam.dll)
-            set_property(TARGET ${ABSOLUTE_TYCAM_LIB} PROPERTY IMPORTED_IMPLIB ${LIB_ROOT_PATH}/x86/tycam.lib)
-        endif()
-    else()
-      if(ARCH)
-          set_property(TARGET ${ABSOLUTE_TYCAM_LIB} PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../lib/linux/lib_${ARCH}/libtycam.so)
-      else()
-          set(ABSOLUTE_TYCAM_LIB -ltycam)
-      endif()
-    endif()
-endif()
-
-if (NOT TARGET tyimgproc)
-    option (OpenCV_STATIC OFF)
-    set(ABSOLUTE_TYIMGPROC_LIB tyimgproc)
-    add_library(${ABSOLUTE_TYIMGPROC_LIB} SHARED IMPORTED)
-    if (MSVC)#for windows
-        if(CMAKE_CL_64) #x64
-            set_property(TARGET ${ABSOLUTE_TYIMGPROC_LIB} PROPERTY IMPORTED_LOCATION ${LIB_ROOT_PATH}/x64/tyimgproc.dll)
-            set_property(TARGET ${ABSOLUTE_TYIMGPROC_LIB} PROPERTY IMPORTED_IMPLIB  ${LIB_ROOT_PATH}/x64/tyimgproc.lib)
-        else()
-            set_property(TARGET ${ABSOLUTE_TYIMGPROC_LIB} PROPERTY IMPORTED_LOCATION ${LIB_ROOT_PATH}/x86/tyimgproc.dll)
-            set_property(TARGET ${ABSOLUTE_TYIMGPROC_LIB} PROPERTY IMPORTED_IMPLIB ${LIB_ROOT_PATH}/x86/tyimgproc.lib)
-        endif()
-    else()
-        if(ARCH)
-            set_property(TARGET ${ABSOLUTE_TYIMGPROC_LIB} PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../lib/linux/lib_${ARCH}/tyimgproc.so)
-        else()
-            set(ABSOLUTE_TYIMGPROC_LIB -ltyimgproc)
-        endif()
-    endif()
-endif()
-
-if (MSVC)
-    if (OpenCV_STATIC)
-        message("using static opencv")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
-    endif()
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-endif()
 
 # ========================================
 # === common, build static lib to speed up
@@ -112,16 +61,19 @@ endif()
 
 add_definitions(-DOPENCV_DEPENDENCIES)
 foreach(sample_path ${ALL_SAMPLES})
+    if (DEFINED SAMPLES)
+      list(FIND SAMPLES ${sample_path} index)
+      if(index EQUAL -1)
+        continue()
+      endif()
+    endif()
     get_filename_component(spath "${sample_path}" ABSOLUTE )
     if (EXISTS "${spath}/")
         file(GLOB sources ${sample_path}/*.cpp)
         get_filename_component(sample ${sample_path} NAME)
         add_executable(${sample} ${sources})
         add_dependencies(${sample} sample_genicam_sfnc_common ${TARGET_LIB})
-        target_link_libraries(${sample} sample_genicam_sfnc_common ${ABSOLUTE_TYCAM_LIB}  ${OpenCV_LIBS} ${CLOUD_VIEWER})
-        if(BUILD_IMGPROC)
-            target_link_libraries(${sample} ${ABSOLUTE_TYIMGPROC_LIB})
-        endif()
+        target_link_libraries(${sample} sample_genicam_sfnc_common ${TYCam_LIBS}  ${OpenCV_LIBS} ${CLOUD_VIEWER})
         set_target_properties(${sample} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
         set_target_properties(${sample} PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON )
         install(TARGETS ${sample} RUNTIME DESTINATION samples/)

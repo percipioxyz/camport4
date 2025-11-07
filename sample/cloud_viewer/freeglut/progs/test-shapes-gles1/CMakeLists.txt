@@ -1,4 +1,8 @@
-cmake_minimum_required(VERSION 2.6)
+if(${CMAKE_VERSION} VERSION_LESS "3.5")
+    cmake_minimum_required(VERSION 2.6)
+else() # to avoid errors reported by CMake 4.0 and above versions
+    cmake_minimum_required(VERSION 3.5)
+endif()
 project(test-shapes-gles1)
 
 IF(CMAKE_COMPILER_IS_GNUCC)

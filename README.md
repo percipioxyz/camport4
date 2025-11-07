@@ -22,7 +22,8 @@ Please refer to [https://doc.percipio.xyz/cam/latest/index.html](https://doc.per
     +---cloud_viewer    point cloud render and show dependencies
     +---common          common API and image data wrapper code for sample_v1 and sample_v2
     +---sample_v1       old sample application source code on orignal API
-    \---sample_v2       new sample application source code easier to use, This is recommended if you want to set up a new project
+    +---sample_v2       new sample application source code easier to use, This is recommended if you want to set up a new project
+    \---sample_genicam_sfnc new sample in GenICam style, Only compatiable with new Camera Serieas(GM/PMD .etc)
 
 ```
 
@@ -48,9 +49,11 @@ install opencv & cmake
 sudo apt-get install libopencv-dev cmake
 ```
 
-go to path lib/linux/\<your platform\>/ 
+if you want install lib in your system default lib PATH,
+go to path lib/linux/\<your platform\>/. Otherwise, You
+can skip This step.
 ```bash
-cp -d libtycam.so* /usr/lib/
+cp -d * /usr/lib/
 ldconfig
 ```
 
@@ -60,11 +63,22 @@ sudo apt-get install libusb-1.0-0-dev
 ```
 
 compile source code
+if our lib already installed in your system default lib PATH
 ```bash
 cd sample
 mkdir build
 cd build
 cmake ..
+make
+```
+if our lib Not installed in your system default lib PATH.
+${arch} can be Aarch64/armv7hf/i686/x64/X3M_Aarch64
+```
+cd sample
+mkdir build
+cd build
+CURRENT_PATH=`pwd`
+cmake .. -DARCH=${arch} -DTYCam_DIR=${CURRENT_PATH}/../../
 make
 ```
 
@@ -80,6 +94,7 @@ prepare environment
 compile source code
 
 using cmake to generate MSVC vcxproj project files & build with MSVC. 
+Must set the correct TYCam_DIR to our top dir, which contains file "TYCamConfig.cmake"
 
 ## NOTE
 - for cross compiling, you may need to build libusb & opencv from source code for your target platform.

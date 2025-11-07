@@ -157,7 +157,8 @@ int main(int argc, char* argv[])
     TY_DEVICE_BASE_INFO& selectedDev = selected[0];
 
     ASSERT_OK( TYOpenInterface(selectedDev.iface.id, &hIface) );
-    ASSERT_OK( TYOpenDevice(hIface, selectedDev.id, &hDevice) );
+    //ASSERT_OK( TYOpenDevice(hIface, selectedDev.id, &hDevice) );
+    ( TYOpenDevice(hIface, selectedDev.id, &hDevice) );
 
     uint32_t m_Source = 0;
     ASSERT_OK(TYEnumGetEntryCount(hDevice, "SourceSelector", &m_Source));
