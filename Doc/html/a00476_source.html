@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TYParameter.h Source File</title>
+<title>TYCamport3: TYImageProc.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -83,92 +83,105 @@ $(document).ready(function(){initNavTree('a00476_source.html',''); initResizable
 
 <div class="header">
   <div class="headertitle">
-<div class="title">TYParameter.h</div>  </div>
+<div class="title">TYImageProc.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef TY_PARAMETER_H</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define TY_PARAMETER_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00461.html">TYApi.h</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">enum</span> ParamType {</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;  Command,</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  Integer,</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  Float,</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  Boolean,</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  Enumeration,</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  String,</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  ByteArray,</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;};</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="a00911.html">   16</a></span>&#160;<span class="keyword">struct </span><a class="code" href="a00911.html">TYEnumEntry</a></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    int32_t value;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">char</span> name[64];</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">char</span> tooltip[512];</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">char</span> description[512];</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">char</span> displayName[512];</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;};</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;TY_CAPI  TYParamExist                   (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">bool</span>* pExist);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;TY_CAPI  TYParamGetToolTip              (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">char</span>* pBuffer, uint32_t bufferSize);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;TY_CAPI  TYParamGetDescriptor           (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">char</span>* pBuffer, uint32_t bufferSize);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;TY_CAPI  TYParamGetDisplayName          (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">char</span>* pBuffer, uint32_t bufferSize);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;TY_CAPI  TYParamGetType                 (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, ParamType* type);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;TY_CAPI  TYParamGetAccess               (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, TY_ACCESS_MODE* access);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;TY_CAPI  TYParamGetVisibility           (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, TY_VISIBILITY_TYPE* visibility);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//Command</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;TY_CAPI  TYCommandExec                  (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//Integer</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;TY_CAPI  TYIntegerSetValue              (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, int64_t value);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;TY_CAPI  TYIntegerGetValue              (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, int64_t* value);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;TY_CAPI  TYIntegerGetMin                (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, int64_t* min);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;TY_CAPI  TYIntegerGetMax                (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, int64_t* max);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;TY_CAPI  TYIntegerGetStep               (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, int64_t* step);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;TY_CAPI  TYIntegerGetUnit               (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">char</span>* pBuffer, uint32_t bufferSize);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//Float</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;TY_CAPI  TYFloatSetValue                (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">double</span> value);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;TY_CAPI  TYFloatGetValue                (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">double</span>* value);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;TY_CAPI  TYFloatGetMin                  (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">double</span>* min);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;TY_CAPI  TYFloatGetMax                  (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">double</span>* max);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;TY_CAPI  TYFloatGetStep                 (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">double</span>* step);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;TY_CAPI  TYFloatGetUnit                 (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">char</span>* pBuffer, uint32_t bufferSize);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">//Boolean</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;TY_CAPI  TYBooleanSetValue              (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">bool</span> value);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;TY_CAPI  TYBooleanGetValue              (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">bool</span>* value);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">//Enumeration</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;TY_CAPI  TYEnumSetValue                 (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, int32_t value);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;TY_CAPI  TYEnumSetString                (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keyword">const</span> <span class="keywordtype">char</span>* name);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;TY_CAPI  TYEnumGetValue                 (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, int32_t* value);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;TY_CAPI  TYEnumGetString                (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">char</span>* name, <span class="keyword">const</span> uint32_t length);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;TY_CAPI  TYEnumGetEntryCount            (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, uint32_t* cnt);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;TY_CAPI  TYEnumGetEntryInfo             (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <a class="code" href="a00911.html">TYEnumEntry</a>* pEnumEntry, uint32_t entryCount, uint32_t* pFilledEntryCount);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">//String</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;TY_CAPI  TYStringSetValue               (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keyword">const</span> <span class="keywordtype">char</span>* pBuffer);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;TY_CAPI  TYStringGetLength              (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, uint32_t* pLength);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;TY_CAPI  TYStringGetValue               (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keywordtype">char</span>* pBuffer, uint32_t bufferSize);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">//ByteArray</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;TY_CAPI  TYByteArrayGetSize             (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, uint32_t* pSize);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;TY_CAPI  TYByteArraySetValue            (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, <span class="keyword">const</span> uint8_t* pBuffer, uint32_t bufferSize);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;TY_CAPI  TYByteArrayGetValue            (<a class="code" href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <span class="keyword">const</span> <span class="keywordtype">char</span>* feat, uint8_t* buffer, uint32_t bufferSize);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif</span></div>
+<a href="a00476.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#ifndef TY_IMAGE_PROC_H_</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#define TY_IMAGE_PROC_H_</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00461.html">TYApi.h</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;TY_CAPI <a class="code" href="a00476.html#a7fa0f452d1557496b0ac764217db40b2">TYGetImageAlgorithmVersion</a>(<a class="code" href="a00722.html">TY_VERSION_INFO</a>* version);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;TY_CAPI <a class="code" href="a00476.html#a74321e8b166042ece04746cc88ab038e">TYImageProcesAcceEnable</a>(<span class="keywordtype">bool</span> en);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;TY_CAPI <a class="code" href="a00476.html#a1d25d4fd48fbdaea74f3dd5c22e20fef">TYUndistortImage</a> (<span class="keyword">const</span> <a class="code" href="a00782.html">TY_CAMERA_CALIB_INFO</a> *srcCalibInfo</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        , <span class="keyword">const</span> <a class="code" href="a00890.html">TY_IMAGE_DATA</a> *srcImage</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        , <span class="keyword">const</span> <a class="code" href="a00770.html">TY_CAMERA_INTRINSIC</a> *cameraNewIntrinsic</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        , <a class="code" href="a00890.html">TY_IMAGE_DATA</a> *dstImage</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        , <span class="keyword">const</span> TYLensOpticalType type = TY_LENS_PINHOLE</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        );</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;TY_CAPI <a class="code" href="a00476.html#a4418c5e3b2f1ade4241820e25d3e4da5">TYUndistortImage2</a> (<span class="keyword">const</span> <a class="code" href="a00782.html">TY_CAMERA_CALIB_INFO</a> *calib_info,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00890.html">TY_IMAGE_DATA</a> *srcImage,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00914.html">TY_CAMERA_ROTATION</a> *cameraRotation,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00770.html">TY_CAMERA_INTRINSIC</a> *cameraNewIntrinsic,</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="a00890.html">TY_IMAGE_DATA</a> *dstImage,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> TYLensOpticalType type = TY_LENS_PINHOLE);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// -----------------------------------------------------------</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00918.html">   54</a></span>&#160;<span class="keyword">struct </span><a class="code" href="a00918.html">DepthSpeckleFilterParameters</a> {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">int</span> max_speckle_size; <span class="comment">// blob size smaller than this will be removed</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">int</span> max_speckle_diff; <span class="comment">// Maximum difference between neighbor disparity pixels</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">float</span> max_physical_size;   <span class="comment">//Maximum Speckle Physical Size to be Filtered-Out, uint is mm^2</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#define DepthSpeckleFilterParameters_Initializer {150, 64, 20}</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;TY_CAPI <a class="code" href="a00476.html#a3e7a2824c444af905a186d978d860f7d">TYDepthSpeckleFilter</a> (<a class="code" href="a00890.html">TY_IMAGE_DATA</a>* depthImage</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        , <span class="keyword">const</span> <a class="code" href="a00918.html">DepthSpeckleFilterParameters</a>* param</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        , <span class="keyword">const</span> <a class="code" href="a00782.html">TY_CAMERA_CALIB_INFO</a>* calib_data = <span class="keyword">nullptr</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        , <span class="keyword">const</span> <span class="keywordtype">float</span> depth_scale_unit = 1.f</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        );</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">// -----------------------------------------------------------</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00922.html">   77</a></span>&#160;<span class="keyword">struct </span><a class="code" href="a00922.html">DepthInpainterParameters</a> {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">int</span> kernel_size;    <span class="comment">//Inpainting kernel size, determines the neighborhood range for repair. Valid range: 1 to 30.</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">int</span> max_internal_hole; <span class="comment">//Maximum internal hole size, holes smaller than this will be filled. Valid range: 3 to 30000.</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#define DepthInpainterParameters_Initializer {5, 50}</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;TY_CAPI <a class="code" href="a00476.html#a7be8e62cef00add9322cd9666d6218cd">TYDepthImageInpainter</a>(<a class="code" href="a00890.html">TY_IMAGE_DATA</a>* depth</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        , <span class="keyword">const</span> <a class="code" href="a00922.html">DepthInpainterParameters</a>* param</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        );</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// -----------------------------------------------------------</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="a00926.html">   96</a></span>&#160;<span class="keyword">struct </span><a class="code" href="a00926.html">DepthEnhenceParameters</a>{</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="a00926.html#a005d6e28cca77a5964b0c588ee3839e9">   97</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="a00926.html#a005d6e28cca77a5964b0c588ee3839e9">sigma_s</a>;          </div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="a00926.html#a307c0f2750006519986ede18f461a33f">   98</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="a00926.html#a307c0f2750006519986ede18f461a33f">sigma_r</a>;          </div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="a00926.html#ae710febd7b70a95c1ec51e8721cb4d6e">   99</a></span>&#160;    <span class="keywordtype">int</span>   <a class="code" href="a00926.html#ae710febd7b70a95c1ec51e8721cb4d6e">outlier_win_sz</a>;   </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">float</span> outlier_rate;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#define DepthEnhenceParameters_Initializer {10, 20, 10, 0.1f}</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;TY_CAPI <a class="code" href="a00476.html#af8bb2a45b6fd8b542d250e2cd04e6d53">TYDepthEnhenceFilter</a> (<span class="keyword">const</span> <a class="code" href="a00890.html">TY_IMAGE_DATA</a>* depthImages</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        , <span class="keywordtype">int</span> imageNum</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        , <a class="code" href="a00890.html">TY_IMAGE_DATA</a> *guide</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        , <a class="code" href="a00890.html">TY_IMAGE_DATA</a> *output</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        , <span class="keyword">const</span> <a class="code" href="a00926.html">DepthEnhenceParameters</a>* param</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        );</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aa00911_html"><div class="ttname"><a href="a00911.html">TYEnumEntry</a></div><div class="ttdef"><b>Definition:</b> <a href="a00476_source.html#l00016">TYParameter.h:16</a></div></div>
+<div class="ttc" id="aa00476_html_a7be8e62cef00add9322cd9666d6218cd"><div class="ttname"><a href="a00476.html#a7be8e62cef00add9322cd9666d6218cd">TYDepthImageInpainter</a></div><div class="ttdeci">TY_CAPI TYDepthImageInpainter(TY_IMAGE_DATA *depth, const DepthInpainterParameters *param)</div><div class="ttdoc">Repair invalid pixels in depth image, filling small holes.</div></div>
+<div class="ttc" id="aa00722_html"><div class="ttname"><a href="a00722.html">TY_VERSION_INFO</a></div><div class="ttdef"><b>Definition:</b> <a href="a00470_source.html#l00799">TYDefs.h:799</a></div></div>
+<div class="ttc" id="aa00922_html"><div class="ttname"><a href="a00922.html">DepthInpainterParameters</a></div><div class="ttdef"><b>Definition:</b> <a href="a00476_source.html#l00077">TYImageProc.h:77</a></div></div>
+<div class="ttc" id="aa00476_html_af8bb2a45b6fd8b542d250e2cd04e6d53"><div class="ttname"><a href="a00476.html#af8bb2a45b6fd8b542d250e2cd04e6d53">TYDepthEnhenceFilter</a></div><div class="ttdeci">TY_CAPI TYDepthEnhenceFilter(const TY_IMAGE_DATA *depthImages, int imageNum, TY_IMAGE_DATA *guide, TY_IMAGE_DATA *output, const DepthEnhenceParameters *param)</div><div class="ttdoc">Remove speckles on depth image.</div></div>
+<div class="ttc" id="aa00926_html_a307c0f2750006519986ede18f461a33f"><div class="ttname"><a href="a00926.html#a307c0f2750006519986ede18f461a33f">DepthEnhenceParameters::sigma_r</a></div><div class="ttdeci">float sigma_r</div><div class="ttdoc">filter param on range</div><div class="ttdef"><b>Definition:</b> <a href="a00476_source.html#l00098">TYImageProc.h:98</a></div></div>
+<div class="ttc" id="aa00926_html_a005d6e28cca77a5964b0c588ee3839e9"><div class="ttname"><a href="a00926.html#a005d6e28cca77a5964b0c588ee3839e9">DepthEnhenceParameters::sigma_s</a></div><div class="ttdeci">float sigma_s</div><div class="ttdoc">filter param on space</div><div class="ttdef"><b>Definition:</b> <a href="a00476_source.html#l00097">TYImageProc.h:97</a></div></div>
+<div class="ttc" id="aa00918_html"><div class="ttname"><a href="a00918.html">DepthSpeckleFilterParameters</a></div><div class="ttdef"><b>Definition:</b> <a href="a00476_source.html#l00054">TYImageProc.h:54</a></div></div>
 <div class="ttc" id="aa00461_html"><div class="ttname"><a href="a00461.html">TYApi.h</a></div><div class="ttdoc">TYApi.h includes camera control and data receiving interface, which supports configuration for image ...</div></div>
-<div class="ttc" id="aa00467_html_a87e3bf5de81e300fe8fd1e548de1e9a0"><div class="ttname"><a href="a00467.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a></div><div class="ttdeci">void * TY_DEV_HANDLE</div><div class="ttdoc">Device Handle.</div><div class="ttdef"><b>Definition:</b> <a href="a00467_source.html#l00169">TYDefs.h:169</a></div></div>
+<div class="ttc" id="aa00476_html_a1d25d4fd48fbdaea74f3dd5c22e20fef"><div class="ttname"><a href="a00476.html#a1d25d4fd48fbdaea74f3dd5c22e20fef">TYUndistortImage</a></div><div class="ttdeci">TY_CAPI TYUndistortImage(const TY_CAMERA_CALIB_INFO *srcCalibInfo, const TY_IMAGE_DATA *srcImage, const TY_CAMERA_INTRINSIC *cameraNewIntrinsic, TY_IMAGE_DATA *dstImage, const TYLensOpticalType type=TY_LENS_PINHOLE)</div><div class="ttdoc">Do image undistortion, only support TY_PIXEL_FORMAT_MONO ,TY_PIXEL_FORMAT_RGB,TY_PIXEL_FORMAT_BGR.</div></div>
+<div class="ttc" id="aa00890_html"><div class="ttname"><a href="a00890.html">TY_IMAGE_DATA</a></div><div class="ttdef"><b>Definition:</b> <a href="a00470_source.html#l01225">TYDefs.h:1225</a></div></div>
+<div class="ttc" id="aa00926_html"><div class="ttname"><a href="a00926.html">DepthEnhenceParameters</a></div><div class="ttdef"><b>Definition:</b> <a href="a00476_source.html#l00096">TYImageProc.h:96</a></div></div>
+<div class="ttc" id="aa00914_html"><div class="ttname"><a href="a00914.html">TY_CAMERA_ROTATION</a></div><div class="ttdef"><b>Definition:</b> <a href="a00470_source.html#l01312">TYDefs.h:1312</a></div></div>
+<div class="ttc" id="aa00476_html_a3e7a2824c444af905a186d978d860f7d"><div class="ttname"><a href="a00476.html#a3e7a2824c444af905a186d978d860f7d">TYDepthSpeckleFilter</a></div><div class="ttdeci">TY_CAPI TYDepthSpeckleFilter(TY_IMAGE_DATA *depthImage, const DepthSpeckleFilterParameters *param, const TY_CAMERA_CALIB_INFO *calib_data=nullptr, const float depth_scale_unit=1.f)</div><div class="ttdoc">Remove speckles on depth image.</div></div>
+<div class="ttc" id="aa00782_html"><div class="ttname"><a href="a00782.html">TY_CAMERA_CALIB_INFO</a></div><div class="ttdef"><b>Definition:</b> <a href="a00470_source.html#l00974">TYDefs.h:974</a></div></div>
+<div class="ttc" id="aa00770_html"><div class="ttname"><a href="a00770.html">TY_CAMERA_INTRINSIC</a></div><div class="ttdef"><b>Definition:</b> <a href="a00470_source.html#l00936">TYDefs.h:936</a></div></div>
+<div class="ttc" id="aa00476_html_a74321e8b166042ece04746cc88ab038e"><div class="ttname"><a href="a00476.html#a74321e8b166042ece04746cc88ab038e">TYImageProcesAcceEnable</a></div><div class="ttdeci">TY_CAPI TYImageProcesAcceEnable(bool en)</div><div class="ttdoc">Image processing acceleration switch.</div></div>
+<div class="ttc" id="aa00476_html_a4418c5e3b2f1ade4241820e25d3e4da5"><div class="ttname"><a href="a00476.html#a4418c5e3b2f1ade4241820e25d3e4da5">TYUndistortImage2</a></div><div class="ttdeci">TY_CAPI TYUndistortImage2(const TY_CAMERA_CALIB_INFO *calib_info, const TY_IMAGE_DATA *srcImage, const TY_CAMERA_ROTATION *cameraRotation, const TY_CAMERA_INTRINSIC *cameraNewIntrinsic, TY_IMAGE_DATA *dstImage, const TYLensOpticalType type=TY_LENS_PINHOLE)</div><div class="ttdoc">Do image undistortion, only support TY_PIXEL_FORMAT_MONO ,TY_PIXEL_FORMAT_RGB,TY_PIXEL_FORMAT_BGR.</div></div>
+<div class="ttc" id="aa00926_html_ae710febd7b70a95c1ec51e8721cb4d6e"><div class="ttname"><a href="a00926.html#ae710febd7b70a95c1ec51e8721cb4d6e">DepthEnhenceParameters::outlier_win_sz</a></div><div class="ttdeci">int outlier_win_sz</div><div class="ttdoc">outlier filter windows ize</div><div class="ttdef"><b>Definition:</b> <a href="a00476_source.html#l00099">TYImageProc.h:99</a></div></div>
+<div class="ttc" id="aa00476_html_a7fa0f452d1557496b0ac764217db40b2"><div class="ttname"><a href="a00476.html#a7fa0f452d1557496b0ac764217db40b2">TYGetImageAlgorithmVersion</a></div><div class="ttdeci">TY_CAPI TYGetImageAlgorithmVersion(TY_VERSION_INFO *version)</div><div class="ttdoc">Get current library version.</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><b>TYParameter.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="a00476.html">TYImageProc.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

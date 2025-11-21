@@ -1062,16 +1062,16 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160; </div>
 <div class="line"><a name="l00976"></a><span class="lineno">  976</span>&#160;<span class="preprocessor">#ifdef NSIMD_ARM_FP16</span></div>
-<div class="line"><a name="l00977"></a><span class="lineno">  977</span>&#160;  <span class="keyword">typedef</span> __fp16 <a class="code" href="a00603.html">f16</a>;</div>
+<div class="line"><a name="l00977"></a><span class="lineno">  977</span>&#160;  <span class="keyword">typedef</span> __fp16 <a class="code" href="a00606.html">f16</a>;</div>
 <div class="line"><a name="l00978"></a><span class="lineno">  978</span>&#160;<span class="preprocessor">  #define NSIMD_NATIVE_FP16</span></div>
 <div class="line"><a name="l00979"></a><span class="lineno">  979</span>&#160;<span class="preprocessor">#elif defined(NSIMD_CUDA) || defined(NSIMD_ROCM)</span></div>
-<div class="line"><a name="l00980"></a><span class="lineno">  980</span>&#160;  <span class="keyword">typedef</span> __half <a class="code" href="a00603.html">f16</a>;</div>
+<div class="line"><a name="l00980"></a><span class="lineno">  980</span>&#160;  <span class="keyword">typedef</span> __half <a class="code" href="a00606.html">f16</a>;</div>
 <div class="line"><a name="l00981"></a><span class="lineno">  981</span>&#160;<span class="preprocessor">  #define NSIMD_NATIVE_FP16</span></div>
 <div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;<span class="preprocessor">#elif defined(NSIMD_ONEAPI)</span></div>
-<div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160;  <span class="keyword">typedef</span> sycl::half <a class="code" href="a00603.html">f16</a>;</div>
+<div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160;  <span class="keyword">typedef</span> sycl::half <a class="code" href="a00606.html">f16</a>;</div>
 <div class="line"><a name="l00984"></a><span class="lineno">  984</span>&#160;<span class="preprocessor">  #define NSIMD_NATIVE_FP16</span></div>
 <div class="line"><a name="l00985"></a><span class="lineno">  985</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00986"></a><span class="lineno"><a class="line" href="a00603.html">  986</a></span>&#160;  <span class="keyword">typedef</span> <span class="keyword">struct </span>{ u16 u; } <a class="code" href="a00603.html">f16</a>;</div>
+<div class="line"><a name="l00986"></a><span class="lineno"><a class="line" href="a00606.html">  986</a></span>&#160;  <span class="keyword">typedef</span> <span class="keyword">struct </span>{ u16 u; } <a class="code" href="a00606.html">f16</a>;</div>
 <div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00988"></a><span class="lineno">  988</span>&#160; </div>
 <div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160;<span class="preprocessor">#if defined(NSIMD_ONEAPI)</span></div>
@@ -1125,7 +1125,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01037"></a><span class="lineno"> 1037</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct </span>sizeof_t {</div>
 <div class="line"><a name="l01038"></a><span class="lineno"> 1038</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> value = <span class="keyword">sizeof</span>(T);</div>
 <div class="line"><a name="l01039"></a><span class="lineno"> 1039</span>&#160;  };</div>
-<div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160;  <span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>sizeof_t&lt;<a class="code" href="a00603.html">f16</a>&gt; { <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> value = 2; };</div>
+<div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160;  <span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>sizeof_t&lt;<a class="code" href="a00606.html">f16</a>&gt; { <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> value = 2; };</div>
 <div class="line"><a name="l01041"></a><span class="lineno"> 1041</span>&#160; </div>
 <div class="line"><a name="l01042"></a><span class="lineno"> 1042</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">const</span> <span class="keywordtype">size_t</span> sizeof_v = sizeof_t&lt;T&gt;::value;</div>
 <div class="line"><a name="l01043"></a><span class="lineno"> 1043</span>&#160; </div>
@@ -1155,19 +1155,19 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01067"></a><span class="lineno"> 1067</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>traits&lt;i16&gt; {</div>
 <div class="line"><a name="l01068"></a><span class="lineno"> 1068</span>&#160;  <span class="keyword">typedef</span> i16 itype;</div>
 <div class="line"><a name="l01069"></a><span class="lineno"> 1069</span>&#160;  <span class="keyword">typedef</span> u16 utype;</div>
-<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;  <span class="keyword">typedef</span> <a class="code" href="a00603.html">f16</a> ftype;</div>
+<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;  <span class="keyword">typedef</span> <a class="code" href="a00606.html">f16</a> ftype;</div>
 <div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160;};</div>
 <div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160; </div>
 <div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>traits&lt;u16&gt; {</div>
 <div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;  <span class="keyword">typedef</span> i16 itype;</div>
 <div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;  <span class="keyword">typedef</span> u16 utype;</div>
-<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;  <span class="keyword">typedef</span> <a class="code" href="a00603.html">f16</a> ftype;</div>
+<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;  <span class="keyword">typedef</span> <a class="code" href="a00606.html">f16</a> ftype;</div>
 <div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160;};</div>
 <div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160; </div>
-<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>traits&lt;<a class="code" href="a00603.html">f16</a>&gt; {</div>
+<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>traits&lt;<a class="code" href="a00606.html">f16</a>&gt; {</div>
 <div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;  <span class="keyword">typedef</span> i16 itype;</div>
 <div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;  <span class="keyword">typedef</span> u16 utype;</div>
-<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;  <span class="keyword">typedef</span> <a class="code" href="a00603.html">f16</a> ftype;</div>
+<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;  <span class="keyword">typedef</span> <a class="code" href="a00606.html">f16</a> ftype;</div>
 <div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160;};</div>
 <div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160; </div>
 <div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;<span class="comment">// 32-bits</span></div>
@@ -1329,7 +1329,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;<span class="keyword">typedef</span> vec(u32) vu32;</div>
 <div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;<span class="keyword">typedef</span> vec(i64) vi64;</div>
 <div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;<span class="keyword">typedef</span> vec(u64) vu64;</div>
-<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;<span class="keyword">typedef</span> vec(<a class="code" href="a00603.html">f16</a>) vf16;</div>
+<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;<span class="keyword">typedef</span> vec(<a class="code" href="a00606.html">f16</a>) vf16;</div>
 <div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;<span class="keyword">typedef</span> vec(f32) vf32;</div>
 <div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;<span class="keyword">typedef</span> vec(f64) vf64;</div>
 <div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160; </div>
@@ -1341,7 +1341,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;<span class="keyword">typedef</span> vecx2(u32) vu32x2;</div>
 <div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;<span class="keyword">typedef</span> vecx2(i64) vi64x2;</div>
 <div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;<span class="keyword">typedef</span> vecx2(u64) vu64x2;</div>
-<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;<span class="keyword">typedef</span> vecx2(<a class="code" href="a00603.html">f16</a>) vf16x2;</div>
+<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;<span class="keyword">typedef</span> vecx2(<a class="code" href="a00606.html">f16</a>) vf16x2;</div>
 <div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;<span class="keyword">typedef</span> vecx2(f32) vf32x2;</div>
 <div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;<span class="keyword">typedef</span> vecx2(f64) vf64x2;</div>
 <div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160; </div>
@@ -1353,7 +1353,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;<span class="keyword">typedef</span> vecx3(u32) vu32x3;</div>
 <div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160;<span class="keyword">typedef</span> vecx3(i64) vi64x3;</div>
 <div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160;<span class="keyword">typedef</span> vecx3(u64) vu64x3;</div>
-<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;<span class="keyword">typedef</span> vecx3(<a class="code" href="a00603.html">f16</a>) vf16x3;</div>
+<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;<span class="keyword">typedef</span> vecx3(<a class="code" href="a00606.html">f16</a>) vf16x3;</div>
 <div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160;<span class="keyword">typedef</span> vecx3(f32) vf32x3;</div>
 <div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;<span class="keyword">typedef</span> vecx3(f64) vf64x3;</div>
 <div class="line"><a name="l01271"></a><span class="lineno"> 1271</span>&#160; </div>
@@ -1365,7 +1365,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;<span class="keyword">typedef</span> vecx4(u32) vu32x4;</div>
 <div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;<span class="keyword">typedef</span> vecx4(i64) vi64x4;</div>
 <div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;<span class="keyword">typedef</span> vecx4(u64) vu64x4;</div>
-<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;<span class="keyword">typedef</span> vecx4(<a class="code" href="a00603.html">f16</a>) vf16x4;</div>
+<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;<span class="keyword">typedef</span> vecx4(<a class="code" href="a00606.html">f16</a>) vf16x4;</div>
 <div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;<span class="keyword">typedef</span> vecx4(f32) vf32x4;</div>
 <div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;<span class="keyword">typedef</span> vecx4(f64) vf64x4;</div>
 <div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160; </div>
@@ -1377,7 +1377,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;<span class="keyword">typedef</span> vecl(u32) vlu32;</div>
 <div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;<span class="keyword">typedef</span> vecl(i64) vli64;</div>
 <div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;<span class="keyword">typedef</span> vecl(u64) vlu64;</div>
-<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;<span class="keyword">typedef</span> vecl(<a class="code" href="a00603.html">f16</a>) vlf16;</div>
+<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;<span class="keyword">typedef</span> vecl(<a class="code" href="a00606.html">f16</a>) vlf16;</div>
 <div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;<span class="keyword">typedef</span> vecl(f32) vlf32;</div>
 <div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;<span class="keyword">typedef</span> vecl(f64) vlf64;</div>
 <div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160; </div>
@@ -1467,7 +1467,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>max_len_t&lt;u16&gt; {</div>
 <div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> value = NSIMD_MAX_LEN_BIT / 16;</div>
 <div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;};</div>
-<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>max_len_t&lt;<a class="code" href="a00603.html">f16</a>&gt; {</div>
+<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>max_len_t&lt;<a class="code" href="a00606.html">f16</a>&gt; {</div>
 <div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> value = NSIMD_MAX_LEN_BIT / 16;</div>
 <div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;};</div>
 <div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>max_len_t&lt;i32&gt; {</div>
@@ -1678,24 +1678,24 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;NSIMD_DLLSPEC f32 nsimd_u16_to_f32(u16);</div>
 <div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160; </div>
 <div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;<span class="preprocessor">#ifdef NSIMD_ARM_FP16</span></div>
-<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;NSIMD_INLINE <a class="code" href="a00603.html">f16</a> nsimd_f32_to_f16(f32 a) { <span class="keywordflow">return</span> (<a class="code" href="a00603.html">f16</a>)a; }</div>
-<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;NSIMD_INLINE f32 nsimd_f16_to_f32(<a class="code" href="a00603.html">f16</a> a) { <span class="keywordflow">return</span> (f32)a; }</div>
+<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;NSIMD_INLINE <a class="code" href="a00606.html">f16</a> nsimd_f32_to_f16(f32 a) { <span class="keywordflow">return</span> (<a class="code" href="a00606.html">f16</a>)a; }</div>
+<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;NSIMD_INLINE f32 nsimd_f16_to_f32(<a class="code" href="a00606.html">f16</a> a) { <span class="keywordflow">return</span> (f32)a; }</div>
 <div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160;<span class="preprocessor">#elif (defined(NSIMD_CUDA) &amp;&amp; __CUDACC_VER_MAJOR__ &gt;= 10) ||                  \</span></div>
 <div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160;<span class="preprocessor">    defined(NSIMD_ROCM)</span></div>
-<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;<span class="keyword">inline</span> <a class="code" href="a00603.html">f16</a> nsimd_f32_to_f16(f32 a) { <span class="keywordflow">return</span> __float2half(a); }</div>
-<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;<span class="keyword">inline</span> f32 nsimd_f16_to_f32(<a class="code" href="a00603.html">f16</a> a) { <span class="keywordflow">return</span> __half2float(a); }</div>
+<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;<span class="keyword">inline</span> <a class="code" href="a00606.html">f16</a> nsimd_f32_to_f16(f32 a) { <span class="keywordflow">return</span> __float2half(a); }</div>
+<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;<span class="keyword">inline</span> f32 nsimd_f16_to_f32(<a class="code" href="a00606.html">f16</a> a) { <span class="keywordflow">return</span> __half2float(a); }</div>
 <div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160;<span class="preprocessor">#elif defined(NSIMD_CUDA) &amp;&amp; __CUDACC_VER_MAJOR__ &lt; 10</span></div>
-<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;<span class="keyword">inline</span> <a class="code" href="a00603.html">f16</a> nsimd_f32_to_f16(f32 a) {</div>
+<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;<span class="keyword">inline</span> <a class="code" href="a00606.html">f16</a> nsimd_f32_to_f16(f32 a) {</div>
 <div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;  u16 ret = nsimd_f32_to_u16(a);</div>
 <div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;  <span class="keywordflow">return</span> *(__half *)&amp;ret;</div>
 <div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;}</div>
-<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;<span class="keyword">inline</span> f32 nsimd_f16_to_f32(<a class="code" href="a00603.html">f16</a> a) { <span class="keywordflow">return</span> nsimd_u16_to_f32(*(u16 *)&amp;a); }</div>
+<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;<span class="keyword">inline</span> f32 nsimd_f16_to_f32(<a class="code" href="a00606.html">f16</a> a) { <span class="keywordflow">return</span> nsimd_u16_to_f32(*(u16 *)&amp;a); }</div>
 <div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;<span class="preprocessor">#elif defined(NSIMD_ONEAPI)</span></div>
-<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;<span class="keyword">inline</span> <a class="code" href="a00603.html">f16</a> nsimd_f32_to_f16(f32 a) { <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>sycl::half<span class="keyword">&gt;</span>(a); }</div>
-<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;<span class="keyword">inline</span> f32 nsimd_f16_to_f32(<a class="code" href="a00603.html">f16</a> a) { <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a); }</div>
+<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;<span class="keyword">inline</span> <a class="code" href="a00606.html">f16</a> nsimd_f32_to_f16(f32 a) { <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>sycl::half<span class="keyword">&gt;</span>(a); }</div>
+<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;<span class="keyword">inline</span> f32 nsimd_f16_to_f32(<a class="code" href="a00606.html">f16</a> a) { <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a); }</div>
 <div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;NSIMD_DLLSPEC <a class="code" href="a00603.html">f16</a> nsimd_f32_to_f16(f32);</div>
-<div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;NSIMD_DLLSPEC f32 nsimd_f16_to_f32(<a class="code" href="a00603.html">f16</a>);</div>
+<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;NSIMD_DLLSPEC <a class="code" href="a00606.html">f16</a> nsimd_f32_to_f16(f32);</div>
+<div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;NSIMD_DLLSPEC f32 nsimd_f16_to_f32(<a class="code" href="a00606.html">f16</a>);</div>
 <div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160; </div>
 <div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;<span class="preprocessor">#ifdef NSIMD_C_LINKAGE_FOR_F16</span></div>
@@ -1710,11 +1710,11 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01622"></a><span class="lineno"> 1622</span>&#160;NSIMD_DLLSPEC u16 f32_to_u16(f32);</div>
 <div class="line"><a name="l01623"></a><span class="lineno"> 1623</span>&#160;NSIMD_DLLSPEC f32 u16_to_f32(u16);</div>
 <div class="line"><a name="l01624"></a><span class="lineno"> 1624</span>&#160;<span class="preprocessor">#ifdef NSIMD_ARM_FP16</span></div>
-<div class="line"><a name="l01625"></a><span class="lineno"> 1625</span>&#160;NSIMD_INLINE <a class="code" href="a00603.html">f16</a> f32_to_f16(f32 a) { <span class="keywordflow">return</span> (<a class="code" href="a00603.html">f16</a>)a; }</div>
-<div class="line"><a name="l01626"></a><span class="lineno"> 1626</span>&#160;NSIMD_INLINE f32 f16_to_f32(<a class="code" href="a00603.html">f16</a> a) { <span class="keywordflow">return</span> (f32)a; }</div>
+<div class="line"><a name="l01625"></a><span class="lineno"> 1625</span>&#160;NSIMD_INLINE <a class="code" href="a00606.html">f16</a> f32_to_f16(f32 a) { <span class="keywordflow">return</span> (<a class="code" href="a00606.html">f16</a>)a; }</div>
+<div class="line"><a name="l01626"></a><span class="lineno"> 1626</span>&#160;NSIMD_INLINE f32 f16_to_f32(<a class="code" href="a00606.html">f16</a> a) { <span class="keywordflow">return</span> (f32)a; }</div>
 <div class="line"><a name="l01627"></a><span class="lineno"> 1627</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l01628"></a><span class="lineno"> 1628</span>&#160;NSIMD_DLLSPEC <a class="code" href="a00603.html">f16</a> f32_to_f16(f32);</div>
-<div class="line"><a name="l01629"></a><span class="lineno"> 1629</span>&#160;NSIMD_DLLSPEC f32 f16_to_f32(<a class="code" href="a00603.html">f16</a>);</div>
+<div class="line"><a name="l01628"></a><span class="lineno"> 1628</span>&#160;NSIMD_DLLSPEC <a class="code" href="a00606.html">f16</a> f32_to_f16(f32);</div>
+<div class="line"><a name="l01629"></a><span class="lineno"> 1629</span>&#160;NSIMD_DLLSPEC f32 f16_to_f32(<a class="code" href="a00606.html">f16</a>);</div>
 <div class="line"><a name="l01630"></a><span class="lineno"> 1630</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l01631"></a><span class="lineno"> 1631</span>&#160;} <span class="comment">// namespace nsimd</span></div>
 <div class="line"><a name="l01632"></a><span class="lineno"> 1632</span>&#160;<span class="preprocessor">#endif</span></div>
@@ -1730,7 +1730,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01642"></a><span class="lineno"> 1642</span>&#160;NSIMD_INLINE i64 nsimd_to_biggest_i16(i16 a) { <span class="keywordflow">return</span> (i64)a; }</div>
 <div class="line"><a name="l01643"></a><span class="lineno"> 1643</span>&#160;NSIMD_INLINE i64 nsimd_to_biggest_i32(i32 a) { <span class="keywordflow">return</span> (i64)a; }</div>
 <div class="line"><a name="l01644"></a><span class="lineno"> 1644</span>&#160;NSIMD_INLINE i64 nsimd_to_biggest_i64(i64 a) { <span class="keywordflow">return</span> a; }</div>
-<div class="line"><a name="l01645"></a><span class="lineno"> 1645</span>&#160;NSIMD_INLINE f64 nsimd_to_biggest_f16(<a class="code" href="a00603.html">f16</a> a) {</div>
+<div class="line"><a name="l01645"></a><span class="lineno"> 1645</span>&#160;NSIMD_INLINE f64 nsimd_to_biggest_f16(<a class="code" href="a00606.html">f16</a> a) {</div>
 <div class="line"><a name="l01646"></a><span class="lineno"> 1646</span>&#160;  <span class="keywordflow">return</span> (f64)nsimd_f16_to_f32(a);</div>
 <div class="line"><a name="l01647"></a><span class="lineno"> 1647</span>&#160;}</div>
 <div class="line"><a name="l01648"></a><span class="lineno"> 1648</span>&#160;NSIMD_INLINE f64 nsimd_to_biggest_f32(f32 a) { <span class="keywordflow">return</span> (f64)a; }</div>
@@ -1746,7 +1746,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01658"></a><span class="lineno"> 1658</span>&#160;NSIMD_INLINE i64 to_biggest(i16 a) { <span class="keywordflow">return</span> nsimd_to_biggest_i16(a); }</div>
 <div class="line"><a name="l01659"></a><span class="lineno"> 1659</span>&#160;NSIMD_INLINE i64 to_biggest(i32 a) { <span class="keywordflow">return</span> nsimd_to_biggest_i32(a); }</div>
 <div class="line"><a name="l01660"></a><span class="lineno"> 1660</span>&#160;NSIMD_INLINE i64 to_biggest(i64 a) { <span class="keywordflow">return</span> nsimd_to_biggest_i64(a); }</div>
-<div class="line"><a name="l01661"></a><span class="lineno"> 1661</span>&#160;NSIMD_INLINE f64 to_biggest(<a class="code" href="a00603.html">f16</a> a) { <span class="keywordflow">return</span> nsimd_to_biggest_f16(a); }</div>
+<div class="line"><a name="l01661"></a><span class="lineno"> 1661</span>&#160;NSIMD_INLINE f64 to_biggest(<a class="code" href="a00606.html">f16</a> a) { <span class="keywordflow">return</span> nsimd_to_biggest_f16(a); }</div>
 <div class="line"><a name="l01662"></a><span class="lineno"> 1662</span>&#160;NSIMD_INLINE f64 to_biggest(f32 a) { <span class="keywordflow">return</span> nsimd_to_biggest_f32(a); }</div>
 <div class="line"><a name="l01663"></a><span class="lineno"> 1663</span>&#160;NSIMD_INLINE f64 to_biggest(f64 a) { <span class="keywordflow">return</span> nsimd_to_biggest_f64(a); }</div>
 <div class="line"><a name="l01664"></a><span class="lineno"> 1664</span>&#160;} <span class="comment">// namespace nsimd</span></div>
@@ -1763,16 +1763,16 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l01675"></a><span class="lineno"> 1675</span>&#160;  <span class="keyword">static</span> T to(T, S value) { <span class="keywordflow">return</span> (T)value; }</div>
 <div class="line"><a name="l01676"></a><span class="lineno"> 1676</span>&#160;};</div>
 <div class="line"><a name="l01677"></a><span class="lineno"> 1677</span>&#160; </div>
-<div class="line"><a name="l01678"></a><span class="lineno"> 1678</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>to_helper&lt;<a class="code" href="a00603.html">f16</a>, <a class="code" href="a00603.html">f16</a>&gt; {</div>
-<div class="line"><a name="l01679"></a><span class="lineno"> 1679</span>&#160;  <span class="keyword">static</span> <a class="code" href="a00603.html">f16</a> to(<a class="code" href="a00603.html">f16</a>, <a class="code" href="a00603.html">f16</a> value) { <span class="keywordflow">return</span> value; }</div>
+<div class="line"><a name="l01678"></a><span class="lineno"> 1678</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>to_helper&lt;<a class="code" href="a00606.html">f16</a>, <a class="code" href="a00606.html">f16</a>&gt; {</div>
+<div class="line"><a name="l01679"></a><span class="lineno"> 1679</span>&#160;  <span class="keyword">static</span> <a class="code" href="a00606.html">f16</a> to(<a class="code" href="a00606.html">f16</a>, <a class="code" href="a00606.html">f16</a> value) { <span class="keywordflow">return</span> value; }</div>
 <div class="line"><a name="l01680"></a><span class="lineno"> 1680</span>&#160;};</div>
 <div class="line"><a name="l01681"></a><span class="lineno"> 1681</span>&#160; </div>
-<div class="line"><a name="l01682"></a><span class="lineno"> 1682</span>&#160;<span class="keyword">template</span> &lt;NSIMD_CONCEPT_VALUE_TYPE S&gt; <span class="keyword">struct </span>to_helper&lt;<a class="code" href="a00603.html">f16</a>, S&gt; {</div>
-<div class="line"><a name="l01683"></a><span class="lineno"> 1683</span>&#160;  <span class="keyword">static</span> <a class="code" href="a00603.html">f16</a> to(<a class="code" href="a00603.html">f16</a>, S value) { <span class="keywordflow">return</span> nsimd_f32_to_f16((f32)value); }</div>
+<div class="line"><a name="l01682"></a><span class="lineno"> 1682</span>&#160;<span class="keyword">template</span> &lt;NSIMD_CONCEPT_VALUE_TYPE S&gt; <span class="keyword">struct </span>to_helper&lt;<a class="code" href="a00606.html">f16</a>, S&gt; {</div>
+<div class="line"><a name="l01683"></a><span class="lineno"> 1683</span>&#160;  <span class="keyword">static</span> <a class="code" href="a00606.html">f16</a> to(<a class="code" href="a00606.html">f16</a>, S value) { <span class="keywordflow">return</span> nsimd_f32_to_f16((f32)value); }</div>
 <div class="line"><a name="l01684"></a><span class="lineno"> 1684</span>&#160;};</div>
 <div class="line"><a name="l01685"></a><span class="lineno"> 1685</span>&#160; </div>
-<div class="line"><a name="l01686"></a><span class="lineno"> 1686</span>&#160;<span class="keyword">template</span> &lt;NSIMD_CONCEPT_VALUE_TYPE T&gt; <span class="keyword">struct </span>to_helper&lt;T, <a class="code" href="a00603.html">f16</a>&gt; {</div>
-<div class="line"><a name="l01687"></a><span class="lineno"> 1687</span>&#160;  <span class="keyword">static</span> T to(T, <a class="code" href="a00603.html">f16</a> value) { <span class="keywordflow">return</span> (T)nsimd_f16_to_f32(value); }</div>
+<div class="line"><a name="l01686"></a><span class="lineno"> 1686</span>&#160;<span class="keyword">template</span> &lt;NSIMD_CONCEPT_VALUE_TYPE T&gt; <span class="keyword">struct </span>to_helper&lt;T, <a class="code" href="a00606.html">f16</a>&gt; {</div>
+<div class="line"><a name="l01687"></a><span class="lineno"> 1687</span>&#160;  <span class="keyword">static</span> T to(T, <a class="code" href="a00606.html">f16</a> value) { <span class="keywordflow">return</span> (T)nsimd_f16_to_f32(value); }</div>
 <div class="line"><a name="l01688"></a><span class="lineno"> 1688</span>&#160;};</div>
 <div class="line"><a name="l01689"></a><span class="lineno"> 1689</span>&#160; </div>
 <div class="line"><a name="l01690"></a><span class="lineno"> 1690</span>&#160;<span class="keyword">template</span> &lt;NSIMD_CONCEPT_VALUE_TYPE T, NSIMD_CONCEPT_VALUE_TYPE S&gt;</div>
@@ -2200,7 +2200,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l02112"></a><span class="lineno"> 2112</span>&#160;<span class="comment">/* ------------------------------------------------------------------------- */</span></div>
 <div class="line"><a name="l02113"></a><span class="lineno"> 2113</span>&#160;<span class="comment">/* isnan, isnormal and isinf functions */</span></div>
 <div class="line"><a name="l02114"></a><span class="lineno"> 2114</span>&#160; </div>
-<div class="line"><a name="l02115"></a><span class="lineno"> 2115</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> nsimd_isnan_f16(<a class="code" href="a00603.html">f16</a> a) {</div>
+<div class="line"><a name="l02115"></a><span class="lineno"> 2115</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> nsimd_isnan_f16(<a class="code" href="a00606.html">f16</a> a) {</div>
 <div class="line"><a name="l02116"></a><span class="lineno"> 2116</span>&#160;  <span class="comment">/* We assume IEEE representation for f16&#39;s */</span></div>
 <div class="line"><a name="l02117"></a><span class="lineno"> 2117</span>&#160;  u16 b = nsimd_scalar_reinterpret_u16_f16(a);</div>
 <div class="line"><a name="l02118"></a><span class="lineno"> 2118</span>&#160;  <span class="keywordflow">if</span> ((((((u32)b) &gt;&gt; 10) &amp; 0x1F) == 0x1F) &amp;&amp; ((((u32)b) &lt;&lt; 6) != 0u)) {</div>
@@ -2230,7 +2230,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l02142"></a><span class="lineno"> 2142</span>&#160;  }</div>
 <div class="line"><a name="l02143"></a><span class="lineno"> 2143</span>&#160;}</div>
 <div class="line"><a name="l02144"></a><span class="lineno"> 2144</span>&#160; </div>
-<div class="line"><a name="l02145"></a><span class="lineno"> 2145</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> nsimd_isinf_f16(<a class="code" href="a00603.html">f16</a> a) {</div>
+<div class="line"><a name="l02145"></a><span class="lineno"> 2145</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> nsimd_isinf_f16(<a class="code" href="a00606.html">f16</a> a) {</div>
 <div class="line"><a name="l02146"></a><span class="lineno"> 2146</span>&#160;  <span class="comment">/* We assume IEEE representation for f16&#39;s */</span></div>
 <div class="line"><a name="l02147"></a><span class="lineno"> 2147</span>&#160;  u16 b = nsimd_scalar_reinterpret_u16_f16(a);</div>
 <div class="line"><a name="l02148"></a><span class="lineno"> 2148</span>&#160;  <span class="keywordflow">if</span> ((((((u32)b) &gt;&gt; 10) &amp; 0x1F) == 0x1F) &amp;&amp; ((((u32)b) &lt;&lt; 6) == 0u)) {</div>
@@ -2260,7 +2260,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l02172"></a><span class="lineno"> 2172</span>&#160;  }</div>
 <div class="line"><a name="l02173"></a><span class="lineno"> 2173</span>&#160;}</div>
 <div class="line"><a name="l02174"></a><span class="lineno"> 2174</span>&#160; </div>
-<div class="line"><a name="l02175"></a><span class="lineno"> 2175</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> nsimd_isnormal_f16(<a class="code" href="a00603.html">f16</a> a) {</div>
+<div class="line"><a name="l02175"></a><span class="lineno"> 2175</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> nsimd_isnormal_f16(<a class="code" href="a00606.html">f16</a> a) {</div>
 <div class="line"><a name="l02176"></a><span class="lineno"> 2176</span>&#160;  <span class="comment">/* We assume IEEE representation for f16&#39;s */</span></div>
 <div class="line"><a name="l02177"></a><span class="lineno"> 2177</span>&#160;  u16 b = nsimd_scalar_reinterpret_u16_f16(a);</div>
 <div class="line"><a name="l02178"></a><span class="lineno"> 2178</span>&#160;  <span class="keywordflow">if</span> ((((((u32)b) &gt;&gt; 10) &amp; 0x1F) == 0u) &amp;&amp; ((((u32)b) &lt;&lt; 6) != 0u)) {</div>
@@ -2292,13 +2292,13 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l02204"></a><span class="lineno"> 2204</span>&#160; </div>
 <div class="line"><a name="l02205"></a><span class="lineno"> 2205</span>&#160;<span class="preprocessor">#if NSIMD_CXX &gt; 0</span></div>
 <div class="line"><a name="l02206"></a><span class="lineno"> 2206</span>&#160;<span class="keyword">namespace </span>nsimd {</div>
-<div class="line"><a name="l02207"></a><span class="lineno"> 2207</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isnan(<a class="code" href="a00603.html">f16</a> a) { <span class="keywordflow">return</span> nsimd_isnan_f16(a); }</div>
+<div class="line"><a name="l02207"></a><span class="lineno"> 2207</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isnan(<a class="code" href="a00606.html">f16</a> a) { <span class="keywordflow">return</span> nsimd_isnan_f16(a); }</div>
 <div class="line"><a name="l02208"></a><span class="lineno"> 2208</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isnan(f32 a) { <span class="keywordflow">return</span> nsimd_isnan_f32(a); }</div>
 <div class="line"><a name="l02209"></a><span class="lineno"> 2209</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isnan(f64 a) { <span class="keywordflow">return</span> nsimd_isnan_f64(a); }</div>
-<div class="line"><a name="l02210"></a><span class="lineno"> 2210</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isinf(<a class="code" href="a00603.html">f16</a> a) { <span class="keywordflow">return</span> nsimd_isinf_f16(a); }</div>
+<div class="line"><a name="l02210"></a><span class="lineno"> 2210</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isinf(<a class="code" href="a00606.html">f16</a> a) { <span class="keywordflow">return</span> nsimd_isinf_f16(a); }</div>
 <div class="line"><a name="l02211"></a><span class="lineno"> 2211</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isinf(f32 a) { <span class="keywordflow">return</span> nsimd_isinf_f32(a); }</div>
 <div class="line"><a name="l02212"></a><span class="lineno"> 2212</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isinf(f64 a) { <span class="keywordflow">return</span> nsimd_isinf_f64(a); }</div>
-<div class="line"><a name="l02213"></a><span class="lineno"> 2213</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isnormal(<a class="code" href="a00603.html">f16</a> a) { <span class="keywordflow">return</span> nsimd_isnormal_f16(a); }</div>
+<div class="line"><a name="l02213"></a><span class="lineno"> 2213</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isnormal(<a class="code" href="a00606.html">f16</a> a) { <span class="keywordflow">return</span> nsimd_isnormal_f16(a); }</div>
 <div class="line"><a name="l02214"></a><span class="lineno"> 2214</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isnormal(f32 a) { <span class="keywordflow">return</span> nsimd_isnormal_f32(a); }</div>
 <div class="line"><a name="l02215"></a><span class="lineno"> 2215</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> isnormal(f64 a) { <span class="keywordflow">return</span> nsimd_isnormal_f64(a); }</div>
 <div class="line"><a name="l02216"></a><span class="lineno"> 2216</span>&#160;} <span class="comment">// namespace nsimd</span></div>
@@ -2311,7 +2311,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l02223"></a><span class="lineno"> 2223</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"><a name="l02224"></a><span class="lineno"> 2224</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l02225"></a><span class="lineno"> 2225</span>&#160; </div>
-<div class="line"><a name="l02226"></a><span class="lineno"> 2226</span>&#160;NSIMD_DLLSPEC <span class="keywordtype">int</span> nsimd_ufp_f16(<a class="code" href="a00603.html">f16</a>, <a class="code" href="a00603.html">f16</a>);</div>
+<div class="line"><a name="l02226"></a><span class="lineno"> 2226</span>&#160;NSIMD_DLLSPEC <span class="keywordtype">int</span> nsimd_ufp_f16(<a class="code" href="a00606.html">f16</a>, <a class="code" href="a00606.html">f16</a>);</div>
 <div class="line"><a name="l02227"></a><span class="lineno"> 2227</span>&#160;NSIMD_DLLSPEC <span class="keywordtype">int</span> nsimd_ufp_f32(f32, f32);</div>
 <div class="line"><a name="l02228"></a><span class="lineno"> 2228</span>&#160;NSIMD_DLLSPEC <span class="keywordtype">int</span> nsimd_ufp_f64(f64, f64);</div>
 <div class="line"><a name="l02229"></a><span class="lineno"> 2229</span>&#160; </div>
@@ -2321,7 +2321,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l02233"></a><span class="lineno"> 2233</span>&#160; </div>
 <div class="line"><a name="l02234"></a><span class="lineno"> 2234</span>&#160;<span class="preprocessor">#if NSIMD_CXX &gt; 0</span></div>
 <div class="line"><a name="l02235"></a><span class="lineno"> 2235</span>&#160;<span class="keyword">namespace </span>nsimd {</div>
-<div class="line"><a name="l02236"></a><span class="lineno"> 2236</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> ufp(<a class="code" href="a00603.html">f16</a> a, <a class="code" href="a00603.html">f16</a> b) { <span class="keywordflow">return</span> nsimd_ufp_f16(a, b); }</div>
+<div class="line"><a name="l02236"></a><span class="lineno"> 2236</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> ufp(<a class="code" href="a00606.html">f16</a> a, <a class="code" href="a00606.html">f16</a> b) { <span class="keywordflow">return</span> nsimd_ufp_f16(a, b); }</div>
 <div class="line"><a name="l02237"></a><span class="lineno"> 2237</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> ufp(f32 a, f32 b) { <span class="keywordflow">return</span> nsimd_ufp_f32(a, b); }</div>
 <div class="line"><a name="l02238"></a><span class="lineno"> 2238</span>&#160;NSIMD_INLINE <span class="keywordtype">int</span> ufp(f64 a, f64 b) { <span class="keywordflow">return</span> nsimd_ufp_f64(a, b); }</div>
 <div class="line"><a name="l02239"></a><span class="lineno"> 2239</span>&#160;} <span class="comment">// namespace nsimd</span></div>
@@ -2345,7 +2345,7 @@ $(document).ready(function(){initNavTree('a00452_source.html',''); initResizable
 <div class="line"><a name="l02257"></a><span class="lineno"> 2257</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aa00603_html"><div class="ttname"><a href="a00603.html">f16</a></div><div class="ttdef"><b>Definition:</b> <a href="a00452_source.html#l00986">nsimd.h:986</a></div></div>
+<div class="ttc" id="aa00606_html"><div class="ttname"><a href="a00606.html">f16</a></div><div class="ttdef"><b>Definition:</b> <a href="a00452_source.html#l00986">nsimd.h:986</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

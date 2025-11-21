@@ -18,6 +18,7 @@ set(ALL_SAMPLES
   sample_get_rw_api
   sample_speckleFilter
   sample_file_iostream
+  sample_reconnect
   )
 
 set(UserSetCtrlSample

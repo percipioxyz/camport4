@@ -6,6 +6,7 @@
 
 #include "Device.hpp"
 #include "TYImageProc.h"
+#include "TYCoordinateMapper.h"
 
 #if _WIN32
 #include <conio.h>

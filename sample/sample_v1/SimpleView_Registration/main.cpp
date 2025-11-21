@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include "TYImageProc.h"
+#include "TYCoordinateMapper.h"
 
 #define MAP_DEPTH_TO_COLOR  0
 

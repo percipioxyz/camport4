@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include "TYImageProc.h"
+#include "TYCoordinateMapper.h"
 
 // The distance(mm) range defined by the macro is related to the camera model
 #define MIN_DEPTH			(400)

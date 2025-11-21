@@ -22,6 +22,7 @@ set(ALL_SAMPLES
     SimpleView_TriggerMode1
     SimpleView_TriggerMode20
     SimpleView_TriggerMode21
+    SimpleView_TriggerMode22
     SimpleView_TriggerMode28
     SimpleView_TriggerMode29
     SimpleView_TriggerMode30

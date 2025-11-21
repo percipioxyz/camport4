@@ -256,7 +256,7 @@ size_t FileAccessControlBuf::writeToFile(const void* buf, size_t count) {
     ASSERT_OK(TYEnumGetValue(m_hDevice, "FileOperationStatus", &op_status));
     // LOGD("File operation status: %d", op_status);
     if (op_status != FILE_OP_STATUS_SUCC) {
-        LOGE("File read failed");
+        LOGE("File write failed");
         return static_cast<size_t>(0);
     }
 
@@ -287,6 +287,7 @@ FileAccessControl::FileAccessControl(TY_DEV_HANDLE hDevice, size_t bufferSize)
 }
 
 bool FileAccessControl::open(TY_FILE_SEL fileSel, std::ios::openmode mode) {
+    clear();
     return m_buf.open(fileSel, mode);
 }
 

@@ -488,6 +488,9 @@ static inline void parse_firmware_errcode(TY_FW_ERRORCODE err_code) {
     if (TY_FW_ERRORCODE_FOC_START_ERR & err_code) {
         LOGE("Motor start failed");
     }
+    if (TY_FW_ERRORCODE_PHASE_CALIB_ERR & err_code) {
+        LOGE("Sensor phase calib failed");
+    }
     if (TY_FW_ERRORCODE_CONFIG_NOT_FOUND & err_code) {
         LOGE("Config file not exist");
     }

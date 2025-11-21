@@ -4,6 +4,7 @@
 #include "common.hpp"
 #include "../../cloud_viewer/cloud_viewer.hpp"
 #include "TYImageProc.h"
+#include "TYCoordinateMapper.h"
 
 struct CallbackData {
     int             index;

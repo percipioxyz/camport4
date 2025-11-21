@@ -8,7 +8,6 @@
 
 
 #include "TYApi.h"
-#include "TYCoordinateMapper.h"
 
 ///@brief  Get current library version.
 ///@param  [out] version       Version infomation to be filled.
@@ -55,19 +54,23 @@ TY_CAPI TYUndistortImage2 (const TY_CAMERA_CALIB_INFO *calib_info,
 struct DepthSpeckleFilterParameters {
     int max_speckle_size; // blob size smaller than this will be removed
     int max_speckle_diff; // Maximum difference between neighbor disparity pixels
+    float max_physical_size;   //Maximum Speckle Physical Size to be Filtered-Out, uint is mm^2
 };
 
 ///<default parameter value definition
-#define DepthSpeckleFilterParameters_Initializer {150, 64}
+#define DepthSpeckleFilterParameters_Initializer {150, 64, 20}
 
 /// @brief Remove speckles on depth image.
 /// @param  [in,out]  depthImage        Depth image to be processed.
 /// @param  [in]  param                 Algorithm parameters.
+/// @param  [in]  calib_data            Image calibration data.
 /// @retval TY_STATUS_OK        Succeed.
 /// @retval TY_STATUS_NULL_POINTER      Any depth, param or depth->buffer is NULL.
 /// @retval TY_STATUS_INVALID_PARAMETER param->max_speckle_size <= 0 or param->max_speckle_diff <= 0
 TY_CAPI TYDepthSpeckleFilter (TY_IMAGE_DATA* depthImage
         , const DepthSpeckleFilterParameters* param
+        , const TY_CAMERA_CALIB_INFO* calib_data = nullptr
+        , const float depth_scale_unit = 1.f
         );
 
 // -----------------------------------------------------------
