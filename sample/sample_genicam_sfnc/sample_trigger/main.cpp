@@ -173,13 +173,16 @@ int main(int argc, char* argv[])
             ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM_EX, &trigger, sizeof(trigger)));
         }
     */
-        DepthViewer depthViewer("Depth");
         LOGD("Start capture");
         ASSERT_OK( TYStartCapture(hDevice) );
 
         LOGD("While loop to fetch frame");
         TY_FRAME_DATA frame;
         int index = 0;
+        double depth_scale_unit = 1.0;
+        if(TY_STATUS_OK == TYEnumSetValue(hDevice, "SourceSelector", SRC_SEL_DEPTH)) {
+            ASSERT_OK(TYFloatGetValue(hDevice, TY_DEPTH_SCALE, &depth_scale_unit));
+        }
         while(!exit_main) {
             if (source == 8) {
                 ASSERT_OK(TYCommandExec(hDevice, "TriggerSoftware"));
@@ -193,16 +196,11 @@ int main(int argc, char* argv[])
                     LOGI("fps: %d", fps);
                 }
 
-                cv::Mat depth, irl, irr, color;
-                parseFrame(frame, &depth, &irl, &irr, &color);
-                if(!depth.empty()){
-                    depthViewer.show(depth);
+                for (int i = 0; i < frame.validCount; i++){
+                    if (frame.image[i].status != TY_STATUS_OK) continue;
+                    decode_and_display_image(frame.image[i], depth_scale_unit);
                 }
-                if(!irl.empty()){ cv::imshow("LeftIR", irl); }
-                if(!irr.empty()){ cv::imshow("RightIR", irr); }
-                if(!color.empty()){ cv::imshow("Color", color); }
-
-                int key = cv::waitKey(1);
+                int key = TYWaitKeyEvents();
                 switch(key & 0xff) {
                 case 0xff:
                     break;

@@ -24,6 +24,7 @@ var NAVTREE =
 [
   [ "TYCamport3", "index.html", [
     [ "Note", "index.html#Note", null ],
+    [ "Modules", "modules.html", "modules" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -48,23 +49,24 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"a00440_source.html",
-"a00470.html#a6ad12f8e99a29828f93af6916a846f38a0519147c7e082603a4405054e2290bcc",
-"a00470.html#a8b13b2837b0f88b1d0926e8662f14ac7af168b0e8e0e841a14b5e12c23d8f167d",
-"a00473.html#a42249b95e468a4990c87563c30234c9b",
-"a00473.html#afc6e304663e2098e5ef452e7c6c87c56",
-"a00658.html#a310481375445aed9dadb496335e4d185",
-"a00894.html",
-"a01448_source.html",
-"a02198_source.html",
-"a02948_source.html",
-"a03698_source.html",
-"a04448_source.html",
-"a05198_source.html",
-"a05948_source.html",
-"a06698_source.html",
-"a07448_source.html",
-"a08198_source.html"
+"a00002_source.html",
+"a00485.html#a6ad12f8e99a29828f93af6916a846f38",
+"a00485.html#a8a9674954d36ad55778cf1633835e06fad4f178d49301370e724ea08f3dab98e7",
+"a00488.html#a3c04c6457068a2e2399edc4871630a49a1f5e7c2eca31227700cfa9c5decec66f",
+"a00488.html#af61e34fb8f5c26cd1cda52948b5cc7a8",
+"a00534.html#af2c1fe7c62791cda75219c10d71132d9",
+"a00642.html#a5d1171084b225e89b8a4e4b401d4611f",
+"a00838.html#a5d0cc184d80be47b9396b859485757bb",
+"a01120_source.html",
+"a01870_source.html",
+"a02620_source.html",
+"a03370_source.html",
+"a04120_source.html",
+"a04870_source.html",
+"a05620_source.html",
+"a06370_source.html",
+"a07120_source.html",
+"a07870_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

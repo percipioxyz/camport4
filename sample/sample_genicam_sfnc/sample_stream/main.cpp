@@ -1,6 +1,5 @@
 #include "../common/common.hpp"
 
-
 #if _WIN32
 #include <conio.h>
 #elif __linux__
@@ -143,8 +142,6 @@ int main(int argc, char* argv[])
           direct = 1;
         }
     }
-
-
     LOGD("Init lib");
     ASSERT_OK( TYInitLib() );
     TY_VERSION_INFO ver;
@@ -212,6 +209,11 @@ int main(int argc, char* argv[])
         } while(wait_cmd);
     }
 direct_start:
+    double depth_scale_unit = 1.0;
+    if(TY_STATUS_OK == TYEnumSetValue(hDevice, "SourceSelector", SRC_SEL_DEPTH)) {
+        ASSERT_OK(TYFloatGetValue(hDevice, TY_DEPTH_SCALE, &depth_scale_unit));
+    }
+
     LOGD("%d-th round\n", round++);
     char* frameBuffer[2] = {0};
     if (!exit_main) {
@@ -241,7 +243,6 @@ direct_start:
             ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM_EX, &trigger, sizeof(trigger)));
         }
     */
-        DepthViewer depthViewer("Depth");
         LOGD("Start capture");
         ASSERT_OK( TYStartCapture(hDevice) );
 
@@ -257,17 +258,11 @@ direct_start:
                 if (fps > 0){
                     LOGI("fps: %d", fps);
                 }
-
-                cv::Mat depth, irl, irr, color;
-                parseFrame(frame, &depth, &irl, &irr, &color);
-                if(!depth.empty()){
-                    depthViewer.show(depth);
+                
+                for (int i = 0; i < frame.validCount; i++){
+                    decode_and_display_image(frame.image[i], depth_scale_unit);
                 }
-                if(!irl.empty()){ cv::imshow("LeftIR", irl); }
-                if(!irr.empty()){ cv::imshow("RightIR", irr); }
-                if(!color.empty()){ cv::imshow("Color", color); }
-
-                int key = cv::waitKey(1);
+                int key = TYWaitKeyEvents();
                 switch(key & 0xff) {
                 case 0xff:
                     break;
@@ -277,7 +272,6 @@ direct_start:
                 default:
                     LOGD("Unmapped key %d", key);
                 }
-
                 LOGD("Re-enqueue buffer(%p, %d)"
                     , frame.userBuffer, frame.bufferSize);
                 ASSERT_OK( TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize) );
@@ -302,7 +296,7 @@ direct_start:
     ASSERT_OK( TYDeinitLib() );
     //if(frameBuffer[0]) delete frameBuffer[0];
     //if(frameBuffer[1]) delete frameBuffer[1];
-
+    
     LOGD("Main done!");
     return 0;
 }

@@ -1,8 +1,8 @@
 var a00930 =
 [
-    [ "description", "a00930.html#ab371299520f45da334bdb6db00c55429", null ],
-    [ "displayName", "a00930.html#aeee998dd30dacdecb690e499dc7c89e7", null ],
-    [ "name", "a00930.html#a14a95f8adbe4c7a113ccfd3936357ca2", null ],
-    [ "tooltip", "a00930.html#a95b420b4f9155d074f716d8a129eda64", null ],
-    [ "value", "a00930.html#af3e3af3c15b1da5e5a7fe940d4fef36d", null ]
+    [ "imageDropped", "a00930.html#a9d598d1da279e2172adca52c5db566b5", null ],
+    [ "imageOutputed", "a00930.html#a7ff234622751a487a2f85cd56bc60aa3", null ],
+    [ "packetLost", "a00930.html#a902fba1b575115e64aa839108d002e8e", null ],
+    [ "packetReceived", "a00930.html#ab3099957df1c4a18082c27c558341a31", null ],
+    [ "rsvd", "a00930.html#afd3df8f7bd491b68b5d0416680a114e1", null ]
 ];

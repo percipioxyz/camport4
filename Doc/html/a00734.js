@@ -1,8 +1,5 @@
 var a00734 =
 [
-    [ "id", "a00734.html#ae84371dc17b5949e79f0226d6fb64053", null ],
-    [ "name", "a00734.html#ab4417fe83294f826e0a3b7fef902553a", null ],
-    [ "netInfo", "a00734.html#afc221c1c18ec0d731f7db8a8750f7573", null ],
-    [ "reserved", "a00734.html#a679a5e02776cbf179be726708224f21f", null ],
-    [ "type", "a00734.html#a8973f7b4623cdb3ac1e3194d48730522", null ]
+    [ "v0", "a00734.html#ae6a2d2f32d7ec9ae661e21cb7a3eaeeb", null ],
+    [ "v1", "a00734.html#afaf245aba99c48dbe2883578a07e0197", null ]
 ];

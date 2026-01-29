@@ -1,603 +1,418 @@
 #include "Device.hpp"
+namespace {
 
-struct to_string
+std::string TY_ERROR(TY_STATUS status)
 {
     std::ostringstream ss;
-    template<class T> to_string & operator << (const T & val) { ss << val; return *this; }
-    operator std::string() const { return ss.str(); }
-};
-
-static std::string TY_ERROR(TY_STATUS status)
-{
-    return to_string() << status << "(" << TYErrorString(status) << ").";
+    ss << status << "(" << TYErrorString(status) << ").";
+    return ss.str();
 }
 
-static inline TY_STATUS searchDevice(std::vector<TY_DEVICE_BASE_INFO>& out, const char *inf_id = nullptr, TY_INTERFACE_TYPE type = TY_INTERFACE_ALL)
+TY_STATUS searchDevice(std::vector<TY_DEVICE_BASE_INFO>& out, 
+                      const char* inf_id = nullptr, 
+                      TY_INTERFACE_TYPE type = TY_INTERFACE_ALL)
 {
     out.clear();
-    ASSERT_OK( TYUpdateInterfaceList() );
+    
+    if (TYUpdateInterfaceList() != TY_STATUS_OK) {
+        return TY_STATUS_ERROR;
+    }
 
     uint32_t n = 0;
-    ASSERT_OK( TYGetInterfaceNumber(&n) );
-    if(n == 0) return TY_STATUS_ERROR;
+    if (TYGetInterfaceNumber(&n) != TY_STATUS_OK || n == 0) {
+        return TY_STATUS_ERROR;
+    }
 
     std::vector<TY_INTERFACE_INFO> ifaces(n);
-    ASSERT_OK( TYGetInterfaceList(&ifaces[0], n, &n) );
+    if (TYGetInterfaceList(ifaces.data(), n, &n) != TY_STATUS_OK) {
+        return TY_STATUS_ERROR;
+    }
 
-    bool found = false;
     std::vector<TY_INTERFACE_HANDLE> hIfaces;
-    for(uint32_t i = 0; i < ifaces.size(); i++){
-        TY_INTERFACE_HANDLE hIface;
-        if(type & ifaces[i].type) {
-                //Interface Not setted
-            if (nullptr == inf_id ||
-                //Interface been setted and matched
-                strcmp(inf_id, ifaces[i].id) == 0) {
-                ASSERT_OK( TYOpenInterface(ifaces[i].id, &hIface) );
-                hIfaces.push_back(hIface);
-                found = true;
-                //Interface been setted, found and just break
-                if(nullptr != inf_id) {
-                    break;
+    hIfaces.reserve(ifaces.size());
+    
+    auto closeInterfaces = [](std::vector<TY_INTERFACE_HANDLE>& handles) {
+        for (auto hIface : handles) {
+            if (hIface) {
+                TYCloseInterface(hIface);
+            }
+        }
+        handles.clear();
+    };
+    
+    for (const auto& iface : ifaces) {
+        if (type & iface.type) {
+            if (!inf_id || strcmp(inf_id, iface.id) == 0) {
+                TY_INTERFACE_HANDLE hIface = nullptr;
+                TY_STATUS status = TYOpenInterface(iface.id, &hIface);
+                if (status == TY_STATUS_OK && hIface) {
+                    hIfaces.push_back(hIface);
+                    if (inf_id) break; //find the interface setted, just return
                 }
             }
         }
-
     }
-    if(!found) return TY_STATUS_ERROR;
-    updateDevicesParallel(hIfaces);
 
-    for (uint32_t i = 0; i < hIfaces.size(); i++) {
-        TY_INTERFACE_HANDLE hIface = hIfaces[i];
-        uint32_t n = 0;
-        TYGetDeviceNumber(hIface, &n);
-        if(n > 0){
-            std::vector<TY_DEVICE_BASE_INFO> devs(n);
-            TYGetDeviceList(hIface, &devs[0], n, &n);
-            for(uint32_t j = 0; j < n; j++) {
-                out.push_back(devs[j]);
+    if (hIfaces.empty()) {
+        return TY_STATUS_ERROR;
+    }
+
+    updateDevicesParallel(hIfaces, static_cast<uint32_t>(hIfaces.size()));
+
+    for (auto hIface : hIfaces) {
+        uint32_t deviceCount = 0;
+        if (TYGetDeviceNumber(hIface, &deviceCount) != TY_STATUS_OK) {
+            continue;
+        }
+        
+        if (deviceCount > 0) {
+            std::vector<TY_DEVICE_BASE_INFO> devs(deviceCount);
+            if (TYGetDeviceList(hIface, devs.data(), deviceCount, &deviceCount) == TY_STATUS_OK) {
+                out.insert(out.end(), devs.begin(), devs.begin() + deviceCount);
             }
         }
-        TYCloseInterface(hIface);
     }
 
-    if(out.size() == 0){
-      std::cout << "not found any device" << std::endl;
-      return TY_STATUS_ERROR;
+    closeInterfaces(hIfaces);
+
+    if (out.empty()) {
+        std::cout << "No devices found" << std::endl;
+        return TY_STATUS_ERROR;
     }
 
     return TY_STATUS_OK;
 }
+
+} // anonymous namespace
 
 namespace percipio_layer {
 
 TYDeviceInfo::TYDeviceInfo(const TY_DEVICE_BASE_INFO& info)
+    : _info(info)
 {
-    _info = info;
 }
 
-TYDeviceInfo::~TYDeviceInfo()
+const char* TYDeviceInfo::mac() const
 {
-
+    return TYIsNetworkInterface(_info.iface.type) ? _info.netInfo.mac : nullptr;
 }
 
-const char* TYDeviceInfo::mac()
+const char* TYDeviceInfo::ip() const
 {
-    if(!TYIsNetworkInterface(_info.iface.type)) {
-        return nullptr;
-    }
-    return _info.netInfo.mac;
+    return TYIsNetworkInterface(_info.iface.type) ? _info.netInfo.ip : nullptr;
 }
 
-const char* TYDeviceInfo::ip()
+const char* TYDeviceInfo::netmask() const
 {
-    if(!TYIsNetworkInterface(_info.iface.type))
-        return nullptr;
-    return _info.netInfo.ip;
+    return TYIsNetworkInterface(_info.iface.type) ? _info.netInfo.netmask : nullptr;
 }
 
-const char* TYDeviceInfo::netmask()
+const char* TYDeviceInfo::gateway() const
 {
-    if(!TYIsNetworkInterface(_info.iface.type))
-        return nullptr;
-    return _info.netInfo.netmask;
+    return TYIsNetworkInterface(_info.iface.type) ? _info.netInfo.gateway : nullptr;
 }
 
-const char* TYDeviceInfo::gateway()
+const char* TYDeviceInfo::broadcast() const
 {
-    if(!TYIsNetworkInterface(_info.iface.type))
-        return nullptr;
-    return _info.netInfo.gateway;
+    return TYIsNetworkInterface(_info.iface.type) ? _info.netInfo.broadcast : nullptr;
 }
 
-const char* TYDeviceInfo::broadcast()
+// TYDevice
+TYDevice::TYDevice(TY_DEV_HANDLE handle, const TY_DEVICE_BASE_INFO& info)
+    : _handle(handle), _dev_info(info)
 {
-    if(!TYIsNetworkInterface(_info.iface.type))
-        return nullptr;
-    return _info.netInfo.broadcast;
-}
-
-static void eventCallback(TY_EVENT_INFO *event_info, void *userdata) {
-    TYDevice* handle = (TYDevice*)userdata;
-    handle->_event_callback(event_info);
-}
-
- TYCamInterface::TYCamInterface()
- {
-    TYContext::getInstance();
-    Reset();
- }
-
-TYCamInterface::~TYCamInterface()
-{
-
-}
-
-TY_STATUS TYCamInterface::Reset()
-{
-    TY_STATUS status;
-    status = TYUpdateInterfaceList();
-    if(status != TY_STATUS_OK) return status;
-
-    uint32_t n = 0;
-    status = TYGetInterfaceNumber(&n);
-    if(status != TY_STATUS_OK) return status;
-
-    if(n == 0) return TY_STATUS_OK;
-
-    ifaces.resize(n);
-    status = TYGetInterfaceList(&ifaces[0], n, &n);
-    return status;
-}
-
-void TYCamInterface::List(std::vector<std::string>& interfaces)
-{
-    for(auto& iter : ifaces) {
-        std::cout << iter.id << std::endl;
-        interfaces.push_back(iter.id);
-    }
-}
-
-FastCamera::FastCamera()
-{
-
-}
-
-FastCamera::FastCamera(const char* sn)
-{
-    const char *inf = nullptr;
-    if (!mIfaceId.empty()) {
-        inf = mIfaceId.c_str();
-    }
-    auto devList = TYContext::getInstance().queryDeviceList(inf);
-    if(devList->empty()) {
-        return;
-    }
-
-    device = (sn && strlen(sn) != 0) ? devList->getDeviceBySN(sn) : devList->getDevice(0);
-    if(!device) {
-        return;
-    }
-
-    TYGetComponentIDs(device->_handle, &components);
-}
-
-TY_STATUS FastCamera::open(const char* sn)
-{
-    const char *inf = nullptr;
-    if (!mIfaceId.empty()) {
-        inf = mIfaceId.c_str();
-    }
-
-    auto devList = TYContext::getInstance().queryDeviceList(inf);
-    if(devList->empty()) {
-        std::cout << "deivce list is empty!" << std::endl;
-        return TY_STATUS_ERROR;
-    }
-
-    device = (sn && strlen(sn) != 0) ? devList->getDeviceBySN(sn) : devList->getDevice(0);
-    if(!device) {
-        return TY_STATUS_ERROR;
-    }
-
-    return TYGetComponentIDs(device->_handle, &components);
-}
-
-TY_STATUS FastCamera::openByIP(const char* ip)
-{
-    const char *inf = nullptr;
-    if (!mIfaceId.empty()) {
-        inf = mIfaceId.c_str();
-    }
-
-    std::unique_lock<std::mutex> lock(_dev_lock);
-    auto devList = TYContext::getInstance().queryNetDeviceList(inf);
-    if(devList->empty()) {
-        std::cout << "net deivce list is empty!" << std::endl;
-        return TY_STATUS_ERROR;
-    }
-
-    device = (ip && strlen(ip) != 0) ? devList->getDeviceByIP(ip) : devList->getDevice(0);
-    if(!device) {
-        std::cout << "open device failed!" << std::endl;
-        return TY_STATUS_ERROR;
-    }
-
-    return TYGetComponentIDs(device->_handle, &components);
-}
-
-TY_STATUS FastCamera::setIfaceId(const char* inf)
-{
-    mIfaceId = inf;
-    return TY_STATUS_OK;
-}
-
-FastCamera::~FastCamera()
-{
-    if(isRuning) {
-        doStop();
-    }
-}
-
-void FastCamera::close()
-{
-    std::unique_lock<std::mutex> lock(_dev_lock);
-    if(isRuning) {
-        doStop();
-    }
-    
-    if(device) device.reset();
-}
-
-std::shared_ptr<TYFrame> FastCamera::fetchFrames(uint32_t timeout_ms)
-{
-    TY_FRAME_DATA tyframe;
-    TY_STATUS status = TYFetchFrame(handle(), &tyframe, timeout_ms);
-    if(status != TY_STATUS_OK) {
-        std::cout << "Frame fetch failed with err code: " << status << "(" << TYErrorString(status) << ")."<< std::endl;
-        return std::shared_ptr<TYFrame>();
-    }
-    
-    std::shared_ptr<TYFrame> frame = std::shared_ptr<TYFrame>(new TYFrame(tyframe));
-    CHECK_RET(TYEnqueueBuffer(handle(), tyframe.userBuffer, tyframe.bufferSize));
-    return frame;
-}
-
-static TY_COMPONENT_ID StreamIdx2CompID(FastCamera::stream_idx idx)
-{
-    TY_COMPONENT_ID comp = 0;
-    switch (idx)
-    {
-    case FastCamera::stream_depth:
-        comp = TY_COMPONENT_DEPTH_CAM;
-        break;
-    case FastCamera::stream_color:
-        comp = TY_COMPONENT_RGB_CAM;
-        break; 
-    case FastCamera::stream_ir_left:
-        comp = TY_COMPONENT_IR_CAM_LEFT;
-        break;
-    case FastCamera::stream_ir_right:
-        comp = TY_COMPONENT_IR_CAM_RIGHT;
-        break;
-    default:
-        break;
-    }
-
-    return comp;
-}
-bool FastCamera::has_stream(stream_idx idx)
-{
-    return components & StreamIdx2CompID(idx);
-}
-
-TY_STATUS FastCamera::stream_enable(stream_idx idx)
-{
-    std::unique_lock<std::mutex> lock(_dev_lock);
-    return TYEnableComponents(handle(), StreamIdx2CompID(idx));
-}
-
-TY_STATUS FastCamera::stream_disable(stream_idx idx)
-{
-    std::unique_lock<std::mutex> lock(_dev_lock);
-    return TYDisableComponents(handle(), StreamIdx2CompID(idx));
-}
-
-TY_STATUS FastCamera::start()
-{
-    std::unique_lock<std::mutex> lock(_dev_lock);
-    if(isRuning) {
-        std::cout << "Device is busy!" << std::endl;
-        return TY_STATUS_BUSY;
-    }
-
-    uint32_t stream_buffer_size;
-    TY_STATUS status = TYGetFrameBufferSize(handle(), &stream_buffer_size);
-    if(status != TY_STATUS_OK) {
-        std::cout << "Get frame buffer size failed with error code: " << TY_ERROR(status) << std::endl;
-        return status;
-    }
-    if(stream_buffer_size == 0) {
-        std::cout << "Frame buffer size is 0, is the data flow component not enabled?" << std::endl;
-        return TY_STATUS_DEVICE_ERROR;
-    }
-
-    for(int i = 0; i < BUF_CNT; i++) {
-        stream_buffer[i].resize(stream_buffer_size);
-        TYEnqueueBuffer(handle(), &stream_buffer[i][0], stream_buffer_size);
-    }
-
-    status = TYStartCapture(handle());
-    if(TY_STATUS_OK != status) {
-        std::cout << "Start capture failed with error code: " << TY_ERROR(status) << std::endl;
-        return status;
-    }
-
-    isRuning = true;
-    return TY_STATUS_OK;
-}
-
-TY_STATUS FastCamera::stop()
-{
-    std::unique_lock<std::mutex> lock(_dev_lock);
-    return doStop();
-}
-
-TY_STATUS FastCamera::doStop()
-{
-    if(!isRuning) 
-        return TY_STATUS_IDLE;
-    
-    isRuning = false;
-    
-    TY_STATUS status = TYStopCapture(handle());
-    if(TY_STATUS_OK != status) {
-        std::cout << "Stop capture failed with error code: " << TY_ERROR(status) << std::endl;
-    }
-    //Stop will stop receive, need TYClearBufferQueue any way
-    //Ignore TYClearBufferQueue ret val
-    TYClearBufferQueue(handle());
-    for(int i = 0; i < BUF_CNT; i++) {
-        stream_buffer[i].clear();
-    }
-
-    return status;
-}
-
-std::shared_ptr<TYFrame> FastCamera::tryGetFrames(uint32_t timeout_ms)
-{
-    std::unique_lock<std::mutex> lock(_dev_lock);
-    return fetchFrames(timeout_ms);
-}
-
-TYDevice::TYDevice(const TY_DEV_HANDLE handle, const TY_DEVICE_BASE_INFO& info)
-{
-    _handle = handle;
-    _dev_info = info;
-    _event_callback = std::bind(&TYDevice::onDeviceEventCallback, this, std::placeholders::_1);
-    TYRegisterEventCallback(_handle, eventCallback, this);
+    _event_callback = [this](const TY_EVENT_INFO* event_info) {
+        this->onDeviceEventCallback(event_info);
+    };
+    TYRegisterEventCallback(_handle, &TYDevice::eventCallbackWrapper, this);
 }
 
 TYDevice::~TYDevice()
 {
-    CHECK_RET(TYCloseDevice(_handle));
-}
-
-void  TYDevice::registerEventCallback(const TY_EVENT eventID, void* data, EventCallback cb)
-{
-    _eventCallbackMap[eventID] = {data, cb};
-}
-
-void TYDevice::onDeviceEventCallback(const TY_EVENT_INFO *event_info)
-{
-    if(_eventCallbackMap[event_info->eventId].second != nullptr) {
-        _eventCallbackMap[event_info->eventId].second(_eventCallbackMap[event_info->eventId].first);
+    if (_handle) {
+        TYCloseDevice(_handle);
     }
 }
 
-std::shared_ptr<TYDeviceInfo> TYDevice::getDeviceInfo()
+TYDevice::TYDevice(TYDevice&& other) noexcept
+    : _handle(other._handle),
+      _dev_info(std::move(other._dev_info)),
+      _eventCallbackMap(std::move(other._eventCallbackMap)),
+      _event_callback(std::move(other._event_callback))
 {
-    return std::shared_ptr<TYDeviceInfo>(new TYDeviceInfo(_dev_info));
+    other._handle = nullptr;
+    if (_handle) {
+        TYRegisterEventCallback(_handle, &TYDevice::eventCallbackWrapper, this);
+    }
 }
 
-std::set<TY_INTERFACE_HANDLE> DeviceList::gifaces;
-DeviceList::DeviceList(std::vector<TY_DEVICE_BASE_INFO>& devices)
+TYDevice& TYDevice::operator=(TYDevice&& other) noexcept
 {
-    devs = devices;
+    if (this != &other) {
+        if (_handle) {
+            TYCloseDevice(_handle);
+        }
+        
+        _handle = other._handle;
+        _dev_info = std::move(other._dev_info);
+        _eventCallbackMap = std::move(other._eventCallbackMap);
+        _event_callback = std::move(other._event_callback);
+        
+        other._handle = nullptr;
+        
+        if (_handle) {
+            TYRegisterEventCallback(_handle, &TYDevice::eventCallbackWrapper, this);
+        }
+    }
+    return *this;
+}
+
+void TYDevice::eventCallbackWrapper(TY_EVENT_INFO* event_info, void* userdata)
+{
+    TYDevice* device = static_cast<TYDevice*>(userdata);
+    if (device && device->_event_callback) {
+        device->_event_callback(event_info);
+    }
+}
+
+void TYDevice::registerEventCallback(TY_EVENT eventID, void* data, EventCallback cb)
+{
+    _eventCallbackMap[eventID] = std::make_pair(data, std::move(cb));
+}
+
+void TYDevice::onDeviceEventCallback(const TY_EVENT_INFO* event_info)
+{
+    auto it = _eventCallbackMap.find(event_info->eventId);
+    if (it != _eventCallbackMap.end() && it->second.second) {
+        it->second.second(it->second.first);
+    }
+}
+
+std::shared_ptr<TYDeviceInfo> TYDevice::getDeviceInfo() const
+{
+    return std::make_shared<TYDeviceInfo>(_dev_info);
+}
+
+// DeviceList 
+DeviceList::DeviceList(std::vector<TY_DEVICE_BASE_INFO> devices)
+    : devs(std::move(devices))
+{
 }
 
 DeviceList::~DeviceList()
 {
     for (TY_INTERFACE_HANDLE iface : gifaces) {
-        TYCloseInterface(iface);
+        if (iface) {
+            TYCloseInterface(iface);
+        }
     }
     gifaces.clear();
 }
 
-std::shared_ptr<TYDeviceInfo> DeviceList::getDeviceInfo(int idx)
+std::shared_ptr<TYDeviceInfo> DeviceList::getDeviceInfo(size_t idx) const
 {
-    if((idx < 0) || (idx > devCount())) {
-        std::cout << "idx out of range" << std::endl;
+    if (idx >= devs.size()) {
+        std::cerr << "Index out of range" << std::endl;
         return nullptr;
     }
-    
-    return std::shared_ptr<TYDeviceInfo>(new TYDeviceInfo(devs[idx]));
+    return std::make_shared<TYDeviceInfo>(devs[idx]);
 }
 
-std::shared_ptr<TYDevice> DeviceList::getDevice(int idx)
+std::shared_ptr<TYDevice> DeviceList::getDevice(size_t idx) const
 {
-    if((idx < 0) || (idx > devCount())) {
-        std::cout << "idx out of range" << std::endl;
+    if (idx >= devs.size()) {
+        std::cerr << "Index out of range" << std::endl;
         return nullptr;
     }
 
-    TY_INTERFACE_HANDLE hIface = NULL;
-    TY_DEV_HANDLE hDevice = NULL;
-
-    TY_STATUS status = TY_STATUS_OK;
-    status = TYOpenInterface(devs[idx].iface.id, &hIface);
-    if(status != TY_STATUS_OK)  {
-        std::cout << "Open interface failed with error code: " << TY_ERROR(status) << std::endl;
+    TY_INTERFACE_HANDLE hIface = nullptr;
+    TY_STATUS status = TYOpenInterface(devs[idx].iface.id, &hIface);
+    if (status != TY_STATUS_OK || !hIface) {
+        std::cerr << "Open interface failed: " << TY_ERROR(status) << std::endl;
         return nullptr;
     }
 
     gifaces.insert(hIface);
+    
     std::string ifaceId = devs[idx].iface.id;
-    std::string open_log = std::string("open device ") + devs[idx].id +
-        "\non interface " + parseInterfaceID(ifaceId);
-    std::cout << open_log << std::endl;
+    std::cout << "Open device " << devs[idx].id 
+              << " on interface " << parseInterfaceID(ifaceId) << std::endl;
+
+    TY_DEV_HANDLE hDevice = nullptr;
     status = TYOpenDevice(hIface, devs[idx].id, &hDevice);
-    if(status != TY_STATUS_OK) {
-        std::cout << "Open device < " << devs[idx].id << "> failed with error code: " << TY_ERROR(status) << std::endl;
+    if (status != TY_STATUS_OK) {
+        std::cerr << "Open device failed: " << TY_ERROR(status) << std::endl;
         return nullptr;
     }
 
     TY_DEVICE_BASE_INFO info;
-    status = TYGetDeviceInfo(hDevice, &info);
-    if(status != TY_STATUS_OK) {
-        std::cout << "Get device info failed with error code: " << TY_ERROR(status) << std::endl;
+    if (TYGetDeviceInfo(hDevice, &info) != TY_STATUS_OK) {
+        TYCloseDevice(hDevice);
+        std::cerr << "Get device info failed" << std::endl;
         return nullptr;
     }
 
-    return std::shared_ptr<TYDevice>(new TYDevice(hDevice, info));
+    return std::make_shared<TYDevice>(hDevice, info);
 }
 
-std::shared_ptr<TYDevice> DeviceList::getDeviceBySN(const char* sn)
+std::shared_ptr<TYDevice> DeviceList::getDeviceBySN(const char* sn) const
 {
-    TY_STATUS status = TY_STATUS_OK;
-    TY_INTERFACE_HANDLE hIface = NULL;
-    TY_DEV_HANDLE hDevice = NULL;
-    
-    if(!sn) {
-        std::cout << "Invalid parameters" << std::endl;
+    if (!sn) {
+        std::cerr << "Invalid parameters" << std::endl;
         return nullptr;
     }
 
-    for(size_t i = 0; i < devs.size(); i++) {
-        if(strcmp(devs[i].id, sn) == 0) {
-            status = TYOpenInterface(devs[i].iface.id, &hIface);
-            if(status != TY_STATUS_OK)  continue;
+    auto it = std::find_if(devs.begin(), devs.end(),
+        [sn](const TY_DEVICE_BASE_INFO& info) {
+            return strcmp(info.id, sn) == 0;
+        });
 
-            gifaces.insert(hIface);
-            std::string ifaceId = devs[i].iface.id;
-            std::string open_log = std::string("open device ") + devs[i].id +
-                "\non interface " + parseInterfaceID(ifaceId);
-            std::cout << open_log << std::endl;
-            status = TYOpenDevice(hIface, devs[i].id, &hDevice);
-            if(status != TY_STATUS_OK) continue;
+    if (it == devs.end()) {
+        std::cerr << "Device SN:" << sn << " not found!" << std::endl;
+        return nullptr;
+    }
 
-            TY_DEVICE_BASE_INFO info;
-            status = TYGetDeviceInfo(hDevice, &info);
-            if(status != TY_STATUS_OK) {
-                TYCloseDevice(hDevice);
+    return getDevice(std::distance(devs.begin(), it));
+}
+
+std::shared_ptr<TYDevice> DeviceList::getDeviceByIP(const char* ip) const
+{
+    if (!ip) {
+        std::cerr << "Invalid parameters" << std::endl;
+        return nullptr;
+    }
+
+    for (size_t i = 0; i < devs.size(); ++i) {
+        if (TYIsNetworkInterface(devs[i].iface.type)) {
+            TY_INTERFACE_HANDLE hIface = nullptr;
+            TY_STATUS status = TYOpenInterface(devs[i].iface.id, &hIface);
+            if (status != TY_STATUS_OK || !hIface) {
                 continue;
             }
-            return std::shared_ptr<TYDevice>(new TYDevice(hDevice, info));
-        }
-    }
 
-    std::cout << "Device <sn:" << sn << "> not found!" << std::endl;
-    return nullptr;
-}
-
-std::shared_ptr<TYDevice> DeviceList::getDeviceByIP(const char* ip)
-{
-    TY_STATUS status = TY_STATUS_OK;
-    TY_INTERFACE_HANDLE hIface = NULL;
-    TY_DEV_HANDLE hDevice = NULL;
-
-    if(!ip) {
-        std::cout << "Invalid parameters" << std::endl;
-        return nullptr;
-    }
-
-    for(size_t i = 0; i < devs.size(); i++) {        
-        if(TYIsNetworkInterface(devs[i].iface.type)) {
-            status = TYOpenInterface(devs[i].iface.id, &hIface);
-            if(status != TY_STATUS_OK)  continue;
-            std::string open_log = "open device ";
-            if(ip && strlen(ip)) {
+            gifaces.insert(hIface);
+            
+            std::string open_log = "Open device ";
+            TY_DEV_HANDLE hDevice = nullptr;
+            
+            if (strlen(ip) > 0) {
                 open_log += ip;
                 status = TYOpenDeviceWithIP(hIface, ip, &hDevice);
             } else {
                 open_log += devs[i].id;
                 status = TYOpenDevice(hIface, devs[i].id, &hDevice);
             }
-            std::string ifaceId = devs[i].iface.id;
-            open_log += "\non interface " + parseInterfaceID(ifaceId);
+            
+            open_log += "\non interface " + parseInterfaceID(devs[i].iface.id);
             std::cout << open_log << std::endl;
 
-            if(status != TY_STATUS_OK) continue;
-
-            TY_DEVICE_BASE_INFO info;
-            status = TYGetDeviceInfo(hDevice, &info);
-            if(status != TY_STATUS_OK) {
-                TYCloseDevice(hDevice);
-                continue;;
+            if (status != TY_STATUS_OK) {
+                continue;
             }
 
-            return std::shared_ptr<TYDevice>(new TYDevice(hDevice, info));
+            TY_DEVICE_BASE_INFO info;
+            if (TYGetDeviceInfo(hDevice, &info) != TY_STATUS_OK) {
+                TYCloseDevice(hDevice);
+                continue;
+            }
+
+            return std::make_shared<TYDevice>(hDevice, info);
         }
     }
 
-    std::cout << "Device <ip:" << ip << "> not found!" << std::endl;
+    std::cerr << "Device IP:" << ip << " not found!" << std::endl;
     return nullptr;
 }
 
-std::shared_ptr<DeviceList> TYContext::queryDeviceList(const char *iface)
+// TYContext 
+TYContext::TYContext()
 {
-    std::vector<TY_DEVICE_BASE_INFO> devs;
-    searchDevice(devs, iface);
-    return std::shared_ptr<DeviceList>(new DeviceList(devs));
+    if (TYInitLib() != TY_STATUS_OK) {
+        throw std::runtime_error("Failed to initialize library");
+    }
+    
+    TY_VERSION_INFO ver;
+    if (TYLibVersion(&ver) == TY_STATUS_OK) {
+        std::cout << "=== lib version: " << ver.major << "." 
+                  << ver.minor << "." << ver.patch << std::endl;
+    }
 }
 
-std::shared_ptr<DeviceList> TYContext::queryNetDeviceList(const char *iface)
+TYContext::~TYContext()
 {
-    std::vector<TY_DEVICE_BASE_INFO> devs;
-    searchDevice(devs, iface, TY_INTERFACE_ETHERNET | TY_INTERFACE_IEEE80211);
-    return std::shared_ptr<DeviceList>(new DeviceList(devs));
+    TYDeinitLib();
 }
 
-bool TYContext::ForceNetDeviceIP(const ForceIPStyle style, const std::string& mac, const std::string& ip, const std::string& mask, const std::string& gateway)
+std::shared_ptr<DeviceList> TYContext::queryDeviceList(const char* iface) const
 {
-    ASSERT_OK( TYUpdateInterfaceList() );
+    std::vector<TY_DEVICE_BASE_INFO> devs;
+    if (searchDevice(devs, iface) == TY_STATUS_OK) {
+        return std::make_shared<DeviceList>(std::move(devs));
+    }
+    return std::make_shared<DeviceList>(std::vector<TY_DEVICE_BASE_INFO>());
+}
+
+std::shared_ptr<DeviceList> TYContext::queryNetDeviceList(const char* iface) const
+{
+    std::vector<TY_DEVICE_BASE_INFO> devs;
+    if (searchDevice(devs, iface, TY_INTERFACE_ETHERNET | TY_INTERFACE_IEEE80211) == TY_STATUS_OK) {
+        return std::make_shared<DeviceList>(std::move(devs));
+    }
+    return std::make_shared<DeviceList>(std::vector<TY_DEVICE_BASE_INFO>());
+}
+
+bool TYContext::ForceNetDeviceIP(ForceIPStyle style, const std::string& mac,
+                                const std::string& ip, const std::string& mask,
+                                const std::string& gateway) const
+{
+    if (TYUpdateInterfaceList() != TY_STATUS_OK) {
+        return false;
+    }
 
     uint32_t n = 0;
-    ASSERT_OK( TYGetInterfaceNumber(&n) );
-    if(n == 0) return false;
-    
-    std::vector<TY_INTERFACE_INFO> ifaces(n);
-    ASSERT_OK( TYGetInterfaceList(&ifaces[0], n, &n) );
-    ASSERT( n == ifaces.size() );
+    if (TYGetInterfaceNumber(&n) != TY_STATUS_OK || n == 0) {
+        return false;
+    }
 
-    bool   open_needed  = false;
-    const char * ip_save      = ip.c_str();
-    const char * netmask_save = mask.c_str();
-    const char * gateway_save = gateway.c_str();
-    switch(style)
-    {
-        case ForceIPStyleDynamic:
-            if(strcmp(ip_save, "0.0.0.0") != 0) {
+    std::vector<TY_INTERFACE_INFO> ifaces(n);
+    if (TYGetInterfaceList(ifaces.data(), n, &n) != TY_STATUS_OK) {
+        return false;
+    }
+
+    const char* ip_save = ip.c_str();
+    const char* netmask_save = mask.c_str();
+    const char* gateway_save = gateway.c_str();
+    bool open_needed = false;
+
+    switch (style) {
+        case ForceIPStyle::Dynamic:
+            if (ip != "0.0.0.0") {
                 open_needed = true;
             }
-            ip_save      = "0.0.0.0";
+            ip_save = "0.0.0.0";
             netmask_save = "0.0.0.0";
             gateway_save = "0.0.0.0";
             break;
-        case ForceIPStyleStatic:
+        case ForceIPStyle::Static:
             open_needed = true;
             break;
-        default:
+        case ForceIPStyle::Force:
             break;
     }
 
     bool result = false;
-    for(uint32_t i = 0; i < n; i++) {
-        if(TYIsNetworkInterface(ifaces[i].type)) {
-            TY_INTERFACE_HANDLE hIface;
-            ASSERT_OK( TYOpenInterface(ifaces[i].id, &hIface) );
-            if (TYForceDeviceIP(hIface, mac.c_str(), ip.c_str(), mask.c_str(), gateway.c_str()) == TY_STATUS_OK) {
-                LOGD("**** Set Temporary IP/Netmask/Gateway ...Done! ****");
+    
+    for (const auto& iface : ifaces) {
+        if (TYIsNetworkInterface(iface.type)) {
+            TY_INTERFACE_HANDLE hIface = nullptr;
+            if (TYOpenInterface(iface.id, &hIface) != TY_STATUS_OK || !hIface) {
+                continue;
+            }
+
+            if (TYForceDeviceIP(hIface, mac.c_str(), ip.c_str(), 
+                               mask.c_str(), gateway.c_str()) == TY_STATUS_OK) {
+                std::cout << "Set Temporary IP/Netmask/Gateway ...Done!" << std::endl;
+                
                 if(open_needed) {
                     TYUpdateDeviceList(hIface);
                     TY_DEV_HANDLE hDev;
@@ -627,9 +442,233 @@ bool TYContext::ForceNetDeviceIP(const ForceIPStyle style, const std::string& ma
                     result = true;
                 }
             }
-            ASSERT_OK( TYCloseInterface(hIface));        
+            
+            TYCloseInterface(hIface);
         }
     }
+    
     return result;
 }
+
+
+TYCamInterface::TYCamInterface()
+{
+    TYContext::getInstance();
+    Reset();
 }
+
+TY_STATUS TYCamInterface::Reset()
+{
+    TY_STATUS status;
+    status = TYUpdateInterfaceList();
+    if(status != TY_STATUS_OK) return status;
+
+    uint32_t n = 0;
+    status = TYGetInterfaceNumber(&n);
+    if(status != TY_STATUS_OK) return status;
+
+    if(n == 0) return TY_STATUS_OK;
+
+    ifaces.resize(n);
+    status = TYGetInterfaceList(&ifaces[0], n, &n);
+    return status;
+}
+
+void TYCamInterface::List(std::vector<std::string>& interfaces) const
+{
+    for(auto& iter : ifaces) {
+        std::cout << iter.id << std::endl;
+        interfaces.push_back(iter.id);
+    }
+}
+
+// FastCamera
+FastCamera::FastCamera()
+{
+}
+
+FastCamera::FastCamera(const char* sn)
+{
+    open(sn);
+}
+
+FastCamera::~FastCamera()
+{
+    close();
+}
+
+TY_STATUS FastCamera::open(const char* sn)
+{
+    std::lock_guard<std::mutex> lock(_dev_lock);
+    
+    const char* inf = mIfaceId.empty() ? nullptr : mIfaceId.c_str();
+    auto devList = TYContext::getInstance().queryDeviceList(inf);
+    
+    if (devList->empty()) {
+        std::cerr << "Device list is empty!" << std::endl;
+        return TY_STATUS_ERROR;
+    }
+
+    device = (sn && strlen(sn) != 0) ? 
+             devList->getDeviceBySN(sn) : devList->getDevice(0);
+             
+    if (!device) {
+        return TY_STATUS_ERROR;
+    }
+
+    return TYGetComponentIDs(device->_handle, &components);
+}
+
+TY_STATUS FastCamera::openByIP(const char* ip)
+{
+    std::lock_guard<std::mutex> lock(_dev_lock);
+    
+    const char* inf = mIfaceId.empty() ? nullptr : mIfaceId.c_str();
+    auto devList = TYContext::getInstance().queryNetDeviceList(inf);
+    
+    if (devList->empty()) {
+        std::cerr << "Network device list is empty!" << std::endl;
+        return TY_STATUS_ERROR;
+    }
+
+    device = (ip && strlen(ip) != 0) ? 
+             devList->getDeviceByIP(ip) : devList->getDevice(0);
+             
+    if (!device) {
+        std::cerr << "Open device failed!" << std::endl;
+        return TY_STATUS_ERROR;
+    }
+
+    return TYGetComponentIDs(device->_handle, &components);
+}
+
+TY_STATUS FastCamera::setIfaceId(const char* inf)
+{
+    mIfaceId = inf ? inf : "";
+    return TY_STATUS_OK;
+}
+
+void FastCamera::close()
+{
+    std::lock_guard<std::mutex> lock(_dev_lock);
+    if (isRunning) {
+        doStop();
+    }
+    device.reset();
+}
+
+std::shared_ptr<TYFrame> FastCamera::fetchFrames(uint32_t timeout_ms)
+{
+    TY_FRAME_DATA tyframe;
+    TY_STATUS status = TYFetchFrame(handle(), &tyframe, timeout_ms);
+    
+    if (status != TY_STATUS_OK) {
+        std::cerr << "Frame fetch failed: " << TY_ERROR(status) << std::endl;
+        return nullptr;
+    }
+    
+    auto frame = std::make_shared<TYFrame>(tyframe);
+    TYEnqueueBuffer(handle(), tyframe.userBuffer, tyframe.bufferSize);
+    return frame;
+}
+
+TY_COMPONENT_ID FastCamera::StreamIdx2CompID(StreamIdx idx)
+{
+    switch (idx) {
+        case StreamIdx::stream_depth:     return TY_COMPONENT_DEPTH_CAM;
+        case StreamIdx::stream_color:     return TY_COMPONENT_RGB_CAM;
+        case StreamIdx::stream_ir_left:   return TY_COMPONENT_IR_CAM_LEFT;
+        case StreamIdx::stream_ir_right:  return TY_COMPONENT_IR_CAM_RIGHT;
+        default:                          return 0;
+    }
+}
+
+bool FastCamera::has_stream(StreamIdx idx) const
+{
+    return components & StreamIdx2CompID(idx);
+}
+
+TY_STATUS FastCamera::stream_enable(StreamIdx idx)
+{
+    std::lock_guard<std::mutex> lock(_dev_lock);
+    return TYEnableComponents(handle(), StreamIdx2CompID(idx));
+}
+
+TY_STATUS FastCamera::stream_disable(StreamIdx idx)
+{
+    std::lock_guard<std::mutex> lock(_dev_lock);
+    return TYDisableComponents(handle(), StreamIdx2CompID(idx));
+}
+
+TY_STATUS FastCamera::start()
+{
+    std::lock_guard<std::mutex> lock(_dev_lock);
+    
+    if (isRunning) {
+        std::cerr << "Device is busy!" << std::endl;
+        return TY_STATUS_BUSY;
+    }
+
+    uint32_t stream_buffer_size = 0;
+    TY_STATUS status = TYGetFrameBufferSize(handle(), &stream_buffer_size);
+    if (status != TY_STATUS_OK) {
+        std::cerr << "Get frame buffer size failed: " << TY_ERROR(status) << std::endl;
+        return status;
+    }
+    
+    if (stream_buffer_size == 0) {
+        std::cerr << "Frame buffer size is 0" << std::endl;
+        return TY_STATUS_DEVICE_ERROR;
+    }
+
+    for (auto& buffer : stream_buffer) {
+        buffer.resize(stream_buffer_size);
+        TYEnqueueBuffer(handle(), buffer.data(), stream_buffer_size);
+    }
+
+    status = TYStartCapture(handle());
+    if (status != TY_STATUS_OK) {
+        std::cerr << "Start capture failed: " << TY_ERROR(status) << std::endl;
+        return status;
+    }
+
+    isRunning = true;
+    return TY_STATUS_OK;
+}
+
+TY_STATUS FastCamera::stop()
+{
+    std::lock_guard<std::mutex> lock(_dev_lock);
+    return doStop();
+}
+
+TY_STATUS FastCamera::doStop()
+{
+    if (!isRunning) {
+        return TY_STATUS_IDLE;
+    }
+    
+    isRunning = false;
+    
+    TY_STATUS status = TYStopCapture(handle());
+    if (status != TY_STATUS_OK) {
+        std::cerr << "Stop capture failed: " << TY_ERROR(status) << std::endl;
+    }
+    
+    TYClearBufferQueue(handle());
+    
+    for (auto& buffer : stream_buffer) {
+        buffer.clear();
+        buffer.shrink_to_fit();
+    }
+    
+    return status;
+}
+
+std::shared_ptr<TYFrame> FastCamera::tryGetFrames(uint32_t timeout_ms)
+{
+    std::lock_guard<std::mutex> lock(_dev_lock);
+    return fetchFrames(timeout_ms);
+}
+
+} // namespace percipio_layer

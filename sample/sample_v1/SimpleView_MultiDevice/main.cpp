@@ -9,36 +9,31 @@ struct CamInfo
     std::vector<char>   fb[2];
     TY_FRAME_DATA       frame;
     int                 idx;
-    DepthRender         render;
-
+    
     CamInfo() : hDev(0), idx(0) {}
 };
-
 
 void frameHandler(TY_FRAME_DATA* frame, void* userdata)
 {
     CamInfo* pData = (CamInfo*) userdata;
+    for (int i = 0; i < frame->validCount; i++){
+        if (frame->image[i].status != TY_STATUS_OK) continue;
 
-    cv::Mat depth, irl, irr, color;
-    parseFrame(*frame, &depth, &irl, &irr, &color);
+        uint32_t destSize;
+        auto win = ty_comp_window_name(frame->image[i].componentID);
+        TYImageInfo image_info = ty_image_info(frame->image[i]);
+        TYDecodeError err = TYGetDecodeBufferSize(&image_info, &destSize, TY_OUTPUT_FORMAT_AUTO);
 
-    char win[64];
-    if(!depth.empty()){
-        cv::Mat colorDepth = pData->render.Compute(depth);
-        sprintf(win, "depth-%s", pData->sn);
-        cv::imshow(win, colorDepth);
-    }
-    if(!irl.empty()){
-        sprintf(win, "LeftIR-%s", pData->sn);
-        cv::imshow(win, irl);
-    }
-    if(!irr.empty()){
-        sprintf(win, "RightIR-%s", pData->sn);
-        cv::imshow(win, irr);
-    }
-    if(!color.empty()){
-        sprintf(win, "color-%s", pData->sn);
-        cv::imshow(win, color);
+        char winName[64];
+        sprintf(winName, "%s-%s", win.c_str(), pData->sn);
+        if(err == TY_DECODE_SUCCESS) {
+            TYDecodeResult retInfo;
+            std::vector<uint8_t> image_data(destSize);
+            ASSERT_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&image_data[0], destSize, &retInfo));
+            TYDisplayImage(winName, retInfo.width, retInfo.height, retInfo.format, &image_data[0]);
+        } else {
+            TYDisplayImage(winName, frame->image[i].width, frame->image[i].height, frame->image[i].pixelFormat, frame->image[i].buffer);
+        }
     }
 
     pData->idx++;
@@ -227,7 +222,7 @@ int main(int argc, char* argv[])
 
             frameHandler(&cams[cam_index].frame, &cams[cam_index]);
 
-            int key = cv::waitKey(1);
+            int key = TYWaitKeyEvents();
             switch(key & 0xff) {
             case 0xff:
                 break;

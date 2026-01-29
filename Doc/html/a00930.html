@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TYEnumEntry Struct Reference</title>
+<title>TYCamport3: TY_CAMERA_STATISTICS Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -86,40 +86,40 @@ $(document).ready(function(){initNavTree('a00930.html',''); initResizable(); });
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00927.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TYEnumEntry Struct Reference</div>  </div>
+<div class="title">TY_CAMERA_STATISTICS Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:af3e3af3c15b1da5e5a7fe940d4fef36d"><td class="memItemLeft" align="right" valign="top"><a id="af3e3af3c15b1da5e5a7fe940d4fef36d"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
-<tr class="separator:af3e3af3c15b1da5e5a7fe940d4fef36d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14a95f8adbe4c7a113ccfd3936357ca2"><td class="memItemLeft" align="right" valign="top"><a id="a14a95f8adbe4c7a113ccfd3936357ca2"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> [64]</td></tr>
-<tr class="separator:a14a95f8adbe4c7a113ccfd3936357ca2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95b420b4f9155d074f716d8a129eda64"><td class="memItemLeft" align="right" valign="top"><a id="a95b420b4f9155d074f716d8a129eda64"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>tooltip</b> [512]</td></tr>
-<tr class="separator:a95b420b4f9155d074f716d8a129eda64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab371299520f45da334bdb6db00c55429"><td class="memItemLeft" align="right" valign="top"><a id="ab371299520f45da334bdb6db00c55429"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>description</b> [512]</td></tr>
-<tr class="separator:ab371299520f45da334bdb6db00c55429"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeee998dd30dacdecb690e499dc7c89e7"><td class="memItemLeft" align="right" valign="top"><a id="aeee998dd30dacdecb690e499dc7c89e7"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>displayName</b> [512]</td></tr>
-<tr class="separator:aeee998dd30dacdecb690e499dc7c89e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3099957df1c4a18082c27c558341a31"><td class="memItemLeft" align="right" valign="top"><a id="ab3099957df1c4a18082c27c558341a31"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>packetReceived</b></td></tr>
+<tr class="separator:ab3099957df1c4a18082c27c558341a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a902fba1b575115e64aa839108d002e8e"><td class="memItemLeft" align="right" valign="top"><a id="a902fba1b575115e64aa839108d002e8e"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>packetLost</b></td></tr>
+<tr class="separator:a902fba1b575115e64aa839108d002e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ff234622751a487a2f85cd56bc60aa3"><td class="memItemLeft" align="right" valign="top"><a id="a7ff234622751a487a2f85cd56bc60aa3"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>imageOutputed</b></td></tr>
+<tr class="separator:a7ff234622751a487a2f85cd56bc60aa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d598d1da279e2172adca52c5db566b5"><td class="memItemLeft" align="right" valign="top"><a id="a9d598d1da279e2172adca52c5db566b5"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>imageDropped</b></td></tr>
+<tr class="separator:a9d598d1da279e2172adca52c5db566b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd3df8f7bd491b68b5d0416680a114e1"><td class="memItemLeft" align="right" valign="top"><a id="afd3df8f7bd491b68b5d0416680a114e1"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rsvd</b> [1024]</td></tr>
+<tr class="separator:afd3df8f7bd491b68b5d0416680a114e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00479_source.html#l00016">16</a> of file <a class="el" href="a00479_source.html">TYParameter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00485_source.html#l01112">1112</a> of file <a class="el" href="a00485_source.html">TYDefs.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00479_source.html">TYParameter.h</a></li>
+<li><a class="el" href="a00485_source.html">TYDefs.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00930.html">TYEnumEntry</a></li>
+    <li class="navelem"><a class="el" href="a00930.html">TY_CAMERA_STATISTICS</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

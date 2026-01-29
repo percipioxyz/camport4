@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TY_TRIGGER_PARAM Struct Reference</title>
+<title>TYCamport3: ParamDetail Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -86,34 +86,65 @@ $(document).ready(function(){initNavTree('a00786.html',''); initResizable(); });
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00783.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TY_TRIGGER_PARAM Struct Reference</div>  </div>
+<div class="title">ParamDetail Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a5767724c36c24fc57325595d4f4ab612"><td class="memItemLeft" align="right" valign="top"><a id="a5767724c36c24fc57325595d4f4ab612"></a>
-TY_TRIGGER_MODE&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
-<tr class="separator:a5767724c36c24fc57325595d4f4ab612"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68f99a07765d80a8b7e3a077f48f5588"><td class="memItemLeft" align="right" valign="top"><a id="a68f99a07765d80a8b7e3a077f48f5588"></a>
-int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>fps</b></td></tr>
-<tr class="separator:a68f99a07765d80a8b7e3a077f48f5588"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a963c0476ae7c6f8b45d8674342b6f1c7"><td class="memItemLeft" align="right" valign="top"><a id="a963c0476ae7c6f8b45d8674342b6f1c7"></a>
-int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rsvd</b></td></tr>
-<tr class="separator:a963c0476ae7c6f8b45d8674342b6f1c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa03b8cfddfad244ab5206d56f62dbce9"><td class="memItemLeft" align="right" valign="top"><a id="aa03b8cfddfad244ab5206d56f62dbce9"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> [64]</td></tr>
+<tr class="separator:aa03b8cfddfad244ab5206d56f62dbce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13f3e25942ede09bb111ffff1c65d7a9"><td class="memItemLeft" align="right" valign="top"><a id="a13f3e25942ede09bb111ffff1c65d7a9"></a>
+AlgParamType&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="separator:a13f3e25942ede09bb111ffff1c65d7a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5486efce025ed62e19163ab330a2ac04"><td class="memItemLeft" align="right" valign="top"><a id="a5486efce025ed62e19163ab330a2ac04"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>description</b> [128]</td></tr>
+<tr class="separator:a5486efce025ed62e19163ab330a2ac04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca150d1c7bb31597610b0ca87c7a0266"><td class="memItemLeft" ><a id="aca150d1c7bb31597610b0ca87c7a0266"></a>
+union {</td></tr>
+<tr class="memitem:a815068f802969133d25db93e388d49ac"><td class="memItemLeft" >
+&#160;&#160;&#160;bool&#160;&#160;&#160;<b>bool_value</b></td></tr>
+<tr class="separator:a815068f802969133d25db93e388d49ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cfbfdde35dc3bbb84f09951416cc92a"><td class="memItemLeft" >
+&#160;&#160;&#160;int32_t&#160;&#160;&#160;<b>int_value</b></td></tr>
+<tr class="separator:a0cfbfdde35dc3bbb84f09951416cc92a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1567c4efea68132e56203dfd604d64ec"><td class="memItemLeft" >
+&#160;&#160;&#160;float&#160;&#160;&#160;<b>float_value</b></td></tr>
+<tr class="separator:a1567c4efea68132e56203dfd604d64ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca150d1c7bb31597610b0ca87c7a0266"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:aca150d1c7bb31597610b0ca87c7a0266"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a692b06c705de7ef5ca6ea83fa64fd30a"><td class="memItemLeft" align="right" valign="top"><a id="a692b06c705de7ef5ca6ea83fa64fd30a"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>min_int</b></td></tr>
+<tr class="separator:a692b06c705de7ef5ca6ea83fa64fd30a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f1458f435ad2d652ec5ee5577213efb"><td class="memItemLeft" align="right" valign="top"><a id="a4f1458f435ad2d652ec5ee5577213efb"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>max_int</b></td></tr>
+<tr class="separator:a4f1458f435ad2d652ec5ee5577213efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aff747aedefcc2d9cf8f469af7e05a8"><td class="memItemLeft" align="right" valign="top"><a id="a1aff747aedefcc2d9cf8f469af7e05a8"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>step_int</b></td></tr>
+<tr class="separator:a1aff747aedefcc2d9cf8f469af7e05a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a141da6fb966b34f6091fff8949e2b9cc"><td class="memItemLeft" align="right" valign="top"><a id="a141da6fb966b34f6091fff8949e2b9cc"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>min_float</b></td></tr>
+<tr class="separator:a141da6fb966b34f6091fff8949e2b9cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05d63a5a1db6849ac3482d0115240303"><td class="memItemLeft" align="right" valign="top"><a id="a05d63a5a1db6849ac3482d0115240303"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>max_float</b></td></tr>
+<tr class="separator:a05d63a5a1db6849ac3482d0115240303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4547a71023c254908a607e4ce9a9fa77"><td class="memItemLeft" align="right" valign="top"><a id="a4547a71023c254908a607e4ce9a9fa77"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>step_float</b></td></tr>
+<tr class="separator:a4547a71023c254908a607e4ce9a9fa77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00470_source.html#l00985">985</a> of file <a class="el" href="a00470_source.html">TYDefs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00479_source.html#l00019">19</a> of file <a class="el" href="a00479_source.html">TYCAPL.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00470_source.html">TYDefs.h</a></li>
+<li><a class="el" href="a00479_source.html">TYCAPL.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00786.html">TY_TRIGGER_PARAM</a></li>
+    <li class="navelem"><a class="el" href="a00786.html">ParamDetail</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

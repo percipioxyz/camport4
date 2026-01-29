@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TY_LASER_PATTERN_PARAM Struct Reference</title>
+<title>TYCamport3: TY_FLOAT_RANGE Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -86,58 +86,45 @@ $(document).ready(function(){initNavTree('a00838.html',''); initResizable(); });
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00835.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TY_LASER_PATTERN_PARAM Struct Reference</div>  </div>
+<div class="title">TY_FLOAT_RANGE Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Collaboration diagram for TY_LASER_PATTERN_PARAM:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00836.png" border="0" usemap="#_t_y___l_a_s_e_r___p_a_t_t_e_r_n___p_a_r_a_m_coll__map" alt="Collaboration graph"/></div>
-<map name="_t_y___l_a_s_e_r___p_a_t_t_e_r_n___p_a_r_a_m_coll__map" id="_t_y___l_a_s_e_r___p_a_t_t_e_r_n___p_a_r_a_m_coll__map">
-<area shape="rect" title=" " alt="" coords="159,95,361,121"/>
-<area shape="rect" href="a00830.html" title=" " alt="" coords="5,5,160,32"/>
-<area shape="rect" href="a00826.html" title=" " alt="" coords="184,5,336,32"/>
-<area shape="rect" href="a00834.html" title=" " alt="" coords="361,5,506,32"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+
+<p>float range data structure  
+ <a href="a00838.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="a00485_source.html">TYDefs.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:af086631a30c2c26605b014be45a1d0a5"><td class="memItemLeft" align="right" valign="top"><a id="af086631a30c2c26605b014be45a1d0a5"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>img_index</b></td></tr>
-<tr class="separator:af086631a30c2c26605b014be45a1d0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17f6b9784f39ee5271d38382cc0f12c0"><td class="memItemLeft" align="right" valign="top"><a id="a17f6b9784f39ee5271d38382cc0f12c0"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
-<tr class="separator:a17f6b9784f39ee5271d38382cc0f12c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23547f7b2eb3920ee79ece19cc02a83c"><td class="memItemLeft" ><a id="a23547f7b2eb3920ee79ece19cc02a83c"></a>
-union {</td></tr>
-<tr class="memitem:a199db2d4427d8ca6a1bbba2afe2c18b6"><td class="memItemLeft" >
-&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<b>payload</b> [512+16]</td></tr>
-<tr class="separator:a199db2d4427d8ca6a1bbba2afe2c18b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adce0a3a6c2e0d7c599f560ed058f2790"><td class="memItemLeft" >
-&#160;&#160;&#160;<a class="el" href="a00826.html">pattern_sine_param</a>&#160;&#160;&#160;<b>sine_param</b></td></tr>
-<tr class="separator:adce0a3a6c2e0d7c599f560ed058f2790"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e5619902b592285767036ffab106c18"><td class="memItemLeft" >
-&#160;&#160;&#160;<a class="el" href="a00830.html">pattern_gray_param</a>&#160;&#160;&#160;<b>gray_param</b></td></tr>
-<tr class="separator:a4e5619902b592285767036ffab106c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fbab4929649a6f70ef8ecdf0cc44c32"><td class="memItemLeft" >
-&#160;&#160;&#160;<a class="el" href="a00834.html">pattern_bin_param</a>&#160;&#160;&#160;<b>bin</b></td></tr>
-<tr class="separator:a6fbab4929649a6f70ef8ecdf0cc44c32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23547f7b2eb3920ee79ece19cc02a83c"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a23547f7b2eb3920ee79ece19cc02a83c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac33f9d82448c101cb871021e2ee4b735"><td class="memItemLeft" align="right" valign="top"><a id="ac33f9d82448c101cb871021e2ee4b735"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>min</b></td></tr>
+<tr class="separator:ac33f9d82448c101cb871021e2ee4b735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e7f4608646b7d6221f025b52fe06c98"><td class="memItemLeft" align="right" valign="top"><a id="a2e7f4608646b7d6221f025b52fe06c98"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>max</b></td></tr>
+<tr class="separator:a2e7f4608646b7d6221f025b52fe06c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2918cd8b8f1c033897d885be93b75f8e"><td class="memItemLeft" align="right" valign="top"><a id="a2918cd8b8f1c033897d885be93b75f8e"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00838.html#a2918cd8b8f1c033897d885be93b75f8e">inc</a></td></tr>
+<tr class="memdesc:a2918cd8b8f1c033897d885be93b75f8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">increaing step <br /></td></tr>
+<tr class="separator:a2918cd8b8f1c033897d885be93b75f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d0cc184d80be47b9396b859485757bb"><td class="memItemLeft" align="right" valign="top"><a id="a5d0cc184d80be47b9396b859485757bb"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>reserved</b> [1]</td></tr>
+<tr class="separator:a5d0cc184d80be47b9396b859485757bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00470_source.html#l01087">1087</a> of file <a class="el" href="a00470_source.html">TYDefs.h</a>.</p>
+<div class="textblock"><p>float range data structure </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00476.html#a97a6eda0c94a5b8baf5c1d247db7143c" title="Get value range of float feature.">TYGetFloatRange</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00485_source.html#l00896">896</a> of file <a class="el" href="a00485_source.html">TYDefs.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00470_source.html">TYDefs.h</a></li>
+<li><a class="el" href="a00485_source.html">TYDefs.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00838.html">TY_LASER_PATTERN_PARAM</a></li>
+    <li class="navelem"><a class="el" href="a00838.html">TY_FLOAT_RANGE</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

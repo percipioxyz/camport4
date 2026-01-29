@@ -3,6 +3,8 @@ if(${CMAKE_VERSION} VERSION_LESS "3.5")
 else() # to avoid errors reported by CMake 4.0 and above versions
     cmake_minimum_required(VERSION 3.5)
 endif()
+#used in common/imgdisplay
+option(BUILD_SAMPLE_WITH_GUI "Build sample with image GUI library" ON)
 if (NOT TARGET tycam)
     find_package(TYCam REQUIRED)
     include_directories(${TYCam_INCLUDE_DIRS})
@@ -28,27 +30,9 @@ if (NOT TARGET tycam)
         set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:libcmt.lib")
         set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /NODEFAULTLIB:libcmtd.lib")
     endif()
-    #only build samples 
-    option (OpenCV_STATIC OFF)
 endif()
 
 if (MSVC)
-    option(OpenCV_STATIC "Using static opencv" OFF)
-    ## set runtime library to static
-    if (OpenCV_STATIC)
-        message("using static opencv")
-        set(CompilerFlags
-            CMAKE_CXX_FLAGS
-            CMAKE_CXX_FLAGS_DEBUG
-            CMAKE_CXX_FLAGS_RELEASE
-            CMAKE_C_FLAGS
-            CMAKE_C_FLAGS_DEBUG
-            CMAKE_C_FLAGS_RELEASE
-            )
-        foreach(CompilerFlag ${CompilerFlags})
-            string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
-        endforeach()
-    endif()
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
@@ -57,17 +41,15 @@ option(BUILD_SAMPLE_V1 "Enable samle v1 build " ON)
 option(BUILD_SAMPLE_V2 "Enable samle v2 build " ON)
 
 option(BUILD_SAMPLE_GENICAM_SFNC "Enable samle genicam SFNC build " ON)
+option (OpenCV_STATIC OFF)
 
 #convert samples got from param to list
 if (DEFINED SAMPLES)
   string(REPLACE " " ";" SAMPLES ${SAMPLES})
 endif()
 
-
-
 if (DEFINED BUILD_SAMPLES AND NOT BUILD_SAMPLES)
     set(BUILD_SAMPLE_V1 OFF)
-    #genIcam sample depends on opencv now, if not build samples, GenIcam off samples too
     set(BUILD_SAMPLE_GENICAM_SFNC OFF)
 endif()
 
@@ -79,18 +61,50 @@ if (DEFINED BUILD_GENICAM_SFNC_SAMPLE AND NOT BUILD_GENICAM_SFNC_SAMPLE)
     set(BUILD_SAMPLE_GENICAM_SFNC OFF)
 endif()
 
+if(BUILD_SAMPLE_WITH_GUI)
+    # ========================================
+    # === OpenCV First
+    # ========================================
+    find_package(OpenCV)
+    if (OpenCV_FOUND)
+        include_directories(${OpenCV_INCLUDE_DIRS})
+        include_directories(${OpenCV2_INCLUDE_DIRS})
+        link_directories(${OpenCV_LIB_DIR})
+        set(COMMON_GUI_LIBS ${OpenCV_LIBS})
+        if (MSVC)
+            if (OpenCV_STATIC)
+                message("using static opencv")
+                set(CompilerFlags
+                    CMAKE_CXX_FLAGS
+                    CMAKE_CXX_FLAGS_DEBUG
+                    CMAKE_CXX_FLAGS_RELEASE
+                    CMAKE_C_FLAGS
+                    CMAKE_C_FLAGS_DEBUG
+                    CMAKE_C_FLAGS_RELEASE
+                    )
+                foreach(CompilerFlag ${CompilerFlags})
+                    string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+                endforeach()
+            endif()
+        endif()
+     endif()
+endif()
 
 set (COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/common)
-set (COMMON_INC ${COMMON_DIR})
+add_subdirectory(common/imgdisplay)
+message(STATUS  "COMMON_GUI_LIBS ${COMMON_GUI_LIBS}")
+message(STATUS "COMMON_GUI_SRC ${COMMON_GUI_SRC}")
+set (COMMON_INC ${COMMON_DIR} ${COMMON_GUI_INC})
 set (COMMON_SOURCES
-    ${COMMON_DIR}/MatViewer.cpp
     ${COMMON_DIR}/TYThread.cpp
     ${COMMON_DIR}/crc32.cpp
     ${COMMON_DIR}/json11.cpp
     ${COMMON_DIR}/ParametersParse.cpp
     ${COMMON_DIR}/huffman.cpp
-    ${COMMON_DIR}/ImageSpeckleFilter.cpp
     ${COMMON_DIR}/FileAccessControl.cpp)
+
+list(APPEND COMMON_SOURCES ${COMMON_GUI_SRC})
+message(STATUS "COMMON_SOURCES ${COMMON_SOURCES}")
 
 if (MSVC)#for windows
     set (LIB_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../lib/win/hostapp/)

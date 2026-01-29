@@ -77,7 +77,6 @@ int main(int argc, char* argv[])
 
     //try to enable depth map
     LOGD("Configure components, open depth cam");
-    DepthViewer depthViewer("Depth");
     if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
         TY_IMAGE_MODE image_mode;
         ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
@@ -89,7 +88,6 @@ int main(int argc, char* argv[])
         //the acutal depth (mm)= PixelValue * ScaleUnit 
         float scale_unit = 1.;
         TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
-        depthViewer.depth_scale_unit = scale_unit;
     }
 
     LOGD("=== Prepare image buffer");

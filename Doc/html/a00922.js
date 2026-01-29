@@ -1,5 +1,9 @@
 var a00922 =
 [
-    [ "kernel_size", "a00922.html#a590be1518406dd2ef992032544eff068", null ],
-    [ "max_internal_hole", "a00922.html#af41d932512d7068cfc0b690768b9a6d5", null ]
+    [ "bin", "a00922.html#afe0387b340dac878ceb8e595451d928f", null ],
+    [ "gray_param", "a00922.html#aab2823301a43f956f77545308f3bd1f8", null ],
+    [ "img_index", "a00922.html#af086631a30c2c26605b014be45a1d0a5", null ],
+    [ "payload", "a00922.html#a898a83f11d45cacc64f8a7d712559357", null ],
+    [ "sine_param", "a00922.html#ae1a8b81e40cdc668c8cb1807f8bbf65a", null ],
+    [ "type", "a00922.html#a17f6b9784f39ee5271d38382cc0f12c0", null ]
 ];

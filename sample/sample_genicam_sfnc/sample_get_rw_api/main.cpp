@@ -54,6 +54,7 @@ int main(int argc, char* argv[])
                 }
     } else {
                 TY_DEV_HANDLE handle;
+                ASSERT_OK( TYOpenInterface(selectedDev.iface.id, &hIface) );
                 int32_t ret = TYOpenDevice(hIface, selectedDev.id, &handle);
                 if (ret == 0) {
                     TYGetDeviceInfo(handle, &selectedDev);
@@ -62,14 +63,19 @@ int main(int argc, char* argv[])
                 } else {
                     LOGD("    - device %s(open failed, error: %d)", selectedDev.id, ret);
                 }
+                TYCloseInterface(hIface);
                 if (strlen(selectedDev.userDefinedName) != 0) {
                     LOGD("          vendor     : %s", selectedDev.userDefinedName);
                 } else {
                     LOGD("          vendor     : %s", selectedDev.vendorName);
                 }
                 LOGD("          model      : %s", selectedDev.modelName);
-                use_old_apis();
 
+                if (strcmp(selectedDev.usbInfo.tlversion, "USB3Vision_1_2") == 0) {
+                    use_new_apis();
+                } else {
+                    use_old_apis();
+                }
     }
 
     ASSERT_OK( TYDeinitLib() );

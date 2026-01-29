@@ -1,7 +1,5 @@
 var a00722 =
 [
-    [ "major", "a00722.html#a95147ff001af1998d50cc00e584fa16d", null ],
-    [ "minor", "a00722.html#a1b7a2221bf6a2054d389d766c8926371", null ],
-    [ "patch", "a00722.html#ad1cf7144e91ae64b4e984dd83571a862", null ],
-    [ "reserved", "a00722.html#ab53072b461dab3cbe2f0c17ec14d1024", null ]
+    [ "v0", "a00722.html#ac714f2fa502b3e46c59a259b3aa8b1f8", null ],
+    [ "v1", "a00722.html#a1e290d3fba013223099f7a56a964b949", null ]
 ];

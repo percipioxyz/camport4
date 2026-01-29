@@ -1,8 +1,6 @@
 var a00894 =
 [
-    [ "bufferSize", "a00894.html#ac8ca7f4c699ee7fa6a3ee8ed65e5236a", null ],
-    [ "image", "a00894.html#adaef6497e00abdb25f67c241acc789a0", null ],
-    [ "reserved", "a00894.html#a69f7bd4ad45a0700f4e53159230e0cc9", null ],
-    [ "userBuffer", "a00894.html#a91bf938ad9164a5f56a5798f5081295f", null ],
-    [ "validCount", "a00894.html#a8e3a508ddd5eec680fc5c114dd297fe3", null ]
+    [ "period_us", "a00894.html#a4f27e7f14fcdd220c1e0f6c00809c2b2", null ],
+    [ "start_time_us", "a00894.html#a2ed27b7603c8040f2dd1f4df341c3d1f", null ],
+    [ "trigger_count", "a00894.html#a4025d2625b859be61306e703eb72fce4", null ]
 ];

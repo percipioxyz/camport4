@@ -1,5 +1,5 @@
 var a00510 =
 [
-    [ "v0", "a00510.html#ab53cc1d6b91d8943291d186655870c99", null ],
-    [ "v1", "a00510.html#ab097ff424a3491b0adf68923a83abe0d", null ]
+    [ "quantval", "a00510.html#ab5b5150e73282a62ca7dc0f7e2fac944", null ],
+    [ "sent_table", "a00510.html#a218b782157eccfbd22023ae6bb4cc7fa", null ]
 ];

@@ -1,19 +1,10 @@
 var a00558 =
 [
-    [ "v0", "a00558.html#a32c1317003a61d8d51b512e33b1ccd8a", null ],
-    [ "v1", "a00558.html#a7fd9840ab0baeb569f634e111bd6bc47", null ],
-    [ "v10", "a00558.html#a2b984a3a002a119fdf9196b430bb839e", null ],
-    [ "v11", "a00558.html#aaee2048648180a97829576a75a62c969", null ],
-    [ "v12", "a00558.html#a9a9e5138c7f296af5f8761b1a902542b", null ],
-    [ "v13", "a00558.html#ae807a0fdbfc7326143dc81aa3c17e0b2", null ],
-    [ "v14", "a00558.html#a5bed986197bebf4bdd8eddd7a307552d", null ],
-    [ "v15", "a00558.html#a8e68f90bdf59c845102338fadd7b3a24", null ],
-    [ "v2", "a00558.html#ab6fee49c2a7f3d05a0710d370c94262b", null ],
-    [ "v3", "a00558.html#ac58279b78b62a6405c3fcd03e996eab2", null ],
-    [ "v4", "a00558.html#ad1d5731bd4e478c8ea7e9be002d7e4c2", null ],
-    [ "v5", "a00558.html#ad81c854c3df432c0cf5bd59e0adad6d4", null ],
-    [ "v6", "a00558.html#af91ea22ed839dc626980ea38da7a7dfd", null ],
-    [ "v7", "a00558.html#aadc2fe9572c65aed41551428dad529a2", null ],
-    [ "v8", "a00558.html#a90faed79ee688c081ff41d1093d8a8e4", null ],
-    [ "v9", "a00558.html#a423df1b32b8e5eb09265c2426e7bf35f", null ]
+    [ "bytes_in_buffer", "a00558.html#a8ecb72557c1c9666d77fffea074282a4", null ],
+    [ "fill_input_buffer", "a00558.html#a859e3c7466e3756d8ad46259443ce94d", null ],
+    [ "init_source", "a00558.html#a6bc2fa084b056a2187b4ef83371eb27c", null ],
+    [ "next_input_byte", "a00558.html#aad884e7f4ba7496ab0f56c942c7585c1", null ],
+    [ "resync_to_restart", "a00558.html#aad6c53cd531bedebd8f4a4617944affa", null ],
+    [ "skip_input_data", "a00558.html#a50932fc835dea9941ebe825ef08f3e1d", null ],
+    [ "term_source", "a00558.html#aa1a163d908533a500d1b577b379309ad", null ]
 ];

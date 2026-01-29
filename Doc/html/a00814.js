@@ -1,7 +1,7 @@
 var a00814 =
 [
-    [ "h", "a00814.html#a936708e6ffb152628d8269cb8ef17862", null ],
-    [ "w", "a00814.html#a28ff34b7b4ac617379f614bd12040be5", null ],
-    [ "x", "a00814.html#ab458b9efaff3f1ee28728ee4845a518f", null ],
-    [ "y", "a00814.html#a06ab60ccb6a66df98bd3012907dfe192", null ]
+    [ "addr", "a00814.html#a24e094e5662fecf24b90aa9e73d65c46", null ],
+    [ "bus", "a00814.html#a9f20755deff9158fc10e7f8d24e8db1f", null ],
+    [ "reserved", "a00814.html#a6d392002a49e53a81503902612e3d508", null ],
+    [ "tlversion", "a00814.html#a691d3593968d5ceae7fadd2835e81e13", null ]
 ];

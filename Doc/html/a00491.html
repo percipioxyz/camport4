@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: Member List</title>
+<title>TYCamport3: TYImageProc.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('a00494.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('a00491.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -82,20 +82,689 @@ $(document).ready(function(){initNavTree('a00494.html',''); initResizable(); });
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">nsimd_aarch64_vf16 Member List</div>  </div>
+<div class="title">TYImageProc.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="a00494.html">nsimd_aarch64_vf16</a>, including all inherited members.</p>
-<table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>v0</b> (defined in <a class="el" href="a00494.html">nsimd_aarch64_vf16</a>)</td><td class="entry"><a class="el" href="a00494.html">nsimd_aarch64_vf16</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>v1</b> (defined in <a class="el" href="a00494.html">nsimd_aarch64_vf16</a>)</td><td class="entry"><a class="el" href="a00494.html">nsimd_aarch64_vf16</a></td><td class="entry"></td></tr>
-</table></div><!-- contents -->
+<p>Image post-process API.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="a00476_source.html">TYApi.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for TYImageProc.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00492.png" border="0" usemap="#_t_y_image_proc_8h" alt=""/></div>
+<map name="_t_y_image_proc_8h" id="_t_y_image_proc_8h">
+<area shape="rect" title="Image post&#45;process API." alt="" coords="127,5,246,32"/>
+<area shape="rect" href="a00476.html" title="TYApi.h includes camera control and data receiving interface, which supports configuration for image ..." alt="" coords="151,80,222,107"/>
+<area shape="rect" href="a00485.html" title="TYDefs.h includes camera control and data receiving data definitions which supports configuration for..." alt="" coords="147,155,227,181"/>
+<area shape="rect" title=" " alt="" coords="5,229,80,256"/>
+<area shape="rect" title=" " alt="" coords="105,229,175,256"/>
+<area shape="rect" title=" " alt="" coords="199,229,270,256"/>
+<area shape="rect" href="a00497_source.html" title=" " alt="" coords="294,229,365,256"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00493.png" border="0" usemap="#_t_y_image_proc_8hdep" alt=""/></div>
+<map name="_t_y_image_proc_8hdep" id="_t_y_image_proc_8hdep">
+<area shape="rect" title="Image post&#45;process API." alt="" coords="5,5,124,32"/>
+<area shape="rect" href="a00479_source.html" title=" " alt="" coords="23,80,106,107"/>
+</map>
+</div>
+</div>
+<p><a href="a00491_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01002.html">TYImageInfo</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01006.html">TYDecodeResult</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01010.html">DepthSpeckleFilterParameters</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01014.html">DepthInpainterParameters</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01018.html">DepthEnhenceParameters</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a159a7e8f746e5f58e8aa6ab794ab468d"><td class="memItemLeft" align="right" valign="top"><a id="a159a7e8f746e5f58e8aa6ab794ab468d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_DECODE_API</b>&#160;&#160;&#160;TY_EXTC TY_EXPORT TYDecodeError TY_STDC</td></tr>
+<tr class="separator:a159a7e8f746e5f58e8aa6ab794ab468d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8c400e207ceaa196d72c4473ea83563"><td class="memItemLeft" align="right" valign="top"><a id="ae8c400e207ceaa196d72c4473ea83563"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DepthSpeckleFilterParameters_Initializer</b>&#160;&#160;&#160;{150, 64, 20}</td></tr>
+<tr class="separator:ae8c400e207ceaa196d72c4473ea83563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1af09ebf06186963f3832468a6b17c88"><td class="memItemLeft" align="right" valign="top"><a id="a1af09ebf06186963f3832468a6b17c88"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DepthInpainterParameters_Initializer</b>&#160;&#160;&#160;{5, 50}</td></tr>
+<tr class="separator:a1af09ebf06186963f3832468a6b17c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76fde32b9f3093e7ba194683b7121bd6"><td class="memItemLeft" align="right" valign="top"><a id="a76fde32b9f3093e7ba194683b7121bd6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DepthEnhenceParameters_Initializer</b>&#160;&#160;&#160;{10, 20, 10, 0.1f}</td></tr>
+<tr class="separator:a76fde32b9f3093e7ba194683b7121bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a7c42989071e1f4c693652bcc0d095feb"><td class="memItemLeft" align="right" valign="top"><a id="a7c42989071e1f4c693652bcc0d095feb"></a>
+typedef enum TYDecodeError&#160;</td><td class="memItemRight" valign="bottom"><b>TYDecodeError</b></td></tr>
+<tr class="separator:a7c42989071e1f4c693652bcc0d095feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae88cfb17f794d1377f213a77e0cbdb89"><td class="memItemLeft" align="right" valign="top"><a id="ae88cfb17f794d1377f213a77e0cbdb89"></a>
+typedef struct <a class="el" href="a01002.html">TYImageInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TYImageInfo</b></td></tr>
+<tr class="separator:ae88cfb17f794d1377f213a77e0cbdb89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a331e15eb4528edc6a0c0d822431f91a3"><td class="memItemLeft" align="right" valign="top"><a id="a331e15eb4528edc6a0c0d822431f91a3"></a>
+typedef enum TYOutputFormat&#160;</td><td class="memItemRight" valign="bottom"><b>TYOutputFormat</b></td></tr>
+<tr class="separator:a331e15eb4528edc6a0c0d822431f91a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd6fff327fbc662f81f168b7088aa2cc"><td class="memItemLeft" align="right" valign="top"><a id="abd6fff327fbc662f81f168b7088aa2cc"></a>
+typedef struct <a class="el" href="a01006.html">TYDecodeResult</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TYDecodeResult</b></td></tr>
+<tr class="separator:abd6fff327fbc662f81f168b7088aa2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a6e72ecc36105041b1d3f0ad054917b76"><td class="memItemLeft" align="right" valign="top"><a id="a6e72ecc36105041b1d3f0ad054917b76"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TYDecodeError</b> { <br />
+&#160;&#160;<b>TY_DECODE_SUCCESS</b> = 0, 
+<b>TY_DECODE_NO_DECODE_NEEDED</b>, 
+<b>TY_DECODE_ERROR_INVALID_PARAM</b>, 
+<b>TY_DECODE_ERROR_FORMAT_MISMATCH</b>, 
+<br />
+&#160;&#160;<b>TY_DECODE_ERROR_UNSUPPORTED_FORMAT</b>, 
+<b>TY_DECODE_ERROR_BUFFER_TOO_SMALL</b>, 
+<b>TY_DECODE_ERROR_DATA_ERROR</b>, 
+<b>TY_DECODE_ERROR_CREATE_WINDOW</b>, 
+<br />
+&#160;&#160;<b>TY_DECODE_ERROR_DISPLAY_IMAGE</b>
+<br />
+ }</td></tr>
+<tr class="separator:a6e72ecc36105041b1d3f0ad054917b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af22dea78a305e7263bc70c958f8d227d"><td class="memItemLeft" align="right" valign="top"><a id="af22dea78a305e7263bc70c958f8d227d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TYOutputFormat</b> { <b>TY_OUTPUT_FORMAT_AUTO</b> = 0, 
+<b>TY_OUTPUT_FORMAT_MONO8</b>, 
+<b>TY_OUTPUT_FORMAT_MONO16</b>, 
+<b>TY_OUTPUT_FORMAT_BGR</b>
+ }</td></tr>
+<tr class="separator:af22dea78a305e7263bc70c958f8d227d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a7fa0f452d1557496b0ac764217db40b2"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00491.html#a7fa0f452d1557496b0ac764217db40b2">TYGetImageAlgorithmVersion</a> (<a class="el" href="a00806.html">TY_VERSION_INFO</a> *version)</td></tr>
+<tr class="memdesc:a7fa0f452d1557496b0ac764217db40b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current library version.  <a href="a00491.html#a7fa0f452d1557496b0ac764217db40b2">More...</a><br /></td></tr>
+<tr class="separator:a7fa0f452d1557496b0ac764217db40b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74321e8b166042ece04746cc88ab038e"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00491.html#a74321e8b166042ece04746cc88ab038e">TYImageProcesAcceEnable</a> (bool en)</td></tr>
+<tr class="memdesc:a74321e8b166042ece04746cc88ab038e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Image processing acceleration switch.  <a href="a00491.html#a74321e8b166042ece04746cc88ab038e">More...</a><br /></td></tr>
+<tr class="separator:a74321e8b166042ece04746cc88ab038e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0aaef4a7a7861eb943df9b1707d17a75"><td class="memItemLeft" align="right" valign="top">TY_DECODE_API&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00491.html#a0aaef4a7a7861eb943df9b1707d17a75">TYGetDecodeTargetPixFmt</a> (const <a class="el" href="a01002.html">TYImageInfo</a> *input, TYPixFmt *outFmt, const TYOutputFormat config=TY_OUTPUT_FORMAT_AUTO)</td></tr>
+<tr class="memdesc:a0aaef4a7a7861eb943df9b1707d17a75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the target pixel format for image decoding.  <a href="a00491.html#a0aaef4a7a7861eb943df9b1707d17a75">More...</a><br /></td></tr>
+<tr class="separator:a0aaef4a7a7861eb943df9b1707d17a75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a268eaaab89c8244caa21ecdcd0383c33"><td class="memItemLeft" align="right" valign="top">TY_DECODE_API&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00491.html#a268eaaab89c8244caa21ecdcd0383c33">TYGetDecodeBufferSize</a> (const <a class="el" href="a01002.html">TYImageInfo</a> *input, uint32_t *totalSize, const TYOutputFormat config=TY_OUTPUT_FORMAT_AUTO)</td></tr>
+<tr class="memdesc:a268eaaab89c8244caa21ecdcd0383c33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the required buffer size for image decoding.  <a href="a00491.html#a268eaaab89c8244caa21ecdcd0383c33">More...</a><br /></td></tr>
+<tr class="separator:a268eaaab89c8244caa21ecdcd0383c33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87081d60b341e4722365e242a0979d7f"><td class="memItemLeft" align="right" valign="top">TY_DECODE_API&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00491.html#a87081d60b341e4722365e242a0979d7f">TYDecodeImage</a> (const <a class="el" href="a01002.html">TYImageInfo</a> *input, const TYOutputFormat config, void *outputBuffer, uint32_t outputBufferSize, <a class="el" href="a01006.html">TYDecodeResult</a> *result)</td></tr>
+<tr class="memdesc:a87081d60b341e4722365e242a0979d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decode an image from compressed format to specified output format.  <a href="a00491.html#a87081d60b341e4722365e242a0979d7f">More...</a><br /></td></tr>
+<tr class="separator:a87081d60b341e4722365e242a0979d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d25d4fd48fbdaea74f3dd5c22e20fef"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00491.html#a1d25d4fd48fbdaea74f3dd5c22e20fef">TYUndistortImage</a> (const <a class="el" href="a00866.html">TY_CAMERA_CALIB_INFO</a> *srcCalibInfo, const <a class="el" href="a00974.html">TY_IMAGE_DATA</a> *srcImage, const <a class="el" href="a00854.html">TY_CAMERA_INTRINSIC</a> *cameraNewIntrinsic, <a class="el" href="a00974.html">TY_IMAGE_DATA</a> *dstImage, const TYLensOpticalType type=TY_LENS_PINHOLE)</td></tr>
+<tr class="memdesc:a1d25d4fd48fbdaea74f3dd5c22e20fef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do image undistortion, only support TYPixelFormatMono8, TYPixelFormatMono16, TYPixelFormatRGB8, TYPixelFormatBGR8, TYPixelFormatCoord3D_C16.  <a href="a00491.html#a1d25d4fd48fbdaea74f3dd5c22e20fef">More...</a><br /></td></tr>
+<tr class="separator:a1d25d4fd48fbdaea74f3dd5c22e20fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4418c5e3b2f1ade4241820e25d3e4da5"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00491.html#a4418c5e3b2f1ade4241820e25d3e4da5">TYUndistortImage2</a> (const <a class="el" href="a00866.html">TY_CAMERA_CALIB_INFO</a> *calib_info, const <a class="el" href="a00974.html">TY_IMAGE_DATA</a> *srcImage, const <a class="el" href="a00998.html">TY_CAMERA_ROTATION</a> *cameraRotation, const <a class="el" href="a00854.html">TY_CAMERA_INTRINSIC</a> *cameraNewIntrinsic, <a class="el" href="a00974.html">TY_IMAGE_DATA</a> *dstImage, const TYLensOpticalType type=TY_LENS_PINHOLE)</td></tr>
+<tr class="memdesc:a4418c5e3b2f1ade4241820e25d3e4da5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do image undistortion, only support TYPixelFormatMono8, TYPixelFormatMono16, TYPixelFormatRGB8, TYPixelFormatBGR8, TYPixelFormatCoord3D_C16.  <a href="a00491.html#a4418c5e3b2f1ade4241820e25d3e4da5">More...</a><br /></td></tr>
+<tr class="separator:a4418c5e3b2f1ade4241820e25d3e4da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e7a2824c444af905a186d978d860f7d"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00491.html#a3e7a2824c444af905a186d978d860f7d">TYDepthSpeckleFilter</a> (<a class="el" href="a00974.html">TY_IMAGE_DATA</a> *depthImage, const <a class="el" href="a01010.html">DepthSpeckleFilterParameters</a> *param, const <a class="el" href="a00866.html">TY_CAMERA_CALIB_INFO</a> *calib_data=nullptr, const float depth_scale_unit=1.f)</td></tr>
+<tr class="memdesc:a3e7a2824c444af905a186d978d860f7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove speckles on depth image.  <a href="a00491.html#a3e7a2824c444af905a186d978d860f7d">More...</a><br /></td></tr>
+<tr class="separator:a3e7a2824c444af905a186d978d860f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7be8e62cef00add9322cd9666d6218cd"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00491.html#a7be8e62cef00add9322cd9666d6218cd">TYDepthImageInpainter</a> (<a class="el" href="a00974.html">TY_IMAGE_DATA</a> *depth, const <a class="el" href="a01014.html">DepthInpainterParameters</a> *param)</td></tr>
+<tr class="memdesc:a7be8e62cef00add9322cd9666d6218cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Repair invalid pixels in depth image, filling small holes.  <a href="a00491.html#a7be8e62cef00add9322cd9666d6218cd">More...</a><br /></td></tr>
+<tr class="separator:a7be8e62cef00add9322cd9666d6218cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8bb2a45b6fd8b542d250e2cd04e6d53"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00491.html#af8bb2a45b6fd8b542d250e2cd04e6d53">TYDepthEnhenceFilter</a> (const <a class="el" href="a00974.html">TY_IMAGE_DATA</a> *depthImages, int imageNum, <a class="el" href="a00974.html">TY_IMAGE_DATA</a> *guide, <a class="el" href="a00974.html">TY_IMAGE_DATA</a> *output, const <a class="el" href="a01018.html">DepthEnhenceParameters</a> *param)</td></tr>
+<tr class="memdesc:af8bb2a45b6fd8b542d250e2cd04e6d53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove speckles on depth image.  <a href="a00491.html#af8bb2a45b6fd8b542d250e2cd04e6d53">More...</a><br /></td></tr>
+<tr class="separator:af8bb2a45b6fd8b542d250e2cd04e6d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Image post-process API. </p>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright(C)2016-2018 Percipio All Rights Reserved </dd></dl>
+
+<p class="definition">Definition in file <a class="el" href="a00491_source.html">TYImageProc.h</a>.</p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a87081d60b341e4722365e242a0979d7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87081d60b341e4722365e242a0979d7f">&#9670;&nbsp;</a></span>TYDecodeImage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_DECODE_API TYDecodeImage </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a01002.html">TYImageInfo</a> *&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TYOutputFormat&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>outputBuffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>outputBufferSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a01006.html">TYDecodeResult</a> *&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Decode an image from compressed format to specified output format. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td>Pointer to input image information </td></tr>
+    <tr><td class="paramname">config</td><td>Decode configuration parameters specifying output format </td></tr>
+    <tr><td class="paramname">outputBuffer</td><td>User-allocated output buffer for decoded image data </td></tr>
+    <tr><td class="paramname">outputBufferSize</td><td>Size of the output buffer in bytes </td></tr>
+    <tr><td class="paramname">result</td><td>Output parameter containing decode result information </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Error code, TY_DECODE_SUCCESS (0) indicates success </dd></dl>
+
+</div>
+</div>
+<a id="af8bb2a45b6fd8b542d250e2cd04e6d53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8bb2a45b6fd8b542d250e2cd04e6d53">&#9670;&nbsp;</a></span>TYDepthEnhenceFilter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYDepthEnhenceFilter </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00974.html">TY_IMAGE_DATA</a> *&#160;</td>
+          <td class="paramname"><em>depthImages</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>imageNum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00974.html">TY_IMAGE_DATA</a> *&#160;</td>
+          <td class="paramname"><em>guide</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00974.html">TY_IMAGE_DATA</a> *&#160;</td>
+          <td class="paramname"><em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a01018.html">DepthEnhenceParameters</a> *&#160;</td>
+          <td class="paramname"><em>param</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Remove speckles on depth image. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">depthImage</td><td>Pointer to depth image array. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">imageNum</td><td>Depth image array size. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">guide</td><td>Guide image. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">output</td><td>Output depth image. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">param</td><td>Algorithm parameters. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">TY_STATUS_OK</td><td>Succeed. </td></tr>
+    <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>Any depthImage, param, output or output-&gt;buffer is NULL. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_PARAMETER</td><td>imageNum &gt;= 11 or imageNum &lt;= 0, or any image invalid </td></tr>
+    <tr><td class="paramname">TY_STATUS_OUT_OF_MEMORY</td><td>Output image not suitable. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7be8e62cef00add9322cd9666d6218cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7be8e62cef00add9322cd9666d6218cd">&#9670;&nbsp;</a></span>TYDepthImageInpainter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYDepthImageInpainter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00974.html">TY_IMAGE_DATA</a> *&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a01014.html">DepthInpainterParameters</a> *&#160;</td>
+          <td class="paramname"><em>param</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Repair invalid pixels in depth image, filling small holes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">depth</td><td>Depth image to be processed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">param</td><td>Algorithm parameters. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">TY_STATUS_OK</td><td>Success. </td></tr>
+    <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>depth, param or depth-&gt;buffer is NULL. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_PARAMETER</td><td>param-&gt;kernel_size or param-&gt;kernel_size out of range </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3e7a2824c444af905a186d978d860f7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e7a2824c444af905a186d978d860f7d">&#9670;&nbsp;</a></span>TYDepthSpeckleFilter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYDepthSpeckleFilter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00974.html">TY_IMAGE_DATA</a> *&#160;</td>
+          <td class="paramname"><em>depthImage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a01010.html">DepthSpeckleFilterParameters</a> *&#160;</td>
+          <td class="paramname"><em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00866.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
+          <td class="paramname"><em>calib_data</em> = <code>nullptr</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>depth_scale_unit</em> = <code>1.f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Remove speckles on depth image. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">depthImage</td><td>Depth image to be processed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">param</td><td>Algorithm parameters. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">calib_data</td><td>Image calibration data. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">TY_STATUS_OK</td><td>Succeed. </td></tr>
+    <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>Any depth, param or depth-&gt;buffer is NULL. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_PARAMETER</td><td>param-&gt;max_speckle_size &lt;= 0 or param-&gt;max_speckle_diff &lt;= 0 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a268eaaab89c8244caa21ecdcd0383c33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a268eaaab89c8244caa21ecdcd0383c33">&#9670;&nbsp;</a></span>TYGetDecodeBufferSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_DECODE_API TYGetDecodeBufferSize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a01002.html">TYImageInfo</a> *&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>totalSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TYOutputFormat&#160;</td>
+          <td class="paramname"><em>config</em> = <code>TY_OUTPUT_FORMAT_AUTO</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculate the required buffer size for image decoding. </p>
+<p>This function calculates the required buffer size (in bytes) for storing the decoded image based on the input image format, dimensions, and the specified output configuration. The calculation takes into account the target pixel format, image dimensions, and memory alignment requirements (4-byte aligned stride).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td>Pointer to input image information </td></tr>
+    <tr><td class="paramname">totalSize</td><td>Output parameter for required buffer size in bytes </td></tr>
+    <tr><td class="paramname">config</td><td>Decode configuration parameters, defaults to TY_OUTPUT_FORMAT_AUTO </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>TYDecodeError<ul>
+<li>TY_DECODE_SUCCESS: Successfully calculated buffer size</li>
+<li>TY_DECODE_ERROR_INVALID_PARAM: Invalid input parameters (null pointers, zero dimensions, etc.)</li>
+<li>TY_DECODE_ERROR_UNSUPPORTED_FORMAT: Unsupported output format or unable to determine format</li>
+<li>TY_DECODE_ERROR_FORMAT_MISMATCH: Incompatible input and output formats</li>
+<li>TY_DECODE_NO_DECODE_NEEDED: No decoding needed, output format same as input </li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+<a id="a0aaef4a7a7861eb943df9b1707d17a75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0aaef4a7a7861eb943df9b1707d17a75">&#9670;&nbsp;</a></span>TYGetDecodeTargetPixFmt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_DECODE_API TYGetDecodeTargetPixFmt </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a01002.html">TYImageInfo</a> *&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TYPixFmt *&#160;</td>
+          <td class="paramname"><em>outFmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TYOutputFormat&#160;</td>
+          <td class="paramname"><em>config</em> = <code>TY_OUTPUT_FORMAT_AUTO</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the target pixel format for image decoding. </p>
+<p>This function determines the target pixel format for decoding based on the input image format and the specified output configuration. It can be used to query the pixel format that will be produced by the decode operation before actually performing the decode.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td>Pointer to input image information </td></tr>
+    <tr><td class="paramname">outFmt</td><td>Output parameter for the target pixel format </td></tr>
+    <tr><td class="paramname">config</td><td>Decode configuration parameters, defaults to TY_OUTPUT_FORMAT_AUTO </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>TYDecodeError<ul>
+<li>TY_DECODE_SUCCESS: Successfully determined target format</li>
+<li>TY_DECODE_NO_DECODE_NEEDED: No decoding needed, output format same as input</li>
+<li>TY_DECODE_ERROR_INVALID_PARAM: Invalid input parameters</li>
+<li>TY_DECODE_ERROR_UNSUPPORTED_FORMAT: Unsupported output format</li>
+<li>TY_DECODE_ERROR_FORMAT_MISMATCH: Incompatible input and output formats </li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+<a id="a7fa0f452d1557496b0ac764217db40b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fa0f452d1557496b0ac764217db40b2">&#9670;&nbsp;</a></span>TYGetImageAlgorithmVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYGetImageAlgorithmVersion </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00806.html">TY_VERSION_INFO</a> *&#160;</td>
+          <td class="paramname"><em>version</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get current library version. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">version</td><td>Version infomation to be filled. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">TY_STATUS_OK</td><td>Succeed. </td></tr>
+    <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>TYGetImageAlgorithmVersion called with NULL pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a74321e8b166042ece04746cc88ab038e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74321e8b166042ece04746cc88ab038e">&#9670;&nbsp;</a></span>TYImageProcesAcceEnable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYImageProcesAcceEnable </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>en</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Image processing acceleration switch. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">en</td><td>Enable image process acceleration switch </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1d25d4fd48fbdaea74f3dd5c22e20fef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d25d4fd48fbdaea74f3dd5c22e20fef">&#9670;&nbsp;</a></span>TYUndistortImage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYUndistortImage </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00866.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
+          <td class="paramname"><em>srcCalibInfo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00974.html">TY_IMAGE_DATA</a> *&#160;</td>
+          <td class="paramname"><em>srcImage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00854.html">TY_CAMERA_INTRINSIC</a> *&#160;</td>
+          <td class="paramname"><em>cameraNewIntrinsic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00974.html">TY_IMAGE_DATA</a> *&#160;</td>
+          <td class="paramname"><em>dstImage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TYLensOpticalType&#160;</td>
+          <td class="paramname"><em>type</em> = <code>TY_LENS_PINHOLE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Do image undistortion, only support TYPixelFormatMono8, TYPixelFormatMono16, TYPixelFormatRGB8, TYPixelFormatBGR8, TYPixelFormatCoord3D_C16. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">srcCalibInfo</td><td>Image calibration data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">srcImage</td><td>Source image. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraNewIntrinsic</td><td>Expected new image intrinsic, will use srcCalibInfo for new image intrinsic if set to NULL. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dstImage</td><td>Output image. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">TY_STATUS_OK</td><td>Succeed. </td></tr>
+    <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>Any srcCalibInfo, srcImage, dstImage, srcImage-&gt;buffer, dstImage-&gt;buffer is NULL. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_PARAMETER</td><td>Invalid srcImage-&gt;width, srcImage-&gt;height, dstImage-&gt;width, dstImage-&gt;height or unsupported pixel format. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4418c5e3b2f1ade4241820e25d3e4da5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4418c5e3b2f1ade4241820e25d3e4da5">&#9670;&nbsp;</a></span>TYUndistortImage2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYUndistortImage2 </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00866.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
+          <td class="paramname"><em>calib_info</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00974.html">TY_IMAGE_DATA</a> *&#160;</td>
+          <td class="paramname"><em>srcImage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00998.html">TY_CAMERA_ROTATION</a> *&#160;</td>
+          <td class="paramname"><em>cameraRotation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00854.html">TY_CAMERA_INTRINSIC</a> *&#160;</td>
+          <td class="paramname"><em>cameraNewIntrinsic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00974.html">TY_IMAGE_DATA</a> *&#160;</td>
+          <td class="paramname"><em>dstImage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TYLensOpticalType&#160;</td>
+          <td class="paramname"><em>type</em> = <code>TY_LENS_PINHOLE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Do image undistortion, only support TYPixelFormatMono8, TYPixelFormatMono16, TYPixelFormatRGB8, TYPixelFormatBGR8, TYPixelFormatCoord3D_C16. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">srcCalibInfo</td><td>Image calibration data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">srcImage</td><td>Source image. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraRotation</td><td>Camera rotation parameter for image orientation adjustment. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraNewIntrinsic</td><td>Expected new image intrinsic, will use srcCalibInfo for new image intrinsic if set to NULL. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dstImage</td><td>Output image. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">TY_STATUS_OK</td><td>Succeed. </td></tr>
+    <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>Any srcCalibInfo, srcImage, dstImage, srcImage-&gt;buffer, dstImage-&gt;buffer is NULL. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_PARAMETER</td><td>Invalid srcImage-&gt;width, srcImage-&gt;height, dstImage-&gt;width, dstImage-&gt;height or unsupported pixel format. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="a00491.html">TYImageProc.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

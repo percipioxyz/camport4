@@ -1,6 +1,5 @@
 #include "common.hpp"
 
-
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 {
     if (event_info->eventId == TY_EVENT_DEVICE_OFFLINE) {
@@ -13,11 +12,10 @@ void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
     }
 }
 
-static inline int covertToLinear(cv::Mat &raw16, cv::Mat raw32,
-    uint32_t *param)
+static inline int covertToLinear(const uint16_t* raw16, int width, int height, uint32_t *param, std::vector<int32_t>& raw32)
 {
-    uint16_t *src = (uint16_t *)raw16.data;
-    int *dst = (int *)raw32.data;
+    raw32.resize(width * height);
+    int *dst = (int *)&raw32[0];
     uint32_t R1 = param[0];
     uint32_t R2 = param[1];
     R1 = 1 << (R1 + 2);
@@ -25,102 +23,35 @@ static inline int covertToLinear(cv::Mat &raw16, cv::Mat raw32,
     uint32_t P1 = 1 << param[6];
     uint32_t P2 = 1 << param[7];
     uint32_t Pk = (int)((P2 - P1)/(4.0f*R1)) + P1;
-    for (int i = 0; i < raw16.cols * raw16.rows; i++) {
-        if (src[i] <= P1) {
-            dst[i] = (int)src[i];
-        } else if (src[i] > P1 && src[i] <= Pk) {
-            dst[i] = ((int)src[i] - P1)* 4* R1 + P1;
+    for (int i = 0; i < width * height; i++) {
+        if (raw16[i] <= P1) {
+            dst[i] = (int)raw16[i];
+        } else if (raw16[i] > P1 && raw16[i] <= Pk) {
+            dst[i] = ((int)raw16[i] - P1)* 4* R1 + P1;
         } else {
-            dst[i] = ((int)src[i] - Pk)* 4* R1 * R2 + P2;
+            dst[i] = ((int)raw16[i] - Pk)* 4* R1 * R2 + P2;
         }
     }
     return 0;
 }
 
-static inline int decodeCsiRaw10(unsigned char* src, unsigned short* dst, int width, int height)
-{
-    if(width & 0x3) {
-        return -1;
-    }
-    int raw10_line_size = 5 * width / 4;
-    for(size_t i = 0, j = 0; i < raw10_line_size * height; i+=5, j+=4)
-    {
-        //[A2 - A9] | [B2 - B9] | [C2 - C9] | [D2 - D9] | [A0A1-B0B1-C0C1-D0D1]
-        dst[j + 0] = ((uint16_t)src[i + 0] << 2) | ((src[i + 4] & 0x3)  >> 0);
-        dst[j + 1] = ((uint16_t)src[i + 1] << 2) | ((src[i + 4] & 0xc)  >> 2);
-        dst[j + 2] = ((uint16_t)src[i + 2] << 2) | ((src[i + 4] & 0x30) >> 4);
-        dst[j + 3] = ((uint16_t)src[i + 3] << 2) | ((src[i + 4] & 0xc0) >> 6);
-    }
-    return 0;
-}
-
-static inline int parseHDRRaw10(TY_FRAME_DATA& frame,
-    cv::Mat* pColor, uint32_t *param)
-{
-    if (pColor == NULL) {
-        return -1;
-    }
-    for(int idx=0;idx<frame.validCount;idx++){
-        TY_IMAGE_DATA &img = frame.image[idx];
-        if(img.componentID == TY_COMPONENT_RGB_CAM && 
-                             img.pixelFormat == TYPixelFormatMono10){
-            cv::Mat raw16 = cv::Mat(img.height,img.width,CV_16U);
-            cv::Mat raw32 = cv::Mat(img.height,img.width,CV_32S);
-            //decode csi_mono10 to gray16
-            decodeCsiRaw10((uchar *)img.buffer, (ushort *)raw16.data,
-                img.width, img.height);
-            //recover 10bit hdr data to 12 bit hdr Data
-            raw16 = raw16 * 4;
-            //covert compressed 12bit hdr data to 20 bit linear data
-            covertToLinear(raw16, raw32, param);
-            //TODO: shitft the 16bit with most details to the lsb for force convert, will show most details when preview
-            //raw32 = raw32 / (1 << 2);
-            //Here May overflow, force type convert here
-            raw32.convertTo(raw32, CV_16U);
-            *pColor = raw32.clone();
-            break;
+void convertInt32ToUint16(const int32_t* data, int width, int height, uint16_t* dst) {
+    const int totalPixels = width * height;
+    
+    for (int i = 0; i < totalPixels; ++i) {
+        double value = static_cast<double>(data[i]);
+        
+        int32_t roundedValue = static_cast<int32_t>(value >= 0 ? value + 0.5 : value - 0.5);
+        
+        if (roundedValue < 0) {
+            dst[i] = 0;
+        } else if (roundedValue > 65535) {
+            dst[i] = 65535;
+        } else {
+            dst[i] = static_cast<uint16_t>(roundedValue);
         }
     }
-    return 0;
 }
-
-static void save_frame_to_file(cv::Mat left, cv::Mat right,
-        cv::Mat depth, cv::Mat color,cv::Mat raw) {
-    char buff[100];
-    static int save_index = 0;
-    if (!left.empty()) {
-        sprintf(buff, "%d-left.png", save_index);
-        cv::imwrite(buff, left);
-    }
-    if (!right.empty()) {
-        sprintf(buff, "%d-right.png", save_index);
-        cv::imwrite(buff, right);
-    }
-    if (!depth.empty()) {
-        //sprintf(buff, "%d-depth.bin", save_index);
-        //std::ofstream ofs(buff, std::ios::binary);
-        //ofs.write((const char*)&depth.cols, sizeof(depth.cols));
-        //ofs.write((const char*)&depth.rows, sizeof(depth.rows));
-        //ofs.write((const char*)depth.data, 2 * depth.rows * depth.cols);
-        ////ofs << depth;
-        //ofs.close();
-
-        sprintf(buff, "%d-depth.png", save_index);
-        cv::imwrite(buff, depth);
-
-    }
-    if (!color.empty()) {
-        sprintf(buff, "%d-color.png", save_index);
-        cv::imwrite(buff, color);
-    }
-    if (!raw.empty()) {
-        sprintf(buff, "%d-raw.png", save_index);
-        cv::imwrite(buff, raw);
-    }
-    printf("saved image data index = %d\n", save_index);
-    save_index++;
-}
-
 
 int main(int argc, char* argv[])
 {
@@ -205,9 +136,12 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_IR_CAM_RIGHT));
     }
 
+    //depth map pixel format is uint16_t ,which default unit is  1 mm
+    //the acutal depth (mm)= PixelValue * ScaleUnit 
+    float scale_unit = 1.;
+
     //try to enable depth map
     LOGD("Configure components, open depth cam");
-    DepthViewer depthViewer("Depth");
     if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
         TY_IMAGE_MODE image_mode;
         ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
@@ -215,11 +149,7 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
 
-        //depth map pixel format is uint16_t ,which default unit is  1 mm
-        //the acutal depth (mm)= PixelValue * ScaleUnit 
-        float scale_unit = 1.;
         TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
-        depthViewer.depth_scale_unit = scale_unit;
     }
     bool hasHDR = false;
     ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_RGB_CAM, TY_BOOL_HDR, &hasHDR));
@@ -281,53 +211,66 @@ int main(int argc, char* argv[])
             if (fps > 0){
                 LOGI("fps: %d", fps);
             }
+            for (int i = 0; i < frame.validCount; i++){
+                if (frame.image[i].status != TY_STATUS_OK) continue;
 
-            cv::Mat depth, irl, irr, color;
-            if (hdr_enable && hasHDR) {
-                uint32_t _hdr_param[8];
-                memset(_hdr_param, 0, sizeof(_hdr_param));
-                //May changed first frame after adjust R1 R2
-                //can disabled when is stabled, seems to depends on R1 R2
-                TYGetByteArray(hDevice, TY_COMPONENT_RGB_CAM, TY_BYTEARRAY_HDR_PARAMETER, (uint8_t *)&_hdr_param[0], 32);
-                if (hdr_param[0] != _hdr_param[0] ||
-                    hdr_param[1] != _hdr_param[1] ||
-                    hdr_param[6] != _hdr_param[6] ||
-                    hdr_param[7] != _hdr_param[7]) {
-                    LOGD("hdr param changed {%u %u %u %u}->{%u %u %u %u}",
-                    hdr_param[0],hdr_param[1],hdr_param[6],hdr_param[7],
-                    _hdr_param[0],_hdr_param[1],_hdr_param[6],_hdr_param[7]);
-                    memcpy(hdr_param, _hdr_param, sizeof(_hdr_param));
+                uint32_t destSize;
+                auto win = ty_comp_window_name(frame.image[i].componentID);
+                TYImageInfo image_info = ty_image_info(frame.image[i]);
+                if(frame.image[i].componentID == TY_COMPONENT_RGB_CAM) {
+                    TYDecodeError err = TYGetDecodeBufferSize(&image_info, &destSize, TY_OUTPUT_FORMAT_MONO16);
+                    if(err == TY_DECODE_SUCCESS) {
+                        TYDecodeResult retInfo;
+                        std::vector<uint16_t> mono16(destSize / sizeof(uint16_t));
+                        ASSERT_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&mono16[0], destSize, &retInfo));
+
+                        uint32_t _hdr_param[8];
+                        memset(_hdr_param, 0, sizeof(_hdr_param));
+                        if (hdr_enable && hasHDR) {
+                            //May changed first frame after adjust R1 R2
+                            //can disabled when is stabled, seems to depends on R1 R2
+                            TYGetByteArray(hDevice, TY_COMPONENT_RGB_CAM, TY_BYTEARRAY_HDR_PARAMETER, (uint8_t *)&_hdr_param[0], 32);
+                            if (hdr_param[0] != _hdr_param[0] ||
+                                hdr_param[1] != _hdr_param[1] ||
+                                hdr_param[6] != _hdr_param[6] ||
+                                hdr_param[7] != _hdr_param[7]) {
+                                LOGD("hdr param changed {%u %u %u %u}->{%u %u %u %u}",
+                                hdr_param[0],hdr_param[1],hdr_param[6],hdr_param[7],
+                                _hdr_param[0],_hdr_param[1],_hdr_param[6],_hdr_param[7]);
+                                memcpy(hdr_param, _hdr_param, sizeof(_hdr_param));
+                            }
+
+                            std::vector<int32_t> raw32;
+                            covertToLinear(&mono16[0], retInfo.width, retInfo.height, _hdr_param, raw32);
+                            convertInt32ToUint16(raw32.data(), retInfo.width, retInfo.height, &mono16[0]);
+                        }
+                        TYDisplayImage(win.c_str(), retInfo.width, retInfo.height, retInfo.format, &mono16[0]);
+                    } else {
+                        TYDisplayImage(win.c_str(), frame.image[i].width, frame.image[i].height, frame.image[i].pixelFormat, frame.image[i].buffer);
+                    }
+                } else {
+                    TYDecodeError err = TYGetDecodeBufferSize(&image_info, &destSize, TY_OUTPUT_FORMAT_AUTO);
+                    if(err == TY_DECODE_SUCCESS) {
+                        TYDecodeResult retInfo;
+                        std::vector<uint8_t> image_data(destSize);
+                        ASSERT_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&image_data[0], destSize, &retInfo));
+                        TYDisplayImage(win.c_str(), retInfo.width, retInfo.height, retInfo.format, &image_data[0]);
+                    } else {
+                        TYDisplayImage(win.c_str(), frame.image[i].width, frame.image[i].height, frame.image[i].pixelFormat, frame.image[i].buffer, scale_unit);
+                    }
                 }
-                //Color cannot use normal parse as is HDR
-                parseFrame(frame, &depth, &irl, &irr, NULL);
-                parseHDRRaw10(frame, &color, &_hdr_param[0]);
-            } else {
-                parseFrame(frame, &depth, &irl, &irr, &color);
-            }
-            if(!depth.empty()){
-                depthViewer.show(depth);
-            }
-            if(!irl.empty()){ cv::imshow("LeftIR", irl); }
-            if(!irr.empty()){ cv::imshow("RightIR", irr); }
-            if(!color.empty()){ 
-                cv::imshow("Color", color);
             }
 
-            cv::Mat raw;
-            int key = cv::waitKey(1);
+            int key = TYWaitKeyEvents();
             switch(key & 0xff) {
             case 0xff:
                 break;
             case 'q':
                 exit_main = true;
                 break;
-            case 's':
-                save_frame_to_file(irl, irr, depth, color, raw);
-                break;
             default:
                 LOGD("Unmapped key %d", key);
             }
-
             LOGD("Re-enqueue buffer(%p, %d)"
                 , frame.userBuffer, frame.bufferSize);
             ASSERT_OK( TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize) );

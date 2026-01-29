@@ -1,6 +1,10 @@
 var a00810 =
 [
-    [ "period_us", "a00810.html#a4f27e7f14fcdd220c1e0f6c00809c2b2", null ],
-    [ "start_time_us", "a00810.html#a2ed27b7603c8040f2dd1f4df341c3d1f", null ],
-    [ "trigger_count", "a00810.html#a4025d2625b859be61306e703eb72fce4", null ]
+    [ "broadcast", "a00810.html#af06cd59af8293ee83dd8f89d46f0984b", null ],
+    [ "gateway", "a00810.html#a5d42445d9d9c9ec989e0e75d292e2867", null ],
+    [ "ip", "a00810.html#a7170ceba47c417184317661d4728ae40", null ],
+    [ "mac", "a00810.html#af242263ed8ecd410db958594f8919b39", null ],
+    [ "netmask", "a00810.html#a8a2bac5ca514b1360a1ba547026ad957", null ],
+    [ "reserved", "a00810.html#aa9ec7fe6e7a1ad9942b940f3be08e65b", null ],
+    [ "tlversion", "a00810.html#ab955bed5e4e272e877d3495a42f05708", null ]
 ];

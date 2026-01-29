@@ -1,5 +1,4 @@
-#include "../common/common.hpp"
-#include "TYImageProc.h"
+#include "common.hpp"
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 {
@@ -52,9 +51,13 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_IR_CAM_LEFT));
     }
 
+
+    //depth map pixel format is uint16_t ,which default unit is  1 mm
+    //the acutal depth (mm)= PixelValue * ScaleUnit 
+    float scale_unit = 1.;
+
     //try to enable depth map
     LOGD("Configure components, open depth cam");
-    DepthViewer depthViewer("Depth");
     if (allComps & TY_COMPONENT_DEPTH_CAM) {
         TY_IMAGE_MODE image_mode;
         ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
@@ -62,11 +65,7 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
 
-        //depth map pixel format is uint16_t ,which default unit is  1 mm
-        //the acutal depth (mm)= PixelValue * ScaleUnit 
-        float scale_unit = 1.;
         TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
-        depthViewer.depth_scale_unit = scale_unit;
     }
 
     TY_CAMERA_ROTATION cameraRotation;
@@ -137,94 +136,58 @@ int main(int argc, char* argv[])
                 LOGI("fps: %d", fps);
             }
 
-            cv::Mat depth, irl;
-            parseFrame(frame, &depth, &irl, nullptr, nullptr);
-            if(!depth.empty()){
-                depthViewer.show(depth);
+            for (int i = 0; i < frame.validCount; i++){
+                if (frame.image[i].status != TY_STATUS_OK) continue;
+
+                if(frame.image[i].componentID == TY_COMPONENT_DEPTH_CAM) {
+                    auto win = ty_comp_window_name(frame.image[i].componentID);
+                    TYDisplayImage(win.c_str(), frame.image[i].width, frame.image[i].height, TYPixelFormatCoord3D_C16, frame.image[i].buffer, scale_unit);
+                }
+
+                if(frame.image[i].componentID == TY_COMPONENT_IR_CAM_LEFT) {
+                    uint32_t destSize;
+                    std::vector<uint8_t> ir_data;
+                    TYImageInfo image_info = ty_image_info(frame.image[i]);
+
+                    TYPixFmt ir_fmt = image_info.format;
+                    TYDecodeError err = TYGetDecodeBufferSize(&image_info, &destSize, TY_OUTPUT_FORMAT_AUTO);
+                    if(err == TY_DECODE_SUCCESS) {
+                        TYDecodeResult retInfo;
+                        ir_data.resize(destSize);
+                        ASSERT_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&ir_data[0], destSize, &retInfo));
+                        ir_fmt = retInfo.format;
+                    } else {
+                        ir_data = std::vector<uint8_t>((uint8_t*)frame.image[i].buffer, (uint8_t*)frame.image[i].buffer + frame.image[i].size);
+                    }
+
+                    TY_IMAGE_DATA src;
+                    src.width = frame.image[i].width;
+                    src.height = frame.image[i].height;
+                    src.size = frame.image[i].size;
+                    src.pixelFormat = ir_fmt;
+                    src.buffer = &ir_data[0];
+
+                    std::vector<uint8_t> rectified_ir_data(ir_data.size());
+                    TY_IMAGE_DATA dst;
+                    dst.width = frame.image[i].width;
+                    dst.height = frame.image[i].height;
+                    dst.size = frame.image[i].size;;
+                    dst.pixelFormat = ir_fmt;
+                    dst.buffer = &rectified_ir_data[0];     
+                
+                    // Distortion rectification
+                    ASSERT_OK(TYUndistortImage2 (&ir_calib_info,
+                            &src,
+                            &cameraRotation,
+                            &cameraRectifiedIntrinsic,
+                            &dst,
+                            lens));
+
+                    TYDisplayImage("rectified ir", dst.width, dst.height, ir_fmt, &ir_data[0]);
+                }
             }
-            if(!irl.empty()){
-                int32_t  ir_image_size;   
-                TYPixFmt fmt;
-                cv::Mat  rectified_ir;
-                if(irl.type() == CV_16U) {
-                    ir_image_size = irl.size().area() * 2;
-                    fmt = TYPixelFormatMono16;
-                    rectified_ir = cv::Mat(irl.size(), CV_16U);
-                } else {
-                    ir_image_size = irl.size().area() * 3;
-                    fmt = TYPixelFormatMono8;
-                    rectified_ir = cv::Mat(irl.size(), CV_8U);
-                }
 
-
-                TY_IMAGE_DATA src;
-                src.width = irl.cols;
-                src.height = irl.rows;
-                src.size = ir_image_size;
-                src.pixelFormat = fmt;
-                src.buffer = irl.data;
-
-                TY_IMAGE_DATA dst;
-                dst.width = irl.cols;
-                dst.height = irl.rows;
-                dst.size = ir_image_size;
-                dst.pixelFormat = fmt;
-                dst.buffer = rectified_ir.data;     
-             
-                // Distortion rectification
-                ASSERT_OK(TYUndistortImage2 (&ir_calib_info,
-                        &src,
-                        &cameraRotation,
-                        &cameraRectifiedIntrinsic,
-                        &dst,
-                        lens));
-
-                // Show the IR graphs before and after the rectification
-                // cv::imshow("Original", irl);    
-                // cv::imshow("Rectified", rectified_ir);
-
-                // Overlap between IR and depth map
-                cv::Mat depth_normalized, irl_normalized;
-
-                // Standardized depth map
-                if (depth.type() == CV_16U) {
-                    double min_val, max_val;
-                    cv::minMaxLoc(depth, &min_val, &max_val);
-                    depth_normalized = (depth - min_val) * 255.0 / (max_val - min_val);
-                    depth_normalized.convertTo(depth_normalized, CV_8U);
-                } else {
-                    cv::normalize(depth, depth_normalized, 0, 255, cv::NORM_MINMAX, CV_8U);
-                }
-                
-                // Standardized original IR diagram
-                cv::normalize(irl, irl_normalized, 0, 255, cv::NORM_MINMAX, CV_8U);
-                
-                // Adjust the size to match
-                cv::Mat depth_resized;
-                if (depth_normalized.size() != irl_normalized.size()) {
-                    cv::resize(depth_normalized, depth_resized, irl_normalized.size());
-                } else {
-                    depth_resized = depth_normalized;
-                }
-                
-                // Create overlapping images
-
-                // cv::Mat ir_depth_mix;
-                // cv::addWeighted(irl_normalized, 0.5, depth_resized, 0.5, 0, ir_depth_mix);
-                // // cv::imwrite("mix_origin_depth.png", ir_depth_mix);
-                // cv::imshow("MixOriginDepth", ir_depth_mix);
-                
-                // The rectified IR and depth maps overlap
-                cv::Mat rectified_normalized;
-                cv::normalize(rectified_ir, rectified_normalized, 0, 255, cv::NORM_MINMAX, CV_8U);
-                
-                cv::Mat rect_depth_mix;
-                cv::addWeighted(rectified_normalized, 0.5, depth_resized, 0.5, 0, rect_depth_mix);
-                // cv::imwrite("mix_rectified_depth.png", rect_depth_mix);
-                cv::imshow("MixRectifiedDepth", rect_depth_mix);
-
-            }
-            int key = cv::waitKey(1);
+            int key = TYWaitKeyEvents();
             switch(key & 0xff) {
             case 0xff:
                 break;

@@ -32,6 +32,7 @@ public:
             stream[TY_COMPONENT_RGB_CAM]->parse(color);
             if (color_needUndistort) {
                 stream[TY_COMPONENT_RGB_CAM]->doUndistortion();
+                color = stream[TY_COMPONENT_RGB_CAM]->image();
             }
         }
 
@@ -39,6 +40,7 @@ public:
             stream[TY_COMPONENT_DEPTH_CAM]->parse(depth);
             if (depth_needUndistort) {
                 stream[TY_COMPONENT_DEPTH_CAM]->doUndistortion();
+                color = stream[TY_COMPONENT_DEPTH_CAM]->image();
             }
         }
         if(color && depth) {
@@ -105,8 +107,8 @@ class Dep2RGBParser: public RegistrationParser {
 public:
     int doRegistration(const std::shared_ptr<TYImage>& depth, const std::shared_ptr<TYImage>& color)
     {
-        int dstW = depth->width();
-        int dstH = depth->width() * color->height() / color->width();
+        int dstW = color->width();
+        int dstH = color->width();
         std::shared_ptr<TYImage> dst;
         dst = std::shared_ptr<TYImage>(new TYImage(dstW, dstH, depth->componentID(), TYPixelFormatCoord3D_C16, sizeof(uint16_t) * dstW * dstH));
         TYMapDepthImageToColorCoordinate(
@@ -115,7 +117,6 @@ public:
                       &color_calib,
                       dstW, dstH, static_cast<uint16_t*>(dst->buffer()),
                       f_depth_scale_unit);
-        dst->resize(color->width(), color->height());
         stream[TY_COMPONENT_DEPTH_CAM]->parse(dst);
         return 0;
     }

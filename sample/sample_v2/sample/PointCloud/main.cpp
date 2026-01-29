@@ -248,7 +248,7 @@ void P3DCamera::processDepth16ToPoint3D(const std::shared_ptr<TYImage>&  depth, 
                 &color_calib,
                 registration_depth->width(), registration_depth->height(), static_cast<uint16_t*>(registration_depth->buffer()), f_depth_scale_unit
             );
-            registration_depth->resize(color_image->width(), color_image->height());
+            //registration_depth->resize(color_image->width(), color_image->height());
             registration_color = color_image;
             p3d.resize(registration_depth->width() * registration_depth->height());
             TYMapDepthImageToPoint3d(&color_calib, registration_depth->width(), registration_depth->height()
@@ -299,7 +299,6 @@ int P3DCamera::process(const std::shared_ptr<TYImage>&  depth, const std::shared
     }
 
     TYPixFmt fmt = depth->pixelFormat();
-#ifdef OPENCV_DEPENDENCIES
     if(color) {
         if(fmt == TYPixelFormatCoord3D_C16)
             processDepth16ToPoint3D(depth, color, p3d, registration_color);
@@ -309,9 +308,7 @@ int P3DCamera::process(const std::shared_ptr<TYImage>&  depth, const std::shared
             std::cout << "Invalid depth image format!" << std::endl;
             return -1;
         }
-    } else
-#endif
-    {
+    } else {
         if(fmt == TYPixelFormatCoord3D_C16)
             processDepth16(depth, p3d);
         else if(fmt == TYPixelFormatCoord3D_ABC16)

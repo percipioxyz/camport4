@@ -1,6 +1,5 @@
 var a00758 =
 [
-    [ "size", "a00758.html#acdf25a8f44c2b532a6f25b5447fec42e", null ],
-    [ "unit_size", "a00758.html#a98580d3f59f14a099c69d793fe1ee523", null ],
-    [ "valid_size", "a00758.html#a07ba18afdbaf51bfa57407eee61e25e8", null ]
+    [ "v0", "a00758.html#aa40331109326c5de0ebb691cc8b8f94c", null ],
+    [ "v1", "a00758.html#af95280454b603140be9b886f2693ea23", null ]
 ];

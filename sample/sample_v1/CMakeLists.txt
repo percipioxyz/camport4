@@ -62,24 +62,6 @@ if(UNIX)
 endif()
 
 # ========================================
-# === OpenCV
-# ========================================
-find_package(OpenCV REQUIRED)
-if (NOT OpenCV_FOUND)
-    message(FATAL_ERROR "OpenCV library not found")
-else()
-    include_directories(${OpenCV_INCLUDE_DIRS})
-    include_directories(${OpenCV2_INCLUDE_DIRS})
-    # if(CMAKE_BUILD_TYPE STREQUAL Debug)
-    # link_directories(${OpenCV_LIB_DIR_DBG})
-    # else()
-    # link_directories(${OpenCV_LIB_DIR_OPT})
-    # endif()
-    link_directories(${OpenCV_LIB_DIR})
-endif()
-
-add_definitions(-DOPENCV_DEPENDENCIES)
-# ========================================
 # === OpenGL
 # ========================================
 if (OPENGL_VIEW)
@@ -145,7 +127,7 @@ foreach(sample ${ALL_SAMPLES})
         file(GLOB sources ${sample}/*.cpp)
         add_executable(${sample} ${sources})
         add_dependencies(${sample} sample_common ${TARGET_LIB})
-        target_link_libraries(${sample} sample_common ${TYCam_LIBS}  ${OpenCV_LIBS} ${CLOUD_VIEWER})
+        target_link_libraries(${sample} sample_common ${TYCam_LIBS} ${COMMON_GUI_LIBS} ${CLOUD_VIEWER})
         set_target_properties(${sample} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
         set_target_properties(${sample} PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON )
         install(TARGETS ${sample} RUNTIME DESTINATION samples/)

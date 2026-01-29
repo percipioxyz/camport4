@@ -685,6 +685,22 @@ namespace {
         /* Set black as background color */
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         //GL_CHECK_ERROR_RET();
+
+        //Initialize a default point cloud
+        std::vector<TY_VECT_3F> init_points = {
+            {-2000.0f, -2000.0f,     0.0f},
+            { 2000.0f,  2000.0f,     0.0f},
+            {    0.0f,  2000.0f,     0.0f},
+            {    0.0f,     0.0f, -4000.0f}
+        };
+
+        std::vector<uint8_t> init_colors = {
+          255,   0,   0,
+            0, 255,   0,
+            0,   0, 255,
+           255,255, 255,
+        };
+        GLPointCloudViewer::Update(4, init_points.data(), init_colors.data());
         return 0;
     }
 

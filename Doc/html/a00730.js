@@ -1,6 +1,5 @@
 var a00730 =
 [
-    [ "addr", "a00730.html#a24e094e5662fecf24b90aa9e73d65c46", null ],
-    [ "bus", "a00730.html#a9f20755deff9158fc10e7f8d24e8db1f", null ],
-    [ "reserved", "a00730.html#a24392df7c2ed7c80161df488c9943b8e", null ]
+    [ "v0", "a00730.html#a664ad248adfb3bdbbb282334a3db4c63", null ],
+    [ "v1", "a00730.html#a310481375445aed9dadb496335e4d185", null ]
 ];

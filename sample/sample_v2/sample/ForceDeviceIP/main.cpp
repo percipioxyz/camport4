@@ -46,13 +46,13 @@ int main(int argc, char* argv[])
     cmd = argv[1];
     mac = argv[2];
 
-    ForceIPStyle style = ForceIPStyleDynamic;
+    ForceIPStyle style = ForceIPStyle::Dynamic;
     if(strcmp(cmd, "-force") == 0)
-      style = ForceIPStyleForce;
+      style = ForceIPStyle::Force;
     else if(strcmp(cmd, "-static") == 0)
-      style = ForceIPStyleStatic;
+      style = ForceIPStyle::Static;
     else if(strcmp(cmd, "-dynamic") == 0)
-      style = ForceIPStyleDynamic;
+      style = ForceIPStyle::Dynamic;
     else {
       Usage(argv[0]);
       return -1;

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TY_CAMERA_DISTORTION Struct Reference</title>
+<title>TYCamport3: tjtransform Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -86,37 +86,145 @@ $(document).ready(function(){initNavTree('a00778.html',''); initResizable(); });
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00775.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TY_CAMERA_DISTORTION Struct Reference</div>  </div>
+<div class="title">tjtransform Struct Reference<div class="ingroups"><a class="el" href="a00506.html">TurboJPEG</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="a00470_source.html">TYDefs.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00473_source.html">turbojpeg.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for tjtransform:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00776.png" border="0" usemap="#tjtransform_coll__map" alt="Collaboration graph"/></div>
+<map name="tjtransform_coll__map" id="tjtransform_coll__map">
+<area shape="rect" title=" " alt="" coords="5,95,100,121"/>
+<area shape="rect" href="a00774.html" title=" " alt="" coords="17,5,89,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a1bf3ab15f857da3b0b9e9414c5faff56"><td class="memItemLeft" align="right" valign="top"><a id="a1bf3ab15f857da3b0b9e9414c5faff56"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00778.html#a1bf3ab15f857da3b0b9e9414c5faff56">data</a> [12]</td></tr>
-<tr class="memdesc:a1bf3ab15f857da3b0b9e9414c5faff56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition is compatible with opencv3.0+ :k1,k2,p1,p2,k3,k4,k5,k6,s1,s2,s3,s4. <br /></td></tr>
-<tr class="separator:a1bf3ab15f857da3b0b9e9414c5faff56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac324e5e442abec8a961e5bf219db12cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00774.html">tjregion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00778.html#ac324e5e442abec8a961e5bf219db12cf">r</a></td></tr>
+<tr class="separator:ac324e5e442abec8a961e5bf219db12cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2525aab4ba6978a1c273f74fef50e498"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00778.html#a2525aab4ba6978a1c273f74fef50e498">op</a></td></tr>
+<tr class="separator:a2525aab4ba6978a1c273f74fef50e498"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e74655baa4402209a21e1ae481c8f6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00778.html#ac0e74655baa4402209a21e1ae481c8f6">options</a></td></tr>
+<tr class="separator:ac0e74655baa4402209a21e1ae481c8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a688fe8f1a8ecc12a538d9e561cf338e3"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00778.html#a688fe8f1a8ecc12a538d9e561cf338e3">data</a></td></tr>
+<tr class="separator:a688fe8f1a8ecc12a538d9e561cf338e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd7fc262df33f741e120ef4183202ef5"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00778.html#afd7fc262df33f741e120ef4183202ef5">customFilter</a> )(short *coeffs, <a class="el" href="a00774.html">tjregion</a> arrayRegion, <a class="el" href="a00774.html">tjregion</a> planeRegion, int componentIndex, int transformIndex, struct <a class="el" href="a00778.html">tjtransform</a> *transform)</td></tr>
+<tr class="separator:afd7fc262df33f741e120ef4183202ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>camera distortion parameters </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="a00461.html#ad4320c38038341657f9e759147db0639" title="Get value of struct.">TYGetStruct</a> Usage: <div class="fragment"><div class="line"><a class="code" href="a00778.html">TY_CAMERA_DISTORTION</a> distortion;</div>
-<div class="line"><a class="code" href="a00461.html#ad4320c38038341657f9e759147db0639">TYGetStruct</a>(hDevice, some_compoent, <a class="code" href="a00470.html#a6ad12f8e99a29828f93af6916a846f38a9e09cfdcd4618eef97e4a3aef8a8177f">TY_STRUCT_CAM_DISTORTION</a>, &amp;distortion, <span class="keyword">sizeof</span>(distortion));</div>
-</div><!-- fragment --> </dd></dl>
+<div class="textblock"><p>Lossless transform </p>
 
-<p class="definition">Definition at line <a class="el" href="a00470_source.html#l00966">966</a> of file <a class="el" href="a00470_source.html">TYDefs.h</a>.</p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00470_source.html">TYDefs.h</a></li>
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00592">592</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="afd7fc262df33f741e120ef4183202ef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd7fc262df33f741e120ef4183202ef5">&#9670;&nbsp;</a></span>customFilter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int(* tjtransform::customFilter) (short *coeffs, <a class="el" href="a00774.html">tjregion</a> arrayRegion, <a class="el" href="a00774.html">tjregion</a> planeRegion, int componentIndex, int transformIndex, struct <a class="el" href="a00778.html">tjtransform</a> *transform)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A callback function that can be used to modify the DCT coefficients after they are losslessly transformed but before they are transcoded to a new JPEG image. This allows for custom filters or other transformations to be applied in the frequency domain.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">coeffs</td><td>pointer to an array of transformed DCT coefficients. (NOTE: this pointer is not guaranteed to be valid once the callback returns, so applications wishing to hand off the DCT coefficients to another function or library should make a copy of them within the body of the callback.)</td></tr>
+    <tr><td class="paramname">arrayRegion</td><td><a class="el" href="a00774.html">tjregion</a> structure containing the width and height of the array pointed to by <code>coeffs</code> as well as its offset relative to the component plane. TurboJPEG implementations may choose to split each component plane into multiple DCT coefficient arrays and call the callback function once for each array.</td></tr>
+    <tr><td class="paramname">planeRegion</td><td><a class="el" href="a00774.html">tjregion</a> structure containing the width and height of the component plane to which <code>coeffs</code> belongs</td></tr>
+    <tr><td class="paramname">componentID</td><td>ID number of the component plane to which <code>coeffs</code> belongs (Y, Cb, and Cr have, respectively, ID's of 0, 1, and 2 in typical JPEG images.)</td></tr>
+    <tr><td class="paramname">transformID</td><td>ID number of the transformed image to which <code>coeffs</code> belongs. This is the same as the index of the transform in the <code>transforms</code> array that was passed to <a class="el" href="a00506.html#ga9cb8abf4cc91881e04a0329b2270be25">tjTransform()</a>.</td></tr>
+    <tr><td class="paramname">transform</td><td>a pointer to a <a class="el" href="a00778.html">tjtransform</a> structure that specifies the parameters and/or cropping region for this transform</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if the callback was successful, or -1 if an error occurred. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00643">643</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+
+</div>
+</div>
+<a id="a688fe8f1a8ecc12a538d9e561cf338e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a688fe8f1a8ecc12a538d9e561cf338e3">&#9670;&nbsp;</a></span>data</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* tjtransform::data</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Arbitrary data that can be accessed within the body of the callback function </p>
+
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00609">609</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+
+</div>
+</div>
+<a id="a2525aab4ba6978a1c273f74fef50e498"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2525aab4ba6978a1c273f74fef50e498">&#9670;&nbsp;</a></span>op</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tjtransform::op</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>One of the <a class="el" href="a00506.html#ga2de531af4e7e6c4f124908376b354866">transform operations</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00600">600</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+
+</div>
+</div>
+<a id="ac0e74655baa4402209a21e1ae481c8f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0e74655baa4402209a21e1ae481c8f6">&#9670;&nbsp;</a></span>options</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tjtransform::options</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The bitwise OR of one of more of the <a class="el" href="a00506.html#ga9c771a757fc1294add611906b89ab2d2">transform options</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00604">604</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+
+</div>
+</div>
+<a id="ac324e5e442abec8a961e5bf219db12cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac324e5e442abec8a961e5bf219db12cf">&#9670;&nbsp;</a></span>r</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00774.html">tjregion</a> tjtransform::r</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Cropping region </p>
+
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00596">596</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00473_source.html">turbojpeg.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aa00461_html_ad4320c38038341657f9e759147db0639"><div class="ttname"><a href="a00461.html#ad4320c38038341657f9e759147db0639">TYGetStruct</a></div><div class="ttdeci">TY_CAPI TYGetStruct(TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, void *pStruct, uint32_t structSize)</div><div class="ttdoc">Get value of struct.</div></div>
-<div class="ttc" id="aa00470_html_a6ad12f8e99a29828f93af6916a846f38a9e09cfdcd4618eef97e4a3aef8a8177f"><div class="ttname"><a href="a00470.html#a6ad12f8e99a29828f93af6916a846f38a9e09cfdcd4618eef97e4a3aef8a8177f">TY_STRUCT_CAM_DISTORTION</a></div><div class="ttdeci">@ TY_STRUCT_CAM_DISTORTION</div><div class="ttdoc">see TY_CAMERA_DISTORTION</div><div class="ttdef"><b>Definition:</b> <a href="a00470_source.html#l00217">TYDefs.h:217</a></div></div>
-<div class="ttc" id="aa00778_html"><div class="ttname"><a href="a00778.html">TY_CAMERA_DISTORTION</a></div><div class="ttdef"><b>Definition:</b> <a href="a00470_source.html#l00966">TYDefs.h:966</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00778.html">TY_CAMERA_DISTORTION</a></li>
+    <li class="navelem"><a class="el" href="a00778.html">tjtransform</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

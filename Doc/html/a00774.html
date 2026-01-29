@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TY_CAMERA_EXTRINSIC Struct Reference</title>
+<title>TYCamport3: tjregion Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -86,47 +86,105 @@ $(document).ready(function(){initNavTree('a00774.html',''); initResizable(); });
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00771.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TY_CAMERA_EXTRINSIC Struct Reference</div>  </div>
+<div class="title">tjregion Struct Reference<div class="ingroups"><a class="el" href="a00506.html">TurboJPEG</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="a00470_source.html">TYDefs.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00473_source.html">turbojpeg.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a99a86a6a9e81421f30c965082b763028"><td class="memItemLeft" align="right" valign="top"><a id="a99a86a6a9e81421f30c965082b763028"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>data</b> [4 *4]</td></tr>
-<tr class="separator:a99a86a6a9e81421f30c965082b763028"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b6a37a93997091b26a75831fa291ad9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00774.html#a4b6a37a93997091b26a75831fa291ad9">x</a></td></tr>
+<tr class="separator:a4b6a37a93997091b26a75831fa291ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b3e0c24cfe87acc80e334cafdcf22c2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00774.html#a7b3e0c24cfe87acc80e334cafdcf22c2">y</a></td></tr>
+<tr class="separator:a7b3e0c24cfe87acc80e334cafdcf22c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6eb73ceef584fc23c8c8097926dce42"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00774.html#ab6eb73ceef584fc23c8c8097926dce42">w</a></td></tr>
+<tr class="separator:ab6eb73ceef584fc23c8c8097926dce42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecefc45a26f4d8b60dd4d825c1710115"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00774.html#aecefc45a26f4d8b60dd4d825c1710115">h</a></td></tr>
+<tr class="separator:aecefc45a26f4d8b60dd4d825c1710115"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>a 4x4 matrix </p><table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">. </th><th class="markdownTableHeadNone">. </th><th class="markdownTableHeadNone">. </th><th class="markdownTableHeadNone">.  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">r11 </td><td class="markdownTableBodyNone">r12 </td><td class="markdownTableBodyNone">r13 </td><td class="markdownTableBodyNone">t1  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">r21 </td><td class="markdownTableBodyNone">r22 </td><td class="markdownTableBodyNone">r23 </td><td class="markdownTableBodyNone">t2  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">r31 </td><td class="markdownTableBodyNone">r32 </td><td class="markdownTableBodyNone">r33 </td><td class="markdownTableBodyNone">t3  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">1  </td></tr>
-</table>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00461.html#ad4320c38038341657f9e759147db0639" title="Get value of struct.">TYGetStruct</a> Usage: <div class="fragment"><div class="line"><a class="code" href="a00774.html">TY_CAMERA_EXTRINSIC</a> extrinsic;</div>
-<div class="line"><a class="code" href="a00461.html#ad4320c38038341657f9e759147db0639">TYGetStruct</a>(hDevice, some_compoent, TY_STRUCT_EXTRINSIC, &amp;extrinsic, <span class="keyword">sizeof</span>(extrinsic));</div>
-</div><!-- fragment --> </dd></dl>
+<div class="textblock"><p>Cropping region </p>
 
-<p class="definition">Definition at line <a class="el" href="a00470_source.html#l00954">954</a> of file <a class="el" href="a00470_source.html">TYDefs.h</a>.</p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00470_source.html">TYDefs.h</a></li>
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00566">566</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="aecefc45a26f4d8b60dd4d825c1710115"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecefc45a26f4d8b60dd4d825c1710115">&#9670;&nbsp;</a></span>h</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tjregion::h</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The height of the cropping region. Setting this to 0 is the equivalent of setting it to the height of the source JPEG image - y. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00586">586</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+
+</div>
+</div>
+<a id="ab6eb73ceef584fc23c8c8097926dce42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6eb73ceef584fc23c8c8097926dce42">&#9670;&nbsp;</a></span>w</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tjregion::w</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The width of the cropping region. Setting this to 0 is the equivalent of setting it to the width of the source JPEG image - x. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00581">581</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+
+</div>
+</div>
+<a id="a4b6a37a93997091b26a75831fa291ad9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b6a37a93997091b26a75831fa291ad9">&#9670;&nbsp;</a></span>x</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tjregion::x</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The left boundary of the cropping region. This must be evenly divisible by the MCU block width (see #tjMCUWidth.) </p>
+
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00571">571</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+
+</div>
+</div>
+<a id="a7b3e0c24cfe87acc80e334cafdcf22c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b3e0c24cfe87acc80e334cafdcf22c2">&#9670;&nbsp;</a></span>y</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tjregion::y</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The upper boundary of the cropping region. This must be evenly divisible by the MCU block height (see #tjMCUHeight.) </p>
+
+<p class="definition">Definition at line <a class="el" href="a00473_source.html#l00576">576</a> of file <a class="el" href="a00473_source.html">turbojpeg.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00473_source.html">turbojpeg.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aa00774_html"><div class="ttname"><a href="a00774.html">TY_CAMERA_EXTRINSIC</a></div><div class="ttdef"><b>Definition:</b> <a href="a00470_source.html#l00954">TYDefs.h:954</a></div></div>
-<div class="ttc" id="aa00461_html_ad4320c38038341657f9e759147db0639"><div class="ttname"><a href="a00461.html#ad4320c38038341657f9e759147db0639">TYGetStruct</a></div><div class="ttdeci">TY_CAPI TYGetStruct(TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, void *pStruct, uint32_t structSize)</div><div class="ttdoc">Get value of struct.</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00774.html">TY_CAMERA_EXTRINSIC</a></li>
+    <li class="navelem"><a class="el" href="a00774.html">tjregion</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

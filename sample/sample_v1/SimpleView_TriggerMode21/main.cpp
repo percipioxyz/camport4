@@ -105,7 +105,6 @@ int main(int argc, char* argv[])
 
     //try to enable depth map
     LOGD("Configure components, open depth cam");
-    DepthViewer depthViewer("Depth");
     if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
         TY_IMAGE_MODE image_mode;
         ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
@@ -117,7 +116,6 @@ int main(int argc, char* argv[])
         //the acutal depth (mm)= PixelValue * ScaleUnit 
         float scale_unit = 1.;
         TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
-        depthViewer.depth_scale_unit = scale_unit;
     }
 
     LOGD("=== Prepare image buffer");
@@ -176,32 +174,6 @@ int main(int argc, char* argv[])
         int err = TYFetchFrame(hDevice, &frame, 20000);
         if (err == TY_STATUS_OK) {
             LOGD("=== Get frame %d (%" PRIu64 ")", ++index, frame.image[0].timestamp);
-#if 0
-            int fps = get_fps();
-            if (fps > 0) {
-                LOGI("fps: %d", fps);
-            }
-
-            cv::Mat depth, irl, irr, color;
-            parseFrame(frame, &depth, &irl, &irr, &color);
-            if (!depth.empty()) {
-                depthViewer.show(depth);
-            }
-            if (!irl.empty()) { cv::imshow("LeftIR", irl); }
-            if (!irr.empty()) { cv::imshow("RightIR", irr); }
-            if (!color.empty()) { cv::imshow("Color", color); }
-
-            int key = cv::waitKey(1);
-            switch (key & 0xff) {
-            case 0xff:
-                break;
-            case 'q':
-                exit_main = true;
-                break;
-            default:
-                LOGD("Unmapped key %d", key);
-            }
-#endif
             LOGD("=== Re-enqueue buffer(%p, %d)"
                 , frame.userBuffer, frame.bufferSize);
             ASSERT_OK(TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize));

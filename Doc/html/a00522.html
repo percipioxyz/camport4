@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: nsimd_cpu_vf32 Struct Reference</title>
+<title>TYCamport3: jpeg_scan_info Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -86,37 +86,43 @@ $(document).ready(function(){initNavTree('a00522.html',''); initResizable(); });
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00519.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">nsimd_cpu_vf32 Struct Reference</div>  </div>
+<div class="title">jpeg_scan_info Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a5ca19db55c7dd198feba11b187852625"><td class="memItemLeft" align="right" valign="top"><a id="a5ca19db55c7dd198feba11b187852625"></a>
-f32&#160;</td><td class="memItemRight" valign="bottom"><b>v0</b></td></tr>
-<tr class="separator:a5ca19db55c7dd198feba11b187852625"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d6120880573ec81600b8fec6124216e"><td class="memItemLeft" align="right" valign="top"><a id="a8d6120880573ec81600b8fec6124216e"></a>
-f32&#160;</td><td class="memItemRight" valign="bottom"><b>v1</b></td></tr>
-<tr class="separator:a8d6120880573ec81600b8fec6124216e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ce0c11720eaed5a323bd14ff6ade5d1"><td class="memItemLeft" align="right" valign="top"><a id="a3ce0c11720eaed5a323bd14ff6ade5d1"></a>
-f32&#160;</td><td class="memItemRight" valign="bottom"><b>v2</b></td></tr>
-<tr class="separator:a3ce0c11720eaed5a323bd14ff6ade5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c82a6d8fa89febd30e50e3485b1e39b"><td class="memItemLeft" align="right" valign="top"><a id="a8c82a6d8fa89febd30e50e3485b1e39b"></a>
-f32&#160;</td><td class="memItemRight" valign="bottom"><b>v3</b></td></tr>
-<tr class="separator:a8c82a6d8fa89febd30e50e3485b1e39b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addd94bff3ee52f961cf6fda5ea86ddca"><td class="memItemLeft" align="right" valign="top"><a id="addd94bff3ee52f961cf6fda5ea86ddca"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>comps_in_scan</b></td></tr>
+<tr class="separator:addd94bff3ee52f961cf6fda5ea86ddca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a041f1af60508517345c1b76c48ee6567"><td class="memItemLeft" align="right" valign="top"><a id="a041f1af60508517345c1b76c48ee6567"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>component_index</b> [MAX_COMPS_IN_SCAN]</td></tr>
+<tr class="separator:a041f1af60508517345c1b76c48ee6567"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33bc5abcded36ccd1b4c2ec94f6e2ba5"><td class="memItemLeft" align="right" valign="top"><a id="a33bc5abcded36ccd1b4c2ec94f6e2ba5"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Ss</b></td></tr>
+<tr class="separator:a33bc5abcded36ccd1b4c2ec94f6e2ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4eefb8be0412f78566862c28a20fb254"><td class="memItemLeft" align="right" valign="top"><a id="a4eefb8be0412f78566862c28a20fb254"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Se</b></td></tr>
+<tr class="separator:a4eefb8be0412f78566862c28a20fb254"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43834ca9482c7ea12cc97cf602da004b"><td class="memItemLeft" align="right" valign="top"><a id="a43834ca9482c7ea12cc97cf602da004b"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Ah</b></td></tr>
+<tr class="separator:a43834ca9482c7ea12cc97cf602da004b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89cc9e990977c50b2b2058e6b9526e67"><td class="memItemLeft" align="right" valign="top"><a id="a89cc9e990977c50b2b2058e6b9526e67"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Al</b></td></tr>
+<tr class="separator:a89cc9e990977c50b2b2058e6b9526e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a07904_source.html#l00032">32</a> of file <a class="el" href="a07904_source.html">cpu/cpu/types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00192">192</a> of file <a class="el" href="a00011_source.html">jpeglib.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a07904_source.html">cpu/cpu/types.h</a></li>
+<li><a class="el" href="a00011_source.html">jpeglib.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00522.html">nsimd_cpu_vf32</a></li>
+    <li class="navelem"><a class="el" href="a00522.html">jpeg_scan_info</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

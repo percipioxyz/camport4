@@ -11,18 +11,19 @@ Please refer to [https://doc.percipio.xyz/cam/latest/index.html](https://doc.per
 
 ## SDK Files
 ```
-+---Doc                 SDK API Documents
-+---include             C header file
-+---lib                 dynamic link library for multi-platform
++---Doc                      SDK API Documents
++---include                  C header file
++---lib                      dynamic link library for multi-platform
 |   +---linux
 |   \---win
-|       +---driver      windows device driver 
-|       \---hostapp     pre-built sample executables
+|       +---driver           windows device driver 
+|       \---hostapp          pre-built sample executables
 \---sample
-    +---cloud_viewer    point cloud render and show dependencies
-    +---common          common API and image data wrapper code for sample_v1 and sample_v2
-    +---sample_v1       old sample application source code on orignal API
-    \---sample_v2       new sample application source code easier to use, This is recommended if you want to set up a new project
+    +---cloud_viewer         point cloud render and show dependencies
+    +---common               common API and image data wrapper code for sample_v1 and sample_v2
+    +---sample_v1            old sample application source code on orignal API
+    +---sample_v2            new sample application source code easier to use, This is recommended if you want to set up a new project
+    \---sample_genicam_sfnc  samples for all new cameras compatiable with GenApi Style API in TYParameter.h
 
 ```
 
@@ -43,28 +44,31 @@ Please refer to [https://doc.percipio.xyz/cam/latest/index.html](https://doc.per
  **for detail about SDK usage please refer to [HERE](https://doc.percipio.xyz/cam/latest/index.html) compile section**
 
 ### Linux
-install opencv & cmake
+This step is optional if you do not need opencv to show our images.
+Install opencv & cmake
 ```bash
 sudo apt-get install libopencv-dev cmake
 ```
-
+This step is optional if use TYCamConfig.cmake
 go to path lib/linux/\<your platform\>/ 
 ```bash
 cp -d libtycam.so* /usr/lib/
 ldconfig
 ```
 
- install libusb (only required by USB camera)
+ Install libusb (only required by USB camera)
 ```bash
 sudo apt-get install libusb-1.0-0-dev
 ```
 
-compile source code
+Compile source code. "${TY_LIB_PATH}" should be the top dir which contains
+TYCamConfig.cmake file. And "${TARGET_ARCH}" should be one of
+Aarch64/X3M_Aarch64/armv7hf/i686/x64
 ```bash
 cd sample
 mkdir build
 cd build
-cmake ..
+cmake .. -DTYCam_DIR=${TY_LIB_PATH} -DARCH=${TARGET_ARCH}
 make
 ```
 
@@ -74,7 +78,7 @@ All executables will be generated in ./bin directory.
 prepare environment
 - install USB driver from lib/win/driver (only required by USB camera)
 - install cmake (https://cmake.org)
-- install opencv (https://opencv.org/)
+- install opencv (https://opencv.org/) (optional)
 - add tycam.dll location to PATH environment variable  or copy to where system can find it
 
 compile source code

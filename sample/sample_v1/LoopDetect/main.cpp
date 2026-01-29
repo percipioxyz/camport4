@@ -14,6 +14,7 @@ void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 int main(int argc, char* argv[])
 {
     std::string ID, IP;
+    float scale_unit = 1.;
 
     for(int i = 1; i < argc; i++){
         if(strcmp(argv[i], "-id") == 0){
@@ -100,8 +101,8 @@ int main(int argc, char* argv[])
 				ASSERT_OK(TYCloseInterface(hIface));
 				continue;
 			}
+            TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
 		}
-
 
         LOGD("=== Prepare image buffer");
         uint32_t frameSize;
@@ -156,72 +157,29 @@ int main(int argc, char* argv[])
             continue;
         }
 
-        bool saveFrame = false;
-        int saveIdx = 0;
-        cv::Mat depth;
-        cv::Mat leftIR;
-        cv::Mat rightIR;
-        cv::Mat color;
-
         LOGD("=== Wait for callback");
         bool exit_main = false;
-        DepthViewer depthViewer("Depth");
         int count = 0;
         TY_FRAME_DATA frame;
         while(!exit_main){
             ret = TYFetchFrame(hDevice, &frame, 1000);
             if( ret == TY_STATUS_OK ) {
                 LOGD("=== Get frame %d", ++count);
-                parseFrame(frame, &depth, &leftIR, &rightIR, &color);
-
-                if(!color.empty()){
-                    LOGI("Color format is %s", colorFormatName(TYImageInFrame(frame, TY_COMPONENT_RGB_CAM)->pixelFormat));
+                for (int i = 0; i < frame.validCount; i++){
+                    if (frame.image[i].status != TY_STATUS_OK) continue;
+                    decode_and_display_image(frame.image[i],scale_unit);
                 }
 
                 LOGD("=== Callback: Re-enqueue buffer(%p, %d)", frame.userBuffer, frame.bufferSize);
                 ASSERT_OK(TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize));
 
-                if(!depth.empty()){
-                    depthViewer.show(depth);
-                }
-                if(!leftIR.empty()){
-                    cv::imshow("LeftIR", leftIR);
-                }
-                if(!rightIR.empty()){
-                    cv::imshow("RightIR", rightIR);
-                }
-                if(!color.empty()){
-                    cv::imshow("color", color);
-                }
 
-                if(saveFrame && !depth.empty() && !leftIR.empty() && !rightIR.empty()){
-                    LOGI(">>>> save frame %d", saveIdx);
-                    char f[32];
-                    sprintf(f, "%d.img", saveIdx++);
-                    FILE* fp = fopen(f, "wb");
-                    fwrite(depth.data, 2, depth.size().area(), fp);
-                    fwrite(color.data, 3, color.size().area(), fp);
-
-                    fclose(fp);
-
-                    saveFrame = false;
-                }
-            }
-              
-            if(device_offline){
-                LOGI("Found device offline");
-                break;
-            }
-
-            int key = cv::waitKey(10);
-            switch(key & 0xff){
+                int key = TYWaitKeyEvents();
+                switch(key & 0xff){
                 case 0xff:
                     break;
                 case 'q':
                     exit_main = true;
-                    break;
-                case 's':
-                    saveFrame = true;
                     break;
                 case 'x':
                     exit_main = true;
@@ -229,6 +187,12 @@ int main(int argc, char* argv[])
                     break;
                 default:
                     LOGD("Unmapped key %d", key);
+                }
+            }
+              
+            if(device_offline){
+                LOGI("Found device offline");
+                break;
             }
         }
 

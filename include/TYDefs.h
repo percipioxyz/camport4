@@ -374,6 +374,12 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
     
     TY_ENUM_LENS_OPTICAL_TYPE       = 0x0909 | TY_FEATURE_ENUM, /// Types of optical distortion of lenses, see TYLensOpticalType
 
+    TY_INT_TRANSMIT_ROI_OFFSET_X    = 0x0910 | TY_FEATURE_INT, ///Offset in pixels from image origin.
+    TY_INT_TRANSMIT_ROI_OFFSET_Y    = 0x0911 | TY_FEATURE_INT, ///Offset in lines from image origin.
+    TY_INT_TRANSMIT_ROI_WIDTH       = 0x0912 | TY_FEATURE_INT, ///ROI Image Width
+    TY_INT_TRANSMIT_ROI_HEIGHT      = 0x0913 | TY_FEATURE_INT, ///ROI Image Height
+    TY_BOOL_TRANSMIT_ROI_ENABLE     = 0x0914 | TY_FEATURE_BOOL, ///< TRANSMIT_ROI enable/disable
+
 }TY_FEATURE_ID_LIST;
 typedef uint32_t TY_FEATURE_ID;///< feature unique id @see TY_FEATURE_ID_LIST
 
@@ -820,7 +826,8 @@ typedef struct TY_DEVICE_USB_INFO
 {
     int     bus;
     int     addr;
-    char    reserved[248];
+    char    tlversion[32];
+    char    reserved[216];
 }TY_DEVICE_USB_INFO;
 
 ///@see TYGetInterfaceList
@@ -1232,7 +1239,7 @@ typedef struct TY_IMAGE_DATA
     void*           buffer;         ///< Pointer to data buffer
     int32_t         width;          ///< Image width in pixels
     int32_t         height;         ///< Image height in pixels
-    TYPixFmt        pixelFormat;    ///< Pixel format, see TY_PIXEL_FORMAT_LIST
+    TYPixFmt        pixelFormat;    ///< Pixel format, see TYPixFmtList
     int32_t         reserved[9];    ///< Reserved
 }TY_IMAGE_DATA;
 

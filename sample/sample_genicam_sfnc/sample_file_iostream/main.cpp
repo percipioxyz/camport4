@@ -2,8 +2,8 @@
 #include "FileAccessControl.hpp"
 
 int main(int argc, char* argv[]) {
-    std::string ID, IP;
-    int r_flag = 0, w_flag = 0, r_file_num = 0, w_file_num = 0;
+    std::string ID, IP, r_file_name, w_file_name, DATA;
+    int r_flag = 0, w_flag = 0, list_flag = 0;
     TY_INTERFACE_HANDLE hIface = NULL;
     TY_DEV_HANDLE hDevice = NULL;
     for (int i = 1; i < argc; i++) {
@@ -15,11 +15,31 @@ int main(int argc, char* argv[]) {
         }
         else if (strcmp(argv[i], "-read") == 0) {
           r_flag = 1;
-          r_file_num = atoi(argv[++i]);
+          list_flag = 1;
+          r_file_name = argv[++i];
         }
+        // write will start writing the file from the beginning.
         else if (strcmp(argv[i], "-write") == 0) {
           w_flag = 1;
-          w_file_num = atoi(argv[++i]);
+          list_flag = 1;
+          w_file_name = argv[++i]; 
+        }
+        // trunc will first clear the file and then write to it.
+        else if (strcmp(argv[i], "-trunc") == 0) {
+          w_flag = 2;
+          list_flag = 1;
+          w_file_name = argv[++i]; 
+        }
+        else if (strcmp(argv[i], "-data") == 0) {
+          DATA = argv[++i];
+        }
+        else if (strcmp(argv[i], "-list") == 0) {
+          list_flag = 1;
+        }
+        else if (strcmp(argv[i], "-h") == 0) {
+          // You can refer to the getFileMaps() of the header file FileAccessControl.hpp for the file_name
+          LOGI("Usage: sample_file_iostream [-h] [-id <ID>] [-ip <IP>] [-list] [-read <file_name>] [-write <file_name>] [-trunc <file_name>] [-data <data>]");
+          return 0;
         }
     }
 
@@ -38,21 +58,23 @@ int main(int argc, char* argv[]) {
     ASSERT_OK( TYOpenInterface(selectedDev.iface.id, &hIface) );
     ASSERT_OK( TYOpenDevice(hIface, selectedDev.id, &hDevice) );
     
-    uint32_t _cnt = 0;
-    ASSERT_OK(TYEnumGetEntryCount(hDevice, "FileSelector", &_cnt));
+    if (list_flag) {
+        uint32_t _cnt = 0;
+        ASSERT_OK(TYEnumGetEntryCount(hDevice, "FileSelector", &_cnt));
 
-    std::vector<TYEnumEntry> _cnt_entry(_cnt);
-    ASSERT_OK(TYEnumGetEntryInfo(hDevice, "FileSelector", _cnt_entry.data(), _cnt, &_cnt));
+        std::vector<TYEnumEntry> _cnt_entry(_cnt);
+        ASSERT_OK(TYEnumGetEntryInfo(hDevice, "FileSelector", _cnt_entry.data(), _cnt, &_cnt));
 
-    for (int i = 0; i < _cnt; i++) {
-        std::cout << "  Name : " << _cnt_entry[i].name << " value : " << _cnt_entry[i].value << std::endl;
+        for (int i = 0; i < _cnt; i++) {
+            std::cout << "  Name : " << _cnt_entry[i].name << " value : " << _cnt_entry[i].value << std::endl;
+        }
     }
 
     percipio::FileAccessControl fileStream(hDevice);
     std::vector<char> buffer(256);
-    std::string content = "a";
+    std::string content = "";
     if (r_flag) {
-        if (fileStream.open(r_file_num, std::ios::in)) {
+        if (fileStream.open(r_file_name.c_str(), std::ios::in)) {
             int count = 0;
             while (fileStream.read(buffer.data(), buffer.size())) {
                 content.append(buffer.data(), buffer.size());
@@ -73,13 +95,16 @@ int main(int argc, char* argv[]) {
         }
     }
     if (w_flag) {
-        if (fileStream.open(w_file_num, std::ios::out)) {
-            if (r_flag) {
-                fileStream << content << std::endl;
+        if ((w_flag == 1 && fileStream.open(w_file_name.c_str(), std::ios::out))
+            || (w_flag == 2 && fileStream.open(w_file_name.c_str(), std::ios::trunc))) {
+            if (DATA.size() > 0) {
+                fileStream << DATA;
+            } else if (r_flag) {
+                fileStream << content;
             } else {
-                fileStream << "Test" << std::endl;
+                fileStream << "Test";
             }
-            
+            fileStream.flush();
             fileStream.close();
         }
     }

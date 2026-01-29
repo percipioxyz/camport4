@@ -1,6 +1,5 @@
 var a00918 =
 [
-    [ "max_physical_size", "a00918.html#aee4feae3dfc735144250ef97bfd2e623", null ],
-    [ "max_speckle_diff", "a00918.html#afdd5935e2dcb0b359500c84c75c613c4", null ],
-    [ "max_speckle_size", "a00918.html#a101f480aa882c40a5e0ed4dc069d3655", null ]
+    [ "data", "a00918.html#ab5beb172b2e717b44797000b0e9af208", null ],
+    [ "offset", "a00918.html#afb13c38d7adbe2176352d9f6fe73fc74", null ]
 ];

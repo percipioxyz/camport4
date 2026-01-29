@@ -16,7 +16,6 @@ set(ALL_SAMPLES
   sample_trigger
   sample_ForceDeviceIP
   sample_get_rw_api
-  sample_speckleFilter
   sample_file_iostream
   sample_reconnect
   )
@@ -39,28 +38,8 @@ if(UNIX)
   target_link_libraries(sample_genicam_sfnc_common pthread)
 endif()
 
-add_definitions(-DOPENCV_DEPENDENCIES)
-
 set(ALL_SAMPLES ${ALL_SAMPLES} ${UserSetCtrlSample})
 
-# ========================================
-# === OpenCV
-# ========================================
-find_package(OpenCV REQUIRED)
-if (NOT OpenCV_FOUND)
-    message(FATAL_ERROR "OpenCV library not found")
-else()
-    include_directories(${OpenCV_INCLUDE_DIRS})
-    include_directories(${OpenCV2_INCLUDE_DIRS})
-    # if(CMAKE_BUILD_TYPE STREQUAL Debug)
-    # link_directories(${OpenCV_LIB_DIR_DBG})
-    # else()
-    # link_directories(${OpenCV_LIB_DIR_OPT})
-    # endif()
-    link_directories(${OpenCV_LIB_DIR})
-endif()
-
-add_definitions(-DOPENCV_DEPENDENCIES)
 foreach(sample_path ${ALL_SAMPLES})
     if (DEFINED SAMPLES)
       list(FIND SAMPLES ${sample_path} index)
@@ -74,7 +53,7 @@ foreach(sample_path ${ALL_SAMPLES})
         get_filename_component(sample ${sample_path} NAME)
         add_executable(${sample} ${sources})
         add_dependencies(${sample} sample_genicam_sfnc_common ${TARGET_LIB})
-        target_link_libraries(${sample} sample_genicam_sfnc_common ${TYCam_LIBS}  ${OpenCV_LIBS} ${CLOUD_VIEWER})
+        target_link_libraries(${sample} sample_genicam_sfnc_common ${TYCam_LIBS} ${COMMON_GUI_LIBS} ${CLOUD_VIEWER})
         set_target_properties(${sample} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
         set_target_properties(${sample} PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON )
         install(TARGETS ${sample} RUNTIME DESTINATION samples/)

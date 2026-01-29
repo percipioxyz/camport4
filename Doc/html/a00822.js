@@ -1,8 +1,15 @@
 var a00822 =
 [
-    [ "amp_thresh", "a00822.html#a6d9a8d7af590951e463312cd7f3e5146", null ],
-    [ "ch", "a00822.html#a1a2f9d4f7146adb1764e16826aaa7961", null ],
-    [ "chn_type", "a00822.html#ab267ce579f3cd3d98dd20ee800f78d2e", null ],
-    [ "rsvd", "a00822.html#a996512f874ce730b12323df5568885a7", null ],
-    [ "type", "a00822.html#a2925b426962ef740722dfbc51ce75096", null ]
+    [ "buildHash", "a00822.html#aa725db32ecbcabc59ab759b294b5cd1d", null ],
+    [ "configVersion", "a00822.html#a2e245f0076c559aeb469fa48e799b84a", null ],
+    [ "firmwareVersion", "a00822.html#a2570cb515298d3174ab2028af340fe76", null ],
+    [ "hardwareVersion", "a00822.html#adbe5206936aa801586075fb70dec83d5", null ],
+    [ "id", "a00822.html#adf4cc367429f25e9fc8a5e96b94da073", null ],
+    [ "iface", "a00822.html#a1fcc11ad86bc5f648f858a04018206d8", null ],
+    [ "modelName", "a00822.html#a49556f137e2273207ffca6ca1570de8c", null ],
+    [ "netInfo", "a00822.html#a94ee8e3aab3e6da1f850d5dee38eca9e", null ],
+    [ "reserved", "a00822.html#a5460e331f093c941417122d53394ab46", null ],
+    [ "usbInfo", "a00822.html#a703b6780753147d26ad08d2cb91d3a72", null ],
+    [ "userDefinedName", "a00822.html#aec6d14a60caf1b1291fd2165fed8d4e1", null ],
+    [ "vendorName", "a00822.html#ae619f10d791f69550d3fc5396c5c5d2c", null ]
 ];

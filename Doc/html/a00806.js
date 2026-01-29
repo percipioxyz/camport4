@@ -1,6 +1,7 @@
 var a00806 =
 [
-    [ "offset_us_count", "a00806.html#a20bda76d8a601257d8078cf7cbecc39d", null ],
-    [ "offset_us_list", "a00806.html#a5881edd7fe30d4d3eb8dc140c81fecaa", null ],
-    [ "start_time_us", "a00806.html#a9e32e3296bc30b87f279a794d9cbe6d7", null ]
+    [ "major", "a00806.html#a95147ff001af1998d50cc00e584fa16d", null ],
+    [ "minor", "a00806.html#a1b7a2221bf6a2054d389d766c8926371", null ],
+    [ "patch", "a00806.html#ad1cf7144e91ae64b4e984dd83571a862", null ],
+    [ "reserved", "a00806.html#ab53072b461dab3cbe2f0c17ec14d1024", null ]
 ];

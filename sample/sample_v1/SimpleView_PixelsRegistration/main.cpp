@@ -1,6 +1,4 @@
 #include "common.hpp"
-#include "TYImageProc.h"
-#include "TYCoordinateMapper.h"
 
 // The distance(mm) range defined by the macro is related to the camera model
 #define MIN_DEPTH			(400)
@@ -14,7 +12,6 @@
 struct CallbackData {
   int             index;
   TY_DEV_HANDLE   hDevice;
-  DepthRender*    render;
 
   float           scale_unit;
 
@@ -22,40 +19,75 @@ struct CallbackData {
   TY_CAMERA_CALIB_INFO color_calib;
 };
 
+struct Rect {
+  int32_t x;
+  int32_t y;
+  int32_t w;
+  int32_t h;
+};
+
+struct Point2D {
+  int32_t x;
+  int32_t y;
+};
+
+static void printRectDebug(const std::vector<Point2D>& dst_pos) {
+    std::cout << "dst_pos = {";
+    for (size_t i = 0; i < dst_pos.size(); ++i) {
+        std::cout << "{" << dst_pos[i].x << ", " << dst_pos[i].y << "}";
+        if (i < dst_pos.size() - 1) std::cout << ", ";
+    }
+    std::cout << "}" << std::endl;
+}
+
+static void printRectDebug(const Rect& rect) {
+    Point2D top_left = {rect.x, rect.y};
+    Point2D top_right = {rect.x + rect.w, rect.y};
+    Point2D bottom_right = {rect.x + rect.w, rect.y + rect.h};
+    Point2D bottom_left = {rect.x, rect.y + rect.h};
+    
+    std::vector<Point2D> points = {top_left, top_right, bottom_right, bottom_left};
+    std::cout << "src_pos = {";
+    for (size_t i = 0; i < points.size(); ++i) {
+        std::cout << "{" << points[i].x << ", " << points[i].y << "}";
+        if (i < points.size() - 1) std::cout << ", ";
+    }
+    std::cout << "}" << std::endl;
+}
+
 static void doRectRegister(const TY_CAMERA_CALIB_INFO& depth_calib
                       , const TY_CAMERA_CALIB_INFO& color_calib
-                      , cv::Mat& depth
+                      , const uint16_t* depth
+                      , const int32_t depthWidth
+                      , const int32_t depthHeight
                       , float f_scale_unit
-                      , cv::Mat& undistort_color
-                      , const cv::Rect& src
-                      , std::vector<cv::Point>& point_array
-                      )
+                      , const int32_t colorWidth
+                      , const int32_t colorHeight
+                      , const Rect& src
+                      , std::vector<Point2D>& point_array)
 {
   std::vector<TY_PIXEL_COLOR_DESC> src_rgb_data(4);
   std::vector<TY_PIXEL_COLOR_DESC> dst_rgb_data(4);
 
   src_rgb_data[0].x = src.x;              src_rgb_data[0].y = src.y;
-  src_rgb_data[1].x = src.x + src.width;  src_rgb_data[1].y = src.y;
-  src_rgb_data[2].x = src.x + src.width;  src_rgb_data[2].y = src.y + src.height;
-  src_rgb_data[3].x = src.x;              src_rgb_data[3].y = src.y + src.height;
-
-  cv::Mat temp;
-  cv::medianBlur(depth, temp, 5);
-  depth = temp;
+  src_rgb_data[1].x = src.x + src.w;      src_rgb_data[1].y = src.y;
+  src_rgb_data[2].x = src.x + src.w;      src_rgb_data[2].y = src.y + src.h;
+  src_rgb_data[3].x = src.x;              src_rgb_data[3].y = src.y + src.h;
 
   ASSERT_OK(
     TYMapRGBPixelsToDepthCoordinate(
       &depth_calib,
-      depth.cols, depth.rows, depth.ptr<uint16_t>(),
+      depthWidth, depthHeight, depth,
       &color_calib,
-      undistort_color.cols, undistort_color.rows, &src_rgb_data[0], src_rgb_data.size(),
+      colorWidth, colorHeight, &src_rgb_data[0], src_rgb_data.size(),
       MIN_DEPTH, MAX_DEPTH,
       &dst_rgb_data[0], f_scale_unit
     )
   );
   
   int size = dst_rgb_data.size();
-  for (int i = 0; i < dst_rgb_data.size(); i++) {
+  point_array.resize(size);
+  for (int i = 0; i < size; i++) {
     point_array[i].x = dst_rgb_data[i].x * f_scale_unit;
     point_array[i].y = dst_rgb_data[i].y * f_scale_unit;
   }
@@ -65,7 +97,39 @@ void handleFrame(TY_FRAME_DATA* frame, void* userdata)
 {
   CallbackData* pData = (CallbackData*)userdata;
   LOGD("=== Get frame %d", ++pData->index);
+#if 1
+  TY_IMAGE_DATA* depthImage = nullptr;
+  TY_IMAGE_DATA* colorImage = nullptr;
+  for (int i = 0; i < frame->validCount; i++) {
+      if (frame->image[i].status != TY_STATUS_OK) continue;
+    
+      if (frame->image[i].componentID == TY_COMPONENT_DEPTH_CAM) {
+          depthImage = &frame->image[i];
+      }
+      else if (frame->image[i].componentID == TY_COMPONENT_RGB_CAM) {
+          colorImage = &frame->image[i];
+      }
+  }
 
+  if (depthImage != nullptr && colorImage != nullptr) {
+      Rect roi_src = {
+          (colorImage->width - DEFAULT_RECT_WIDTH) / 2, 
+          (colorImage->height - DEFAULT_RECT_HEIGHT) / 2, 
+          DEFAULT_RECT_WIDTH, 
+          DEFAULT_RECT_HEIGHT
+      };
+
+      printRectDebug(roi_src);
+
+      std::vector<Point2D> dst_pos(4);
+      doRectRegister(pData->depth_calib, pData->color_calib, 
+                (const uint16_t*)depthImage->buffer, depthImage->width, depthImage->height, pData->scale_unit,
+                colorImage->width, colorImage->height, 
+                roi_src, dst_pos);
+      
+      printRectDebug(dst_pos);
+  }
+#else
   cv::Mat depth, color;
   parseFrame(*frame, &depth, 0, 0, &color);
   if (!depth.empty() && !color.empty()) {
@@ -132,7 +196,7 @@ void handleFrame(TY_FRAME_DATA* frame, void* userdata)
     }
     cv::imshow("Depth", depth_display);
   }
-
+#endif
   LOGD("=== Re-enqueue buffer(%p, %d)", frame->userBuffer, frame->bufferSize);
   ASSERT_OK(TYEnqueueBuffer(pData->hDevice, frame->userBuffer, frame->bufferSize));
 }
@@ -225,11 +289,9 @@ int main(int argc, char* argv[])
     ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM_EX, &trigger, sizeof(trigger)));
   }
 
-  DepthRender render;
   CallbackData cb_data;
   cb_data.index = 0;
   cb_data.hDevice = hDevice;
-  cb_data.render = &render;
 
   float scale_unit = 1.;
   TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
@@ -258,7 +320,8 @@ int main(int argc, char* argv[])
     }
 
     handleFrame(&frame, &cb_data);
-    int key = cv::waitKey(1);
+/*
+    int key = TYWaitKeyEvents();
     switch(key & 0xff){
       case 0xff:
         break;
@@ -268,6 +331,7 @@ int main(int argc, char* argv[])
       default:
         LOGD("Pressed key %d", key);
     }
+*/
   }
 
   ASSERT_OK( TYStopCapture(hDevice) );

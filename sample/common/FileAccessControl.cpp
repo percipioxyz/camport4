@@ -1,14 +1,15 @@
 // FileAccessControl.cpp
 #include "FileAccessControl.hpp"
+#include <cstring>
+#include <string>
 // #include "TYFileAccessController.hpp"
 #include "Utils.hpp"
-#include <cstring>
 
 namespace percipio {
 
 FileAccessControlBuf::FileAccessControlBuf(TY_DEV_HANDLE hDevice, size_t bufferSize)
     : m_hDevice(hDevice)
-    , m_fileSelector(static_cast<TY_FILE_SEL>(0))
+    , m_fileSelector("")
     , m_buffer(bufferSize)
     , m_bufferSize(bufferSize)
     , m_currentPosition(0)
@@ -26,13 +27,18 @@ FileAccessControlBuf::~FileAccessControlBuf() {
     }
 }
 
-bool FileAccessControlBuf::open(TY_FILE_SEL fileSel, std::ios::openmode mode) {
-    m_fileSelector = fileSel;
+bool FileAccessControlBuf::open(const char *file_name, std::ios::openmode mode) {
+    m_fileSelector = file_name;
     
     TY_FILE_OPEN_MODE openMode;
+    if (mode & std::ios::trunc) {
+        if (!deleteFile()) {
+            return false;
+        }
+    }
     if ((mode & std::ios::out) && (mode & std::ios::in)) {
         openMode = FILE_OPEN_MODE_READWRITE;
-    } else if (mode & std::ios::out) {
+    } else if ((mode & std::ios::out) || (mode & std::ios::trunc)) {
         openMode = FILE_OPEN_MODE_WRITE;
     } else {
         openMode = FILE_OPEN_MODE_READ;
@@ -62,8 +68,8 @@ bool FileAccessControlBuf::close() {
 }
 
 bool FileAccessControlBuf::openFile(TY_FILE_OPEN_MODE openMode) {
-    int32_t op_status= 0;
-    ASSERT_OK(TYEnumSetValue(m_hDevice, "FileSelector", m_fileSelector));
+    int64_t op_status= 0;
+    ASSERT_OK(TYEnumSetString(m_hDevice, "FileSelector", m_fileSelector.c_str()));
     // LOGD("Open file:%d", m_fileSelector);
 
     ASSERT_OK(TYEnumSetValue(m_hDevice, "FileOpenMode", openMode));
@@ -76,11 +82,11 @@ bool FileAccessControlBuf::openFile(TY_FILE_OPEN_MODE openMode) {
     ASSERT_OK(TYEnumGetValue(m_hDevice, "FileOperationStatus", &op_status));
     // LOGD("File operation status: %d", op_status);
 
-    return (op_status == FILE_OP_STATUS_SUCC);
+    return (static_cast<TY_FILE_OP_STATUS>(op_status) == FILE_OP_STATUS_SUCC);
 }
 
 bool FileAccessControlBuf::closeFile() {
-    int32_t op_status= 0;
+    int64_t op_status= 0;
 
     ASSERT_OK(TYEnumSetValue(m_hDevice, "FileOperationSelector", FILE_OP_SEL_CLOSE));
     // LOGD("Close file");
@@ -88,7 +94,26 @@ bool FileAccessControlBuf::closeFile() {
     ASSERT_OK(TYEnumGetValue(m_hDevice, "FileOperationStatus", &op_status));
     // LOGD("File operation status: %d", op_status);
 
-    return (op_status == FILE_OP_STATUS_SUCC);
+    return (static_cast<TY_FILE_OP_STATUS>(op_status) == FILE_OP_STATUS_SUCC);
+}
+
+bool FileAccessControlBuf::deleteFile() {
+    int64_t op_status= 0;
+
+    m_isOpen = openFile(FILE_OPEN_MODE_WRITE);
+    if (!m_isOpen) {
+        return false;
+    }
+
+    ASSERT_OK(TYEnumSetValue(m_hDevice, "FileOperationSelector", FILE_OP_SEL_DELETE));
+    ASSERT_OK(TYCommandExec(m_hDevice, "FileOperationExecute"));
+    ASSERT_OK(TYEnumGetValue(m_hDevice, "FileOperationStatus", &op_status));
+    if (static_cast<TY_FILE_OP_STATUS>(op_status) != FILE_OP_STATUS_SUCC) {
+        LOGE("File delete failed");
+        return false;
+    }
+
+    return true;
 }
 
 FileAccessControlBuf::int_type FileAccessControlBuf::underflow() {
@@ -196,79 +221,104 @@ std::streambuf::pos_type FileAccessControlBuf::seekpos(
 }
 
 size_t FileAccessControlBuf::readFromFile(void* buf, size_t count) {
-    int32_t op_status= 0;
+    int64_t op_status= 0;
     int64_t n_read = 0;
+    int64_t package_size = 0;
+    int64_t max_len = 0;
+    size_t total_read = 0;
+    int64_t remaining = 0;
+
+    size_t fsize = getFileSize();
+    // LOGD(" fsize: %zd, count: %zd", fsize, count);
+
+    remaining = count > (fsize - m_currentPosition) ? (fsize - m_currentPosition) : count;
+    // LOGD(" remaining: %zd", remaining);
 
     ASSERT_OK(TYEnumSetValue(m_hDevice, "FileOperationSelector", FILE_OP_SEL_READ));
     // LOGD("File operation set %d", FILE_OP_SEL_READ);
 
-    if (seekTofile() != TY_STATUS_OK) {
-        return static_cast<size_t>(0);
-    }
+    while (remaining > 0) { 
+        if (seekTofile() != TY_STATUS_OK) {
+            return static_cast<size_t>(total_read);
+        }
 
-    size_t fsize = getFileSize();
+        ASSERT_OK(TYIntegerGetMax(m_hDevice, "FileAccessLength", &max_len));
 
-    ASSERT_OK(TYIntegerSetValue(m_hDevice, "FileAccessLength", fsize > count ? count : fsize));
-    // LOGD("FileAccessLength: %zd", fsize > count ? count : fsize);
-
-    ASSERT_OK(TYCommandExec(m_hDevice, "FileOperationExecute"));
-
-    ASSERT_OK(TYEnumGetValue(m_hDevice, "FileOperationStatus", &op_status));
-    // LOGD("File operation status:%d", op_status);
-    if (op_status != FILE_OP_STATUS_SUCC) {
-        LOGE("File read failed");
-        return static_cast<size_t>(0);
-    }
+        package_size = (remaining > max_len) ? max_len : remaining;
     
-    ASSERT_OK(TYIntegerGetValue(m_hDevice, "FileOperationResult", &n_read));
-    // LOGD("%d bytes read", n_read);
+        ASSERT_OK(TYIntegerSetValue(m_hDevice, "FileAccessLength", package_size));
+        // LOGD("FileAccessLength: %d", count);
 
-    ASSERT_OK(TYByteArrayGetValue(m_hDevice, "FileAccessBuffer", reinterpret_cast<uint8_t*>(buf), n_read));
+        ASSERT_OK(TYCommandExec(m_hDevice, "FileOperationExecute"));
+        ASSERT_OK(TYEnumGetValue(m_hDevice, "FileOperationStatus", &op_status));
+        // LOGD("File operation status: %d", op_status);
+        if (static_cast<TY_FILE_OP_STATUS>(op_status) != FILE_OP_STATUS_SUCC) {
+            LOGE("File read failed");
+            return static_cast<size_t>(total_read);
+        }    
 
-    m_currentPosition += n_read;
+        ASSERT_OK(TYIntegerGetValue(m_hDevice, "FileOperationResult", &n_read));
+        // LOGD("%d bytes read", n_read);
+        if (n_read <= 0) {
+            break;
+        }
 
-    return static_cast<size_t>(n_read);
+        ASSERT_OK(TYByteArrayGetValue(m_hDevice, "FileAccessBuffer", reinterpret_cast<uint8_t*>(static_cast<char*>(buf) + total_read), n_read));
+
+        remaining = remaining - n_read;
+        m_currentPosition += n_read;
+        total_read += n_read;
+    }
+
+    return static_cast<size_t>(total_read);
 }
 
 size_t FileAccessControlBuf::writeToFile(const void* buf, size_t count) {
-    int32_t op_status= 0;
+    int64_t op_status= 0;
     int64_t n_write = 0;
+    int64_t package_size = 0;
+    int64_t max_len = 0;
+    size_t total_written = 0;
+    int64_t remaining = count;
 
     ASSERT_OK(TYEnumSetValue(m_hDevice, "FileOperationSelector", FILE_OP_SEL_WRITE));
     // LOGD("File operation set %d", FILE_OP_SEL_WRITE);
 
-    if (seekTofile() != TY_STATUS_OK) {
-        return static_cast<size_t>(0);
-    }
+    while(remaining > 0) {
+        if (seekTofile() != TY_STATUS_OK) {
+            return static_cast<size_t>(total_written);
+        }
 
-    size_t fsize = getFileSize();
+        ASSERT_OK(TYIntegerGetMax(m_hDevice, "FileAccessLength", &max_len));
 
-    // if remote file size is larger than local file size, remove the remote file to make sure the remote file can be rewritten
-    if (fsize > count) {
-        ASSERT_OK(TYEnumSetValue(m_hDevice, "FileOperationSelector", FILE_OP_SEL_DELETE));
+        package_size = (remaining > max_len) ? max_len : remaining;
+    
+        ASSERT_OK(TYIntegerSetValue(m_hDevice, "FileAccessLength", package_size));
+        // LOGD("FileAccessLength: %d", count);
+        ASSERT_OK(TYByteArraySetValue(m_hDevice, "FileAccessBuffer", reinterpret_cast<const uint8_t*>(static_cast<const char*>(buf) + m_currentPosition), package_size));
         ASSERT_OK(TYCommandExec(m_hDevice, "FileOperationExecute"));
+        ASSERT_OK(TYEnumGetValue(m_hDevice, "FileOperationStatus", &op_status));
+        // LOGD("File operation status: %d", op_status);
+        if (static_cast<TY_FILE_OP_STATUS>(op_status) != FILE_OP_STATUS_SUCC) {
+            LOGE("File write failed");
+            return static_cast<size_t>(total_written);
+        }
+        ASSERT_OK(TYIntegerGetValue(m_hDevice, "FileOperationResult", &n_write));
+        // LOGD("%d bytes write", n_write);
+        if (n_write <= 0) {
+            break;
+        }
+
+        remaining = remaining - n_write;
+        m_currentPosition += n_write;
+        total_written += n_write;
     }
 
-    ASSERT_OK(TYIntegerSetValue(m_hDevice, "FileAccessLength", count));
-    // LOGD("FileAccessLength: %d", count);
-    ASSERT_OK(TYByteArraySetValue(m_hDevice, "FileAccessBuffer", reinterpret_cast<const uint8_t*>(buf), count));
-    ASSERT_OK(TYCommandExec(m_hDevice, "FileOperationExecute"));
-    ASSERT_OK(TYEnumGetValue(m_hDevice, "FileOperationStatus", &op_status));
-    // LOGD("File operation status: %d", op_status);
-    if (op_status != FILE_OP_STATUS_SUCC) {
-        LOGE("File write failed");
-        return static_cast<size_t>(0);
-    }
-
-    ASSERT_OK(TYIntegerGetValue(m_hDevice, "FileOperationResult", &n_write));
-    // LOGD("%d bytes write", n_write);
-
-    m_currentPosition += n_write;
-
-    return static_cast<size_t>(n_write);
+    return static_cast<size_t>(total_written);
 }
 
 TY_STATUS FileAccessControlBuf::seekTofile() {
+    // LOGD("FileAccessOffset set: %zd", m_currentPosition);
     return TYIntegerSetValue(m_hDevice, "FileAccessOffset", m_currentPosition);
 }
 
@@ -280,15 +330,15 @@ size_t FileAccessControlBuf::getFileSize() {
 
 
 
-// FileAccessControl 实现
+// FileAccessControl
 FileAccessControl::FileAccessControl(TY_DEV_HANDLE hDevice, size_t bufferSize)
     : std::iostream(&m_buf)
     , m_buf(hDevice, bufferSize) {
 }
 
-bool FileAccessControl::open(TY_FILE_SEL fileSel, std::ios::openmode mode) {
+bool FileAccessControl::open(const char *file_name, std::ios::openmode mode) {
     clear();
-    return m_buf.open(fileSel, mode);
+    return m_buf.open(file_name, mode);
 }
 
 bool FileAccessControl::close() {
@@ -299,11 +349,11 @@ bool FileAccessControl::isOpen() const {
     return m_buf.isOpen();
 }
 
-void FileAccessControl::setFileSelector(TY_FILE_SEL fileSel) {
+void FileAccessControl::setFileSelector(const char *fileSel) {
     m_buf.setFileSelector(fileSel);
 }
 
-TY_FILE_SEL FileAccessControl::getFileSelector() const {
+const std::string& FileAccessControl::getFileSelector() const {
     return m_buf.getFileSelector();
 }
 

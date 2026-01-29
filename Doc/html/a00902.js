@@ -1,10 +1,7 @@
 var a00902 =
 [
-    [ "duty", "a00902.html#ac4a3104b77b1adc0046324d2c089cb92", null ],
-    [ "freq", "a00902.html#a024ec1ea3c9d08373044d0e028af138a", null ],
-    [ "mode", "a00902.html#a76015c9205569743a52fb82f4ef19643", null ],
-    [ "mode_supported", "a00902.html#a0d429d12055015d2ae3983e492be63c4", null ],
-    [ "reserved", "a00902.html#a50bde09f33a9ee22472630c900051eb1", null ],
-    [ "volt", "a00902.html#ac5f16965d352d927fab395a7cf476701", null ],
-    [ "volt_supported", "a00902.html#a51078ffcc07c1e5a8666e19c1b39da20", null ]
+    [ "phc_group_attr", "a00906.html", "a00906" ],
+    [ "offset", "a00902.html#ac039183da68398ac49bf8d9cc033f742", null ],
+    [ "phc_attr", "a00902.html#ad8875979dd101b6816856f93de72b1bd", null ],
+    [ "size", "a00902.html#aaceb97f214307656669b12b0bc2351df", null ]
 ];

@@ -103,6 +103,9 @@ int main(int argc, char* argv[])
                 }
                 LOGD("          model      : %s", devs[j].modelName);
 
+                if(strlen(devs[j].usbInfo.tlversion))
+                    LOGD("          TL version : %s", devs[j].usbInfo.tlversion);
+
                 if (save) {
                     *output << devs[j].id <<" "<<std::endl;
                 }

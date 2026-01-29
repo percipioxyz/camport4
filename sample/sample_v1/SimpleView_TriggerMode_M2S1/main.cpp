@@ -13,7 +13,6 @@ struct CamInfo
     std::vector<char>   fb[6];
     TY_FRAME_DATA       frame;
     int                 idx;
-    DepthRender         render;
 
     CamInfo() : hDev(0), idx(0) {}
 };
@@ -22,29 +21,25 @@ struct CamInfo
 void frameHandler(TY_FRAME_DATA* frame, void* userdata)
 {
     CamInfo* pData = (CamInfo*)userdata;
+    for (int i = 0; i < pData->frame.validCount; i++){
+        if (pData->frame.image[i].status != TY_STATUS_OK) continue;
 
-    cv::Mat depth, irl, irr, color;
-    parseFrame(*frame, &depth, &irl, &irr, &color);
+        uint32_t destSize;
+        auto win = ty_comp_window_name(pData->frame.image[i].componentID);
+        TYImageInfo image_info = ty_image_info(pData->frame.image[i]);
+        TYDecodeError err = TYGetDecodeBufferSize(&image_info, &destSize, TY_OUTPUT_FORMAT_AUTO);
 
-    char win[64];
-    if (!depth.empty()) {
-        cv::Mat colorDepth = pData->render.Compute(depth);
-        sprintf(win, "depth-%s", pData->tag.c_str());
-        cv::imshow(win, colorDepth);
+        char win_name[64];
+        sprintf(win_name, "%s-%s", win.c_str(), pData->tag.c_str());
+        if(err == TY_DECODE_SUCCESS) {
+            TYDecodeResult retInfo;
+            std::vector<uint8_t> image_data(destSize);
+            ASSERT_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&image_data[0], destSize, &retInfo));
+            TYDisplayImage(win_name, retInfo.width, retInfo.height, retInfo.format, &image_data[0]);
+        } else {
+            TYDisplayImage(win_name, pData->frame.image[i].width, pData->frame.image[i].height, pData->frame.image[i].pixelFormat, pData->frame.image[i].buffer);
+        }
     }
-    if (!irl.empty()) {
-        sprintf(win, "LeftIR-%s", pData->tag.c_str());
-        cv::imshow(win, irl);
-    }
-    if (!irr.empty()) {
-        sprintf(win, "RightIR-%s", pData->tag.c_str());
-        cv::imshow(win, irr);
-    }
-    if (!color.empty()) {
-        sprintf(win, "color-%s", pData->tag.c_str());
-        cv::imshow(win, color);
-    }
-
     pData->idx++;
 
     LOGD("=== Re-enqueue buffer(%p, %d)", frame->userBuffer, frame->bufferSize);
@@ -265,7 +260,7 @@ int main(int argc, char* argv[])
 
             frameHandler(&cams[cam_index].frame, &cams[cam_index]);
 
-            int key = cv::waitKey(1);
+            int key = TYWaitKeyEvents();
             switch (key & 0xff) {
             case 0xff:
                 break;

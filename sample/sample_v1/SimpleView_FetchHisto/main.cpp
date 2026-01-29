@@ -115,25 +115,6 @@ int main(int argc, char* argv[])
                             , i, ir_left_his[i], i, ir_right_his[i]);
                     }
                 }
-                if(frame.image[i].componentID == TY_COMPONENT_IR_CAM_LEFT) {
-                    cv::Mat irl(frame.image[i].height, frame.image[i].width, CV_8U, frame.image[i].buffer);
-                    imshow("irl", irl);
-                }
-                if(frame.image[i].componentID == TY_COMPONENT_IR_CAM_RIGHT) {
-                    cv::Mat irr(frame.image[i].height, frame.image[i].width, CV_8U, frame.image[i].buffer);
-                    imshow("irr", irr);
-                }
-            }
-
-            int key = cv::waitKey(1);
-            switch(key & 0xff) {
-            case 0xff:
-                break;
-            case 'q':
-                exit_main = true;
-                break;
-            default:
-                LOGD("Unmapped key %d", key);
             }
 
             LOGD("=== Re-enqueue buffer(%p, %d)"

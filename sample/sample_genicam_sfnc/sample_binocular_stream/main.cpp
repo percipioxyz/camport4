@@ -81,7 +81,6 @@ int main(int argc, char* argv[])
     LOGD("Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
 
-    DepthViewer depthViewer("Depth");
     LOGD("Start capture");
     ASSERT_OK( TYStartCapture(hDevice) );
 
@@ -99,17 +98,15 @@ int main(int argc, char* argv[])
                 LOGI("fps: %d", fps);
             }
 
-            cv::Mat irl, irr;
-            parseFrame(frame, nullptr, &irl, &irr, nullptr);
-            if(!irl.empty()){
-                cv::imshow("left-ir", irl);
-            }
+            for (int i = 0; i < frame.validCount; i++){
+                if (frame.image[i].status != TY_STATUS_OK) continue;
 
-            if(!irr.empty()){
-                cv::imshow("right-ir", irr);
+                if(frame.image[i].componentID == TY_COMPONENT_IR_CAM_LEFT ||
+                    frame.image[i].componentID == TY_COMPONENT_IR_CAM_RIGHT) {
+                    decode_and_display_image(frame.image[i]);
+                }
             }
-            
-            int key = cv::waitKey(1);
+            int key = TYWaitKeyEvents();
             switch(key & 0xff) {
             case 0xff:
                 break;

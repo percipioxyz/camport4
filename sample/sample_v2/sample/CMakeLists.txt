@@ -2,6 +2,7 @@
 set(ALL_CPP_API_SAMPLES
     ListDevices
     ForceDeviceIP
+    Registration
     DepthStream
     TofDepthStream
     SoftTrigger
@@ -21,10 +22,8 @@ set(ALL_CPP_API_SAMPLES
     )
 
 set(SAMPLES_DEPENDS_OPENCV
-    Registration
     IREnhance
     )
-
 
 if (BUILD_SAMPLE_V2_WITH_OPENCV)
     set(ALL_CPP_API_SAMPLES ${ALL_CPP_API_SAMPLES} ${SAMPLES_DEPENDS_OPENCV})
@@ -44,9 +43,8 @@ foreach(sample ${ALL_CPP_API_SAMPLES})
         
         add_executable(${sample_exec} ${sources})
         add_dependencies(${sample_exec} cpp_api_lib ${TARGET_LIB})
-        target_link_libraries(${sample_exec} cpp_api_lib ${TYCam_LIBS})
+        target_link_libraries(${sample_exec} cpp_api_lib ${TYCam_LIBS} ${COMMON_GUI_LIBS})
         if (BUILD_SAMPLE_V2_WITH_OPENCV)
-            add_definitions(-DOPENCV_DEPENDENCIES)
             target_link_libraries(${sample_exec} ${OpenCV_LIBS})
         endif()
         set_target_properties(${sample_exec} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

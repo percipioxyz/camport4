@@ -73,6 +73,7 @@ int main(int argc, char* argv[])
         LOGD("ISP Block Size: %u", block_size);
 
         uint8_t * buf = new uint8_t[block_size];
+        memset(buf, 0, block_size);
         
         if (!output_file.empty()) {
             ASSERT_OK( TYGetByteArray(hDevice, TY_COMPONENT_STORAGE, TY_BYTEARRAY_ISP_BLOCK, buf, block_size) );

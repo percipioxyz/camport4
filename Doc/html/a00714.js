@@ -1,7 +1,5 @@
 var a00714 =
 [
-    [ "depth", "a00714.html#a5c2c74e1aa19e036ec78459623f3d1aa", null ],
-    [ "rsvd", "a00714.html#a34a4bba880ce9c62e6f8fd05c077060e", null ],
-    [ "x", "a00714.html#a86e54f296eb1afe8964402379feb3961", null ],
-    [ "y", "a00714.html#aff6686623101300f50db5106c28bc4f0", null ]
+    [ "v0", "a00714.html#a9f58d2787e23d83df4b0f576d3a4a429", null ],
+    [ "v1", "a00714.html#a234980a3c7bdb52002363b29304543f1", null ]
 ];

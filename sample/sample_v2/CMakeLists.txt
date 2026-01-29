@@ -4,14 +4,13 @@ else() # to avoid errors reported by CMake 4.0 and above versions
     cmake_minimum_required(VERSION 3.5)
 endif()
 
-
 option(BUILD_SAMPLE_V2_WITH_OPENCV "Enable opencv library dependencies " ON)
 
 # ========================================
 # === common, build static lib to speed up
 # ========================================
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/hpp/)
-include_directories(${COMMON_INC}/)
+include_directories(${COMMON_INC})
 
 set(CPLUSPLUS_SAMPLE_API_SOURCE 
     cpp/Device.cpp
@@ -33,10 +32,6 @@ if (BUILD_SAMPLE_V2_WITH_OPENCV)
         # endif()
         link_directories(${OpenCV_LIB_DIR})
     endif()
-endif()
-
-if (BUILD_SAMPLE_V2_WITH_OPENCV)
-    add_definitions(-DOPENCV_DEPENDENCIES)
 endif()
 
 add_library(cpp_api_lib STATIC ${COMMON_SOURCES} ${CPLUSPLUS_SAMPLE_API_SOURCE})

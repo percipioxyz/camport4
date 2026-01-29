@@ -3,8 +3,6 @@
 #include <cmath>
 #include "common.hpp"
 #include "../../cloud_viewer/cloud_viewer.hpp"
-#include "TYImageProc.h"
-#include "TYCoordinateMapper.h"
 
 struct CallbackData {
     int             index;
@@ -17,93 +15,100 @@ struct CallbackData {
     bool saveOneFramePoint3d;
     bool exit_main;
     int  fileIndex;
+
+    std::vector<TY_VECT_3F> p3d;
+    std::vector<uint8_t> colorBuffer;
 };
 
 CallbackData cb_data;
-
-bool isTof = false;
-cv::Mat tofundis_mapx, tofundis_mapy;
-
 //////////////////////////////////////////////////
-
 static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
-    //we only using Opencv Mat as data container.
-    //you can allocate memory by yourself.
     CallbackData* pData = (CallbackData*) userdata;
     LOGD("=== Get frame %d", ++pData->index);
 
-    cv::Mat color;
-    std::vector<TY_VECT_3F> p3d(0);
-    for (int i = 0; i < frame->validCount; i++){
+    TY_IMAGE_DATA* depthImage = nullptr;
+    TY_IMAGE_DATA* colorImage = nullptr;
+    for (int i = 0; i < frame->validCount; i++) {
         if (frame->image[i].status != TY_STATUS_OK) continue;
-
-        if (frame->image[i].componentID == TY_COMPONENT_DEPTH_CAM){
-            //frame->image[i].pixelFormat
-            p3d.resize(frame->image[i].width * frame->image[i].height);
-            for (int pxl = 0; pxl < p3d.size(); pxl++) {
-                p3d[pxl].z = *((int16_t *)frame->image[i].buffer + 3 * pxl + 2);
-                if (p3d[pxl].z == 0) {
-                    p3d[pxl].x = NAN;
-                    p3d[pxl].y = NAN;
-                    p3d[pxl].z = NAN;
-                } else {
-                    p3d[pxl].x = *((int16_t *)frame->image[i].buffer + 3 * pxl) * pData->f_depth_scale;
-                    p3d[pxl].y = *((int16_t *)frame->image[i].buffer + 3 * pxl + 1) * pData->f_depth_scale;
-                    p3d[pxl].z = *((int16_t *)frame->image[i].buffer + 3 * pxl + 2) * pData->f_depth_scale;
-                }
-            }
-        } else if (frame->image[i].componentID == TY_COMPONENT_RGB_CAM){
-            parseColorFrame(&frame->image[i], &color);
+        
+        if (frame->image[i].componentID == TY_COMPONENT_DEPTH_CAM) {
+            depthImage = &frame->image[i];
+        }
+        else if (frame->image[i].componentID == TY_COMPONENT_RGB_CAM) {
+            colorImage = &frame->image[i];
+            std::cout << "###color image fmt: 0x" << std::hex << colorImage->pixelFormat << std::endl;
         }
     }
 
-    if(p3d.size()){
-        uint8_t *color_data = NULL;
-        cv::Mat undistort_color;
-        if (!color.empty()){
-            // do rgb undistortion
-            TY_IMAGE_DATA src;
-            src.width = color.cols;
-            src.height = color.rows;
-            src.size = color.size().area() * 3;
-            src.pixelFormat = TYPixelFormatRGB8;
-            src.buffer = color.data;
+    if (depthImage != nullptr) {
+        std::vector<TY_VECT_3F> p3d(depthImage->width * depthImage->height);
+        for (int pxl = 0; pxl < p3d.size(); pxl++) {
+            p3d[pxl].z = *((int16_t *)depthImage->buffer + 3 * pxl + 2);
+            if (p3d[pxl].z == 0) {
+                p3d[pxl].x = NAN;
+                p3d[pxl].y = NAN;
+                p3d[pxl].z = NAN;
+            } else {
+                p3d[pxl].x = *((int16_t *)depthImage->buffer + 3 * pxl) * pData->f_depth_scale;
+                p3d[pxl].y = *((int16_t *)depthImage->buffer + 3 * pxl + 1) * pData->f_depth_scale;
+                p3d[pxl].z = *((int16_t *)depthImage->buffer + 3 * pxl + 2) * pData->f_depth_scale;
+            }
+        }
 
-            undistort_color = cv::Mat(color.size(), CV_8UC3);
-            TY_IMAGE_DATA dst;
-            dst.width = color.cols;
-            dst.height = color.rows;
-            dst.size = undistort_color.size().area() * 3;
-            dst.buffer = undistort_color.data;
-            dst.pixelFormat = TYPixelFormatRGB8;
-            ASSERT_OK(TYUndistortImage(&pData->color_calib, &src, NULL, &dst));
-            cv::cvtColor(undistort_color, undistort_color, cv::COLOR_BGR2RGB);
-            color_data = undistort_color.ptr<uint8_t>();
+        uint8_t* color_data = nullptr;
+        if (colorImage != nullptr) {
+            const TYImageInfo color_info = ty_image_info(*colorImage);
+            uint32_t colorDestSize = 0;
+            TYDecodeResult colorDecode;
+            TYDecodeError colorDecodeErr = TYGetDecodeBufferSize(&color_info, &colorDestSize, TY_OUTPUT_FORMAT_BGR);
+            if (colorDecodeErr == TY_DECODE_SUCCESS) {
+                pData->colorBuffer.resize(colorDestSize);
+                ASSERT_OK(TYDecodeImage(&color_info, TY_OUTPUT_FORMAT_BGR, (void*)&pData->colorBuffer[0], colorDestSize, &colorDecode));
 
-            TY_CAMERA_EXTRINSIC extri_inv;
-            cv::Mat mappedDepth = cv::Mat::zeros(undistort_color.size(), CV_16U);
-            ASSERT_OK(TYInvertExtrinsic(&pData->color_calib.extrinsic, &extri_inv));
-            ASSERT_OK(TYMapPoint3dToPoint3d(&extri_inv, &p3d[0], p3d.size(), &p3d[0]));
-            ASSERT_OK(TYMapPoint3dToDepthImage(&pData->color_calib, 
-                                               &p3d[0], 
-                                               p3d.size(),
-                                               undistort_color.cols, 
-                                               undistort_color.rows, 
-                                               (uint16_t*)mappedDepth.data));
+                TY_IMAGE_DATA src, dst;
+                src.width = colorImage->width;
+                src.height = colorImage->height;
+                src.size = colorImage->size; // uint16_t
+                src.pixelFormat = TYPixelFormatBGR8; 
+                src.buffer = (void*)&pData->colorBuffer[0];
+                
+                std::vector<uint8_t> undistortColorBuffer(colorDestSize);
+                dst.width = colorImage->width;
+                dst.height = colorImage->height;
+                dst.size = colorImage->size;
+                dst.buffer = (void*)&undistortColorBuffer[0];
+                dst.pixelFormat = TYPixelFormatBGR8;
 
-            p3d.resize(mappedDepth.size().area());
-            ASSERT_OK(TYMapDepthImageToPoint3d(&pData->color_calib, 
-                                               mappedDepth.cols, 
-                                               mappedDepth.rows, 
-                                               (uint16_t*)mappedDepth.data, 
-                                               &p3d[0], 
-                                               pData->f_depth_scale));
+                ASSERT_OK(TYUndistortImage(&pData->color_calib, &src, NULL, &dst));
+                pData->colorBuffer = std::move(undistortColorBuffer);
+                
+                color_data = &pData->colorBuffer[0];
+            
+                TY_CAMERA_EXTRINSIC extri_inv;
+                std::vector<uint16_t> mappedDepth(colorImage->width * colorImage->height);
+                ASSERT_OK(TYInvertExtrinsic(&pData->color_calib.extrinsic, &extri_inv));
+                ASSERT_OK(TYMapPoint3dToPoint3d(&extri_inv, &p3d[0], p3d.size(), &p3d[0]));
+                ASSERT_OK(TYMapPoint3dToDepthImage(&pData->color_calib, 
+                                                &p3d[0], 
+                                                p3d.size(),
+                                                colorImage->width, 
+                                                colorImage->height, 
+                                                &mappedDepth[0]));
+
+                p3d.resize(colorImage->width * colorImage->height);
+                ASSERT_OK(TYMapDepthImageToPoint3d(&pData->color_calib, 
+                                                colorImage->width, 
+                                                colorImage->height, 
+                                                &mappedDepth[0], 
+                                                &p3d[0], 
+                                                pData->f_depth_scale));
+            }
         }
 
         if (pData->saveOneFramePoint3d){
             char file[32];
             sprintf(file, "points-%d.xyz", pData->fileIndex++);
-            writePointCloud((cv::Point3f*)&p3d[0], (const cv::Vec3b*)undistort_color.data, p3d.size(), file, PC_FILE_FORMAT_XYZ);
+            writePointCloud((float*)&p3d[0], color_data, p3d.size(), file, PC_FILE_FORMAT_XYZ);
             pData->saveOneFramePoint3d = false;
         }
         for (int idx = 0; idx < p3d.size(); idx++){//we adjust coordinate for display
@@ -111,6 +116,7 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
             p3d[idx].z = -p3d[idx].z;
         }
         GLPointCloudViewer::Update(p3d.size(), &p3d[0], color_data);
+
     }
 }
 
@@ -250,8 +256,6 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA
         , &cb_data.depth_calib, sizeof(cb_data.depth_calib)));
 
-    ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_DISTORTION, &isTof));
-
     LOGD("=== Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
 
@@ -266,17 +270,18 @@ int main(int argc, char* argv[])
 
     LOGD("=== Start capture");
     ASSERT_OK( TYStartCapture(hDevice) );
-
+    
     cb_data.index = 0;
     cb_data.hDevice = hDevice;
     cb_data.saveOneFramePoint3d = false;
     cb_data.fileIndex = 0;
     cb_data.exit_main = false;
+
     //start a thread to fetch image data
     TYThread fetch_thread;
     fetch_thread.create(FetchFrameThreadFunc, &cb_data);
+
     LOGD("=== While loop to fetch frame");
-    FetchOneFrame(cb_data); 
     GLPointCloudViewer::ResetViewTranslate();//init view position by first frame
     GLPointCloudViewer::RegisterKeyCallback(key_pressed);//key pressed callback
     GLPointCloudViewer::EnterMainLoop();//start main window 

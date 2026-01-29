@@ -7,8 +7,8 @@ using namespace percipio_layer;
 class StorageCfgTestCamera : public FastCamera
 {
     public:
-        StorageCfgTestCamera() : FastCamera() {};
-        ~StorageCfgTestCamera() {}; 
+        StorageCfgTestCamera() : FastCamera() {}
+        ~StorageCfgTestCamera() {}
 
         TY_STATUS SaveJsonCfg(const std::string file);
         TY_STATUS DumpJsonCfg(const std::string file);
@@ -24,12 +24,12 @@ TY_STATUS StorageCfgTestCamera::DumpJsonCfg(const std::string file)
     std::string js_code;
     TY_STATUS ret = load_parameters_from_storage(handle(), js_code);
     if(ret == TY_STATUS_OK) {
-        std::ofstream filestream(file.c_str()); // 创建ofstream对象，打开文件
-        if (filestream.is_open()) { // 检查文件是否成功打开
-            filestream << js_code; // 写入字符串到文件
-            filestream.close(); // 关闭文件
+        std::ofstream filestream(file.c_str()); // create ofstream and open file
+        if (filestream.is_open()) { // check if file is opened
+            filestream << js_code; // write content in file
+            filestream.close(); // close file
         } else {
-            // 错误处理
+            // err handle
         }
     }
     return ret;

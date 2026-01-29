@@ -1,12 +1,16 @@
 #pragma once
 
 #include <memory>
+#include <map>
 #include <set>
 #include <mutex>
 #include <queue>
 #include <thread>
 #include <atomic>
 #include <condition_variable>
+#include <chrono>
+#include <functional>
+#include <algorithm>
 
 #include "common.hpp"
 
@@ -14,144 +18,191 @@ namespace percipio_layer {
 
 class TYImage
 {
-  public:
+public:
     TYImage();
-    TYImage(const TY_IMAGE_DATA& image);
-    TYImage(const TYImage& src);
-    TYImage(int32_t width, int32_t height, TY_COMPONENT_ID compID, TYPixFmt format, int32_t size);
-
+    explicit TYImage(const TY_IMAGE_DATA& image, float f_scale_unit = 1.0f);
+    explicit TYImage(const TYImage& src);
+    TYImage(int32_t width, int32_t height, TY_COMPONENT_ID compID, 
+            TYPixFmt format, int32_t size);
+    
+    TYImage& operator=(const TYImage& src);
+    
     ~TYImage();
 
-    int32_t  size()       const { return image_data.size;   }
-    int32_t  width()      const { return image_data.width;  }
-    int32_t  height()     const { return image_data.height; }
-    int32_t  bpp()        const { return 8 * image_data.size / (image_data.width * image_data.height); }
-    void*    buffer()     const { return image_data.buffer; }
-    int32_t  status()     const { return image_data.status; }
-    uint64_t timestamp()  const { return image_data.timestamp; }
-    int32_t  imageIndex() const { return image_data.imageIndex; }
+    int32_t size() const noexcept { return image_data.size; }
+    int32_t width() const noexcept { return image_data.width; }
+    int32_t height() const noexcept { return image_data.height; }
+    int32_t bpp() const noexcept { 
+        return (image_data.width * image_data.height > 0) ? 
+               8 * image_data.size / (image_data.width * image_data.height) : 0; 
+    }
+    
+    void* buffer() const noexcept { return image_data.buffer; }
+    int32_t status() const noexcept { return image_data.status; }
+    uint64_t timestamp() const noexcept { return image_data.timestamp; }
+    int32_t imageIndex() const noexcept { return image_data.imageIndex; }
 
-    bool     resize(int w, int h);
+    TYPixFmt pixelFormat() const noexcept { return image_data.pixelFormat; }
+    TY_COMPONENT_ID componentID() const noexcept { return image_data.componentID; }
 
-    TYPixFmt pixelFormat() const { return image_data.pixelFormat; }
-    TY_COMPONENT_ID componentID() const { return image_data.componentID; }
+    float DepthScaleUnit() const noexcept { return scale_unit; }
+    
+    const TY_IMAGE_DATA* image() const noexcept { return &image_data; }
+    
+    bool isValid() const noexcept { return image_data.buffer != nullptr && image_data.size > 0; }
 
-    const TY_IMAGE_DATA* image() const { return &image_data; }
-
-  private:
+private:
     bool m_isOwner = false;
-    TY_IMAGE_DATA image_data;
+    TY_IMAGE_DATA image_data{};
+    float scale_unit = 1.0f;
+    
+    void cleanup() noexcept;
+    void copyFrom(const TYImage& src);
 };
 
 class TYFrame
 {
-  public:
-    ~TYFrame();
-    void operator=(TYFrame const&) = delete;
-    TYFrame(TYFrame const&) = delete;
-    TYFrame(const TY_FRAME_DATA& frame);
- 
-    std::shared_ptr<TYImage> depthImage()        { return _images[TY_COMPONENT_DEPTH_CAM];}
-    std::shared_ptr<TYImage> colorImage()        { return _images[TY_COMPONENT_RGB_CAM];}
-    std::shared_ptr<TYImage> leftIRImage()       { return _images[TY_COMPONENT_IR_CAM_LEFT];}
-    std::shared_ptr<TYImage> rightIRImage()      { return _images[TY_COMPONENT_IR_CAM_RIGHT];}
+public:
+    ~TYFrame() = default;
+    
+    TYFrame(const TYFrame&) = delete;
+    TYFrame& operator=(const TYFrame&) = delete;
+    
+    TYFrame(TYFrame&&) = delete;
+    TYFrame& operator=(TYFrame&&) = delete;
+    
+    explicit TYFrame(const TY_FRAME_DATA& frame);
 
-  private:
-    int32_t               bufferSize = 0;
-    std::vector<uint8_t>  userBuffer;
+    std::shared_ptr<TYImage> depthImage() { return getImage(TY_COMPONENT_DEPTH_CAM); }
+    std::shared_ptr<TYImage> colorImage() { return getImage(TY_COMPONENT_RGB_CAM); }
+    std::shared_ptr<TYImage> leftIRImage() { return getImage(TY_COMPONENT_IR_CAM_LEFT); }
+    std::shared_ptr<TYImage> rightIRImage() { return getImage(TY_COMPONENT_IR_CAM_RIGHT); }
+    
+    bool hasImage(TY_COMPONENT_ID compID) const {
+        return _images.find(compID) != _images.end();
+    }
 
-    typedef std::map<TY_COMPONENT_ID, std::shared_ptr<TYImage>> ty_image;
-    ty_image              _images;
+private:
+    std::vector<uint8_t> userBuffer;
+    std::map<TY_COMPONENT_ID, std::shared_ptr<TYImage>> _images;
+    
+    std::shared_ptr<TYImage> getImage(TY_COMPONENT_ID compID) {
+        auto it = _images.find(compID);
+        return (it != _images.end()) ? it->second : nullptr;
+    }
 };
 
-#ifdef OPENCV_DEPENDENCIES
 class ImageDisplay
 {
-  public:
+public:
+    static ImageDisplay& getInstance() {
+        static ImageDisplay instance;
+        return instance;
+    }
+    
+    ImageDisplay(const ImageDisplay&) = delete;
+    ImageDisplay& operator=(const ImageDisplay&) = delete;
+    
+    int updateWindow(const std::string& win, std::shared_ptr<TYImage> img);
+    void closeWindow(const std::string& win);
+    void destroyAllWindows();
+    
+    void stop();
+
+private:
     ImageDisplay();
     ~ImageDisplay();
-
-    int updateWindow(const char* win, const cv::Mat& img);
-    void CloseWindow(const char* win);
-
-  private:
-    std::atomic<bool> m_running;
+    
+    std::atomic<bool> m_running{true};
     std::thread m_thread;
+    
+    std::atomic<int> m_key{0};
+    mutable std::mutex m_mutex;
+    
+    struct DisplayItem {
+        std::shared_ptr<TYImage> image;
+        bool updated = false;
+        
+        DisplayItem() = default;
+        DisplayItem(std::shared_ptr<TYImage> img, bool upd) : image(img), updated(upd) {}
+    };
+    
+    std::map<std::string, DisplayItem> displays;
+    std::set<std::string> windowsToDestroy;
+    
     void displayThread();
-
-    int m_key;
-
-    std::set<std::string> destroy_win;
-
-    std::mutex      _lock;
-    typedef std::map<std::string, cv::Mat> ty_display;
-    ty_display displays;
 };
-#endif
 
 class ImageProcesser
 {
-  public:
-    ImageProcesser(const char* win,  const TY_CAMERA_CALIB_INFO* calib_data = nullptr);
-    ~ImageProcesser() {clear();}
-
+public:
+    explicit ImageProcesser(const std::string& win, 
+                          const TY_CAMERA_CALIB_INFO* calib_data = nullptr);
+    ~ImageProcesser() { clear(); }
+    
+    ImageProcesser(const ImageProcesser&) = delete;
+    ImageProcesser& operator=(const ImageProcesser&) = delete;
+    
     virtual int parse(const std::shared_ptr<TYImage>& image);
-    int DepthImageRender();
     TY_STATUS doUndistortion();
     int flush();
     void clear();
-
+    
     const std::shared_ptr<TYImage>& image() const { return _image; }
-    const std::string& win() { return win_name; }
+    const std::string& win() const { return win_name; }
+    
+    bool isValid() const { return _image != nullptr; }
 
-  protected:
+protected:
     std::shared_ptr<TYImage> _image;
 
-#ifdef OPENCV_DEPENDENCIES
-    ImageDisplay* disp_ptr;
-#endif
-
-  private:
+private:
     std::string win_name;
     std::shared_ptr<TY_CAMERA_CALIB_INFO> _calib_data;
-
-#ifdef OPENCV_DEPENDENCIES
-    DepthRender render;
-#endif
+    bool has_win;
+    mutable std::mutex image_mutex;
 };
 
+using TYFrameKeyBoardEventCallback = std::function<void(int, void*)>;
+using ImageProcesserMap = std::map<TY_COMPONENT_ID, std::shared_ptr<ImageProcesser>>;
 
-typedef void (*TYFrameKeyBoardEventCallback) (int, void*);
-typedef std::map<TY_COMPONENT_ID, std::shared_ptr<ImageProcesser>> ty_stream;
 class TYFrameParser
 {
-  public:
-    TYFrameParser(uint32_t max_queue_size = 4);
+public:
+    explicit TYFrameParser(uint32_t max_queue_size = 4);
     ~TYFrameParser();
+    
+    TYFrameParser(const TYFrameParser&) = delete;
+    TYFrameParser& operator=(const TYFrameParser&) = delete;
 
     void RegisterKeyBoardEventCallback(TYFrameKeyBoardEventCallback cb, void* data) {
-      user_data = data;
-      func_keyboard_event = cb;
+        user_data = data;
+        func_keyboard_event = std::move(cb);
     }
 
     int setImageProcesser(TY_COMPONENT_ID id, std::shared_ptr<ImageProcesser> proc);
     virtual int doProcess(const std::shared_ptr<TYFrame>& frame);
     void update(const std::shared_ptr<TYFrame>& frame);
+    
+    void stop();
 
 protected:
-    ty_stream stream;
-  private:
-    std::mutex      _queue_lock;
-    uint32_t        _max_queue_size;
+    ImageProcesserMap stream;
 
-    bool            isRuning;
-    std::thread     processThread_;
-
-    void* user_data;
-    TYFrameKeyBoardEventCallback     func_keyboard_event;
+private:
+    mutable std::mutex queue_mutex;
+    std::condition_variable cv;
+    uint32_t max_queue_size;
+    
+    std::atomic<bool> isRunning{true};
+    std::thread processThread;
+    
+    void* user_data = nullptr;
+    TYFrameKeyBoardEventCallback func_keyboard_event;
     std::queue<std::shared_ptr<TYFrame>> images;
-
-    inline void ImageQueueSizeCheck();
-    inline void display();
+    
+    void processThreadFunc();
+    void imageQueueSizeCheck();
 };
-}
+
+} // namespace percipio_layer

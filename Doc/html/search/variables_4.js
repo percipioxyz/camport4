@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['featureid_943',['featureID',['../a00746.html#a42bc9dd85f75d13ed508965da9053fdc',1,'TY_FEATURE_INFO']]],
-  ['firmwareversion_944',['firmwareVersion',['../a00738.html#a2570cb515298d3174ab2028af340fe76',1,'TY_DEVICE_BASE_INFO']]]
+  ['featureid_1119',['featureID',['../a00830.html#a42bc9dd85f75d13ed508965da9053fdc',1,'TY_FEATURE_INFO']]],
+  ['firmwareversion_1120',['firmwareVersion',['../a00822.html#a2570cb515298d3174ab2028af340fe76',1,'TY_DEVICE_BASE_INFO']]]
 ];

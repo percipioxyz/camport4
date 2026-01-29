@@ -101,9 +101,12 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_IR_CAM_RIGHT));
     }
 
+    //depth map pixel format is uint16_t ,which default unit is  1 mm
+    //the acutal depth (mm)= PixelValue * ScaleUnit 
+    float scale_unit = 1.;
+
     //try to enable depth map
     LOGD("Configure components, open depth cam");
-    DepthViewer depthViewer("Depth");
     if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
         TY_IMAGE_MODE image_mode;
         ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
@@ -111,14 +114,8 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
 
-        //depth map pixel format is uint16_t ,which default unit is  1 mm
-        //the acutal depth (mm)= PixelValue * ScaleUnit 
-        float scale_unit = 1.;
         TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
-        depthViewer.depth_scale_unit = scale_unit;
     }
-
-
 
     LOGD("Prepare image buffer");
     uint32_t frameSize;
@@ -260,17 +257,13 @@ int main(int argc, char* argv[])
             if (fps > 0) {
                 LOGI("fps: %d", fps);
             }
-
-            cv::Mat depth, irl, irr, color;
-            parseFrame(frame, &depth, &irl, &irr, &color);
-            if (!depth.empty()) {
-                depthViewer.show(depth);
+            
+            for (int i = 0; i < frame.validCount; i++){
+                if (frame.image[i].status != TY_STATUS_OK) continue;
+                decode_and_display_image(frame.image[i], scale_unit);
             }
-            if (!irl.empty()) { cv::imshow("LeftIR", irl); }
-            if (!irr.empty()) { cv::imshow("RightIR", irr); }
-            if (!color.empty()) { cv::imshow("Color", color); }
 
-            int key = cv::waitKey(1);
+            int key = TYWaitKeyEvents();
             switch (key & 0xff) {
             case 0xff:
                 break;
@@ -280,7 +273,6 @@ int main(int argc, char* argv[])
             default:
                 LOGD("Unmapped key %d", key);
             }
-
             ASSERT_OK(TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize));
         }
     }

@@ -1,6 +1,4 @@
 #include "common.hpp"
-#include "TYImageProc.h"
-
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 {
@@ -115,7 +113,6 @@ int main(int argc, char* argv[])
 
     //try to enable depth map
     LOGD("Configure components, open depth cam");
-    DepthViewer depthViewer("Depth");
     if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
         bool b_support_xyz48_fmt = false;
         std::vector<TY_ENUM_ENTRY> image_mode_list;
@@ -128,12 +125,6 @@ int main(int argc, char* argv[])
         }
         ASSERT(b_support_xyz48_fmt);
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
-
-        //depth map pixel format is uint16_t ,which default unit is  1 mm
-        //the acutal depth (mm)= PixelValue * ScaleUnit 
-        float scale_unit = 1.;
-        TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
-        depthViewer.depth_scale_unit = scale_unit;
     }
 
     TY_CAMERA_CALIB_INFO depth_calib, new_depth_calib; 
@@ -182,39 +173,56 @@ int main(int argc, char* argv[])
             if (fps > 0){
                 LOGI("fps: %d", fps);
             }
+            
+            for (int i = 0; i < frame.validCount; i++){
+                if (frame.image[i].status != TY_STATUS_OK) continue;
 
-            cv::Mat points, irl, irr, color;
-            parseFrame(frame, &points, &irl, &irr, &color);
-            if(!points.empty()){
-              cv::Mat depth = cv::Mat(points.size(), CV_16U);
-              parseXYZ48((int16_t*)points.data, (int16_t*)depth.data, depth.cols, depth.rows);
+                if(frame.image[i].componentID == TY_COMPONENT_DEPTH_CAM) {
+                    ASSERT(frame.image[i].pixelFormat == TYPixelFormatCoord3D_ABC16);
+                    int32_t width = frame.image[i].width;
+                    int32_t height = frame.image[i].height;
+                    std::vector<int16_t> depth(width * height);
 
-              TY_IMAGE_DATA src;
-              src.width = depth.cols;
-              src.height = depth.rows;
-              src.size = depth.size().area() * 3;
-              src.pixelFormat = TYPixelFormatCoord3D_C16;
-              src.buffer = depth.data;
+                    parseXYZ48((int16_t*)frame.image[i].buffer, &depth[0], width, height);
+                    
+                    TY_IMAGE_DATA src;
+                    src.width = width;
+                    src.height = height;
+                    src.size = width * height * 2;
+                    src.pixelFormat = TYPixelFormatCoord3D_C16;
+                    src.buffer = &depth[0];
 
-              cv::Mat undistort_depth = cv::Mat(depth.size(), CV_16U);
-              TY_IMAGE_DATA dst;
-              dst.width = undistort_depth.cols;
-              dst.height = undistort_depth.rows;
-              dst.size = undistort_depth.size().area() * 3;
-              dst.buffer = undistort_depth.data;
-              dst.pixelFormat = TYPixelFormatCoord3D_C16;
+                    std::vector<int16_t> undistort_depth(width * height);
+                    TY_IMAGE_DATA dst;
+                    dst.width = width;
+                    dst.height = height;
+                    dst.size = width * height * 2;
+                    dst.buffer = &undistort_depth[0];
+                    dst.pixelFormat = TYPixelFormatCoord3D_C16;
 
-              float f_depth_scale = (1.f * src.width / new_depth_calib.intrinsicWidth);
-              TY_CAMERA_INTRINSIC rsz_intrinsic = new_depth_calib.intrinsic * f_depth_scale;
-              ASSERT_OK(TYUndistortImage(&depth_calib, &src, &rsz_intrinsic, &dst));
-              depthViewer.show(undistort_depth);
+                    float f_depth_scale = (1.f * src.width / new_depth_calib.intrinsicWidth);
+                    TY_CAMERA_INTRINSIC rsz_intrinsic = new_depth_calib.intrinsic * f_depth_scale;
+                    ASSERT_OK(TYUndistortImage(&depth_calib, &src, &rsz_intrinsic, &dst));
+
+                    auto win = ty_comp_window_name(frame.image[i].componentID);
+                    TYDisplayImage(win.c_str(), width, height, TYPixelFormatCoord3D_C16, &undistort_depth[0]);
+                } else { 
+                    uint32_t destSize;
+                    auto win = ty_comp_window_name(frame.image[i].componentID);
+                    TYImageInfo image_info = ty_image_info(frame.image[i]);
+                    TYDecodeError err = TYGetDecodeBufferSize(&image_info, &destSize, TY_OUTPUT_FORMAT_AUTO);
+                    if(err == TY_DECODE_SUCCESS) {
+                        TYDecodeResult retInfo;
+                        std::vector<uint8_t> image_data(destSize);
+                        ASSERT_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&image_data[0], destSize, &retInfo));
+                        TYDisplayImage(win.c_str(), retInfo.width, retInfo.height, retInfo.format, &image_data[0]);
+                    } else {
+                        TYDisplayImage(win.c_str(), frame.image[i].width, frame.image[i].height, frame.image[i].pixelFormat, frame.image[i].buffer);
+                    }
+                }
             }
 
-            if(!irl.empty()){ cv::imshow("LeftIR", irl); }
-            if(!irr.empty()){ cv::imshow("RightIR", irr); }
-            if(!color.empty()){ cv::imshow("Color", color); }
-
-            int key = cv::waitKey(1);
+            int key = TYWaitKeyEvents();
             switch(key & 0xff) {
             case 0xff:
                 break;

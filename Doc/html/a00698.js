@@ -1,7 +1,5 @@
 var a00698 =
 [
-    [ "major", "a00698.html#aeb82a4ec75492c355b6276db9cc05f02", null ],
-    [ "minor", "a00698.html#a82a416d115a545dcecb5ddd02a9b3d49", null ],
-    [ "patch", "a00698.html#ad1df6113218e56f57510ca4e90ac514e", null ],
-    [ "reserved", "a00698.html#a69030b14fffe76f3fc7215c10b46884c", null ]
+    [ "v0", "a00698.html#ae3a95d1d6e52ee990922ad876abdb091", null ],
+    [ "v1", "a00698.html#ae153e1df3d1cd142f8bc315aa3e13761", null ]
 ];

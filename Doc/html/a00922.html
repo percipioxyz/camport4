@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: DepthInpainterParameters Struct Reference</title>
+<title>TYCamport3: TY_LASER_PATTERN_PARAM Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -86,31 +86,58 @@ $(document).ready(function(){initNavTree('a00922.html',''); initResizable(); });
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00919.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">DepthInpainterParameters Struct Reference</div>  </div>
+<div class="title">TY_LASER_PATTERN_PARAM Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Collaboration diagram for TY_LASER_PATTERN_PARAM:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00920.png" border="0" usemap="#_t_y___l_a_s_e_r___p_a_t_t_e_r_n___p_a_r_a_m_coll__map" alt="Collaboration graph"/></div>
+<map name="_t_y___l_a_s_e_r___p_a_t_t_e_r_n___p_a_r_a_m_coll__map" id="_t_y___l_a_s_e_r___p_a_t_t_e_r_n___p_a_r_a_m_coll__map">
+<area shape="rect" title=" " alt="" coords="159,95,361,121"/>
+<area shape="rect" href="a00914.html" title=" " alt="" coords="5,5,160,32"/>
+<area shape="rect" href="a00910.html" title=" " alt="" coords="184,5,336,32"/>
+<area shape="rect" href="a00918.html" title=" " alt="" coords="361,5,506,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a590be1518406dd2ef992032544eff068"><td class="memItemLeft" align="right" valign="top"><a id="a590be1518406dd2ef992032544eff068"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>kernel_size</b></td></tr>
-<tr class="separator:a590be1518406dd2ef992032544eff068"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af41d932512d7068cfc0b690768b9a6d5"><td class="memItemLeft" align="right" valign="top"><a id="af41d932512d7068cfc0b690768b9a6d5"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>max_internal_hole</b></td></tr>
-<tr class="separator:af41d932512d7068cfc0b690768b9a6d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af086631a30c2c26605b014be45a1d0a5"><td class="memItemLeft" align="right" valign="top"><a id="af086631a30c2c26605b014be45a1d0a5"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>img_index</b></td></tr>
+<tr class="separator:af086631a30c2c26605b014be45a1d0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17f6b9784f39ee5271d38382cc0f12c0"><td class="memItemLeft" align="right" valign="top"><a id="a17f6b9784f39ee5271d38382cc0f12c0"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="separator:a17f6b9784f39ee5271d38382cc0f12c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10e02a244b402bebe92d6f1d665ad776"><td class="memItemLeft" ><a id="a10e02a244b402bebe92d6f1d665ad776"></a>
+union {</td></tr>
+<tr class="memitem:ae4ad1a9d7b0bff285e096122f9b18ef8"><td class="memItemLeft" >
+&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<b>payload</b> [512+16]</td></tr>
+<tr class="separator:ae4ad1a9d7b0bff285e096122f9b18ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e05560b3a080de46d35d75c781f84a0"><td class="memItemLeft" >
+&#160;&#160;&#160;<a class="el" href="a00910.html">pattern_sine_param</a>&#160;&#160;&#160;<b>sine_param</b></td></tr>
+<tr class="separator:a9e05560b3a080de46d35d75c781f84a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6e45f6c599ccbccaa22bfa3454df1a6"><td class="memItemLeft" >
+&#160;&#160;&#160;<a class="el" href="a00914.html">pattern_gray_param</a>&#160;&#160;&#160;<b>gray_param</b></td></tr>
+<tr class="separator:ac6e45f6c599ccbccaa22bfa3454df1a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3b89a725b3c52df4919788412355604"><td class="memItemLeft" >
+&#160;&#160;&#160;<a class="el" href="a00918.html">pattern_bin_param</a>&#160;&#160;&#160;<b>bin</b></td></tr>
+<tr class="separator:ac3b89a725b3c52df4919788412355604"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10e02a244b402bebe92d6f1d665ad776"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a10e02a244b402bebe92d6f1d665ad776"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00476_source.html#l00077">77</a> of file <a class="el" href="a00476_source.html">TYImageProc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00485_source.html#l01094">1094</a> of file <a class="el" href="a00485_source.html">TYDefs.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00476_source.html">TYImageProc.h</a></li>
+<li><a class="el" href="a00485_source.html">TYDefs.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00922.html">DepthInpainterParameters</a></li>
+    <li class="navelem"><a class="el" href="a00922.html">TY_LASER_PATTERN_PARAM</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
