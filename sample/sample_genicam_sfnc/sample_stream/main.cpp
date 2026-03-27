@@ -100,7 +100,7 @@ StreamCtrl::StreamCtrl(const TY_DEV_HANDLE dev,  const char* stream)
         std::cout << stream << " only supports one binning mode: " << entrys[0].name << std::endl;
     } else {
         std::cout << stream << " supports the following binning mode:" << std::endl;
-        for(size_t i = 0; i < m_BinningCnt; i++) {
+        for(uint32_t i = 0; i < m_BinningCnt; i++) {
             std::cout << "\t" << std::dec << i << "." << entrys[i].name << std::endl;
         }
 

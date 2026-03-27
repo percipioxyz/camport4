@@ -34,7 +34,7 @@ void frameHandler(TY_FRAME_DATA* frame, void* userdata)
         if(err == TY_DECODE_SUCCESS) {
             TYDecodeResult retInfo;
             std::vector<uint8_t> image_data(destSize);
-            ASSERT_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&image_data[0], destSize, &retInfo));
+            ASSERT_DEC_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&image_data[0], destSize, &retInfo));
             TYDisplayImage(win_name, retInfo.width, retInfo.height, retInfo.format, &image_data[0]);
         } else {
             TYDisplayImage(win_name, pData->frame.image[i].width, pData->frame.image[i].height, pData->frame.image[i].pixelFormat, pData->frame.image[i].buffer);

@@ -67,8 +67,8 @@ int main(int argc, char* argv[])
     ASSERT_OK(TYEnumGetEntryCount(hDevice, "UserSetSelector", &count)); 
     std::vector<TYEnumEntry> entrys(count);
     ASSERT_OK(TYEnumGetEntryInfo(hDevice, "UserSetSelector", &entrys[0], count, &count));
-    for(int i = 0; i < count; i++) {
-        LOGD("UserSetSelector : %s - value : %d", entrys[i].name, entrys[i].value);
+    for(uint32_t i = 0; i < count; i++) {
+        LOGD("UserSetSelector : %s - value : %" PRId64 "", entrys[i].name, entrys[i].value);
     }
 
     //Set the camera properties and save them to a user set entry
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
         entrys.resize(count);
         ASSERT_OK(TYEnumGetEntryInfo(hDevice, "UserSetDefault", &entrys[0], count, &count));
         for(int i = 0; i < count; i++) {
-            LOGD("UserSetDefault : %s - value : %d", entrys[i].name, entrys[i].value);
+            LOGD("UserSetDefault : %s - value : %" PRId64 "", entrys[i].name, entrys[i].value);
         }
     } else {
         LOGD("No Default User set item!");

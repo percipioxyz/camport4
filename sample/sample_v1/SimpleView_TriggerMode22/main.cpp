@@ -154,7 +154,7 @@ int main(int argc, char* argv[])
                     if(err == TY_DECODE_SUCCESS) {
                         TYDecodeResult retInfo;
                         ir_data.resize(destSize);
-                        ASSERT_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&ir_data[0], destSize, &retInfo));
+                        ASSERT_DEC_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&ir_data[0], destSize, &retInfo));
                         ir_fmt = retInfo.format;
                     } else {
                         ir_data = std::vector<uint8_t>((uint8_t*)frame.image[i].buffer, (uint8_t*)frame.image[i].buffer + frame.image[i].size);

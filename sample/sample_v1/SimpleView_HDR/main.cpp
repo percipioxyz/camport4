@@ -253,7 +253,7 @@ int main(int argc, char* argv[])
                     if(err == TY_DECODE_SUCCESS) {
                         TYDecodeResult retInfo;
                         std::vector<uint8_t> image_data(destSize);
-                        ASSERT_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&image_data[0], destSize, &retInfo));
+                        ASSERT_DEC_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&image_data[0], destSize, &retInfo));
                         TYDisplayImage(win.c_str(), retInfo.width, retInfo.height, retInfo.format, &image_data[0]);
                     } else {
                         TYDisplayImage(win.c_str(), frame.image[i].width, frame.image[i].height, frame.image[i].pixelFormat, frame.image[i].buffer, scale_unit);

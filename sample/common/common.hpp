@@ -158,7 +158,7 @@ static inline TY_STATUS decode_and_display_image(const TY_IMAGE_DATA &image, con
         case TY_DECODE_SUCCESS:{
             TYDecodeResult retInfo;
             std::vector<uint8_t> image_data(destSize);
-            ASSERT_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&image_data[0], destSize, &retInfo));
+            ASSERT_DEC_OK(TYDecodeImage(&image_info,  TY_OUTPUT_FORMAT_AUTO, (void*)&image_data[0], destSize, &retInfo));
             TYDisplayImage(win.c_str(), retInfo.width, retInfo.height, retInfo.format, &image_data[0]);
             break;
         }

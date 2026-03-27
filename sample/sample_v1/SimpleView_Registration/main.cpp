@@ -83,7 +83,7 @@ void handleFrame(TY_FRAME_DATA* frame, void* userdata)
             TYDecodeError colorDecodeErr = TYGetDecodeBufferSize(&color_info, &colorDestSize, TY_OUTPUT_FORMAT_BGR);
             if (colorDecodeErr == TY_DECODE_SUCCESS) {
                 pData->colorBuffer.resize(colorDestSize);
-                ASSERT_OK(TYDecodeImage(&color_info, TY_OUTPUT_FORMAT_BGR, (void*)&pData->colorBuffer[0], colorDestSize, &colorDecode));
+                ASSERT_DEC_OK(TYDecodeImage(&color_info, TY_OUTPUT_FORMAT_BGR, (void*)&pData->colorBuffer[0], colorDestSize, &colorDecode));
 
                 TY_IMAGE_DATA src, dst;
                 src.width = colorImage->width;

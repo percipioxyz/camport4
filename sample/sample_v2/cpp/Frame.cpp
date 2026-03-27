@@ -23,9 +23,9 @@ TYImage::TYImage(const TY_IMAGE_DATA& image, float f_scale_unit)
         image_data.buffer = std::malloc(destSize);
         if (image_data.buffer) {
             TYDecodeResult retInfo;
-            TY_STATUS decodeStatus = TYDecodeImage(&image_info, TY_OUTPUT_FORMAT_AUTO, image_data.buffer, destSize, &retInfo);
+            TYDecodeError decodeStatus = TYDecodeImage(&image_info, TY_OUTPUT_FORMAT_AUTO, image_data.buffer, destSize, &retInfo);
             
-            if (decodeStatus == TY_STATUS_OK) {
+            if (decodeStatus == TY_DECODE_SUCCESS) {
                 m_isOwner = true;
                 image_data.timestamp = image.timestamp;
                 image_data.imageIndex = image.imageIndex;

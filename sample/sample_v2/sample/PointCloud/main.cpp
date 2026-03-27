@@ -106,7 +106,7 @@ void P3DCamera::savePointsToPly(const std::vector<TY_VECT_3F>& p3d, const std::s
             case 8://mono8
             {
                 uint8_t* mono8 = pixels;
-                for(int i = 0; i < p3d.size(); i++) {
+                for(size_t i = 0; i < p3d.size(); i++) {
                     if(!std::isnan(point->z)) {
                         ss << (point->x)/1000 << " " << (point->y)/1000 << " " << (point->z)/1000 << " " << 
                             (uint32_t)mono8[i] << " " << (uint32_t)mono8[i] << " " << (uint32_t)mono8[i] << std::endl;
@@ -119,7 +119,7 @@ void P3DCamera::savePointsToPly(const std::vector<TY_VECT_3F>& p3d, const std::s
             case 16://mono16
             {
                 uint16_t* mono16 = (uint16_t*)pixels;
-                for(int i = 0; i < p3d.size(); i++) {
+                for(size_t i = 0; i < p3d.size(); i++) {
                     if(!std::isnan(point->z)) {
                         ss << (point->x)/1000 << " " << (point->y)/1000 << " " << (point->z)/1000 << " " << 
                             (uint32_t)(mono16[i] >> 8) << " " << (uint32_t)(mono16[i] >> 8) << " " << (uint32_t)(mono16[i] >> 8) << std::endl;
@@ -132,7 +132,7 @@ void P3DCamera::savePointsToPly(const std::vector<TY_VECT_3F>& p3d, const std::s
             case 24://bgr888
             {   
                 uint8_t* bgr = pixels;
-                for(int i = 0; i < p3d.size(); i++) {
+                for(size_t i = 0; i < p3d.size(); i++) {
                     if(!std::isnan(point->z)) {
                         ss << (point->x)/1000 << " " << (point->y)/1000 << " " << (point->z)/1000 << " " << 
                             (uint32_t)bgr[3*i] << " " << (uint32_t)bgr[3*i + 1] << " " << (uint32_t)bgr[3*i + 2] << std::endl;
@@ -145,7 +145,7 @@ void P3DCamera::savePointsToPly(const std::vector<TY_VECT_3F>& p3d, const std::s
             case 48://bgr16
             {
                 uint16_t* bgr16 = (uint16_t*)pixels;
-                for(int i = 0; i < p3d.size(); i++) {
+                for(size_t i = 0; i < p3d.size(); i++) {
                     if(!std::isnan(point->z)) {
                         ss << (point->x)/1000 << " " << (point->y)/1000 << " " << (point->z)/1000 << " " << 
                             (uint32_t)(bgr16[3*i] >> 8) << " " << (uint32_t)(bgr16[3*i + 1] >> 8) << " " << (uint32_t)(bgr16[3*i + 2] >> 8) << std::endl;
@@ -158,7 +158,7 @@ void P3DCamera::savePointsToPly(const std::vector<TY_VECT_3F>& p3d, const std::s
             default:
             {
                 std::cout << "Unsupported RGB format!" << std::endl;
-                for(int i = 0; i < p3d.size(); i++) {
+                for(size_t i = 0; i < p3d.size(); i++) {
                     if(!std::isnan(point->z)) {
                         ss << (point->x)/1000 << " " << (point->y)/1000 << " " << (point->z)/1000 << std::endl;
                         pointsCnt++;
@@ -169,7 +169,7 @@ void P3DCamera::savePointsToPly(const std::vector<TY_VECT_3F>& p3d, const std::s
             }
         }
     } else {
-        for(int i = 0; i < p3d.size(); i++) {
+        for(size_t i = 0; i < p3d.size(); i++) {
             if(!std::isnan(point->z)) {
                 ss << (point->x)/1000 << " " << (point->y)/1000 << " " << (point->z)/1000 << std::endl;
                 pointsCnt++;
@@ -213,7 +213,7 @@ void P3DCamera::processXYZ48(const std::shared_ptr<TYImage>&  depth, std::vector
     if(depth->pixelFormat() == TYPixelFormatCoord3D_ABC16) {
         int16_t* src = static_cast<int16_t*>(depth->buffer());
         p3d.resize(depth->width() * depth->height());
-        for (int pix = 0; pix < p3d.size(); pix++) {
+        for (size_t pix = 0; pix < p3d.size(); pix++) {
             p3d[pix].x = *(src + 3*pix + 0) * f_depth_scale_unit;
             p3d[pix].y = *(src + 3*pix + 1) * f_depth_scale_unit;
             p3d[pix].z = *(src + 3*pix + 2) * f_depth_scale_unit;
@@ -327,7 +327,7 @@ int P3DCamera::process(const std::shared_ptr<TYImage>&  depth, const std::shared
         auto now = std::chrono::system_clock::now();
         std::time_t now_time = std::chrono::system_clock::to_time_t(now);
 
-        char file[32];
+        char file[128];
         struct tm* p = std::localtime(&now_time);
         sprintf(file, "%d.%d.%d %02d_%02d_%02d.ply", 1900 + p->tm_year, 1+p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
         std::cout << "Save : " << file << std::endl;

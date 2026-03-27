@@ -694,13 +694,7 @@ namespace {
             {    0.0f,     0.0f, -4000.0f}
         };
 
-        std::vector<uint8_t> init_colors = {
-          255,   0,   0,
-            0, 255,   0,
-            0,   0, 255,
-           255,255, 255,
-        };
-        GLPointCloudViewer::Update(4, init_points.data(), init_colors.data());
+        GLPointCloudViewer::Update(4, init_points.data(), nullptr);
         return 0;
     }
 

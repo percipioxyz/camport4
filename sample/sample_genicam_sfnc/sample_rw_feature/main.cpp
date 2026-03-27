@@ -137,7 +137,7 @@ void read_feat(TY_DEV_HANDLE hDevice, const std::string &feat,
         std::vector<TYEnumEntry> infos(cnt);
         TYEnumGetEntryInfo(hDevice, feat.c_str(), &infos[0], cnt, &filled_cnt);
         for(uint32_t i = 0; i < filled_cnt; i++) {
-            LOGD("===         %14s:     value(%d), desc(%s)", "", infos[i].value, infos[i].name);
+            LOGD("===         %14s:     value(%" PRId64 "), desc(%s)", "", infos[i].value, infos[i].name);
 
         }
         break;

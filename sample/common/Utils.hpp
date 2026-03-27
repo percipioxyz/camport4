@@ -52,6 +52,18 @@
             }while(0)
 #endif
 
+#ifndef ASSERT_DEC_OK
+#define ASSERT_DEC_OK(x)    do{ \
+                auto err = (x); \
+                if(err != TY_DECODE_SUCCESS) { \
+                    LOGE("Assert decode failed: error %d at %s:%d", err, __FILE__, __LINE__); \
+                    LOGE("    : " #x ); \
+                    abort(); \
+                } \
+            }while(0)
+#endif
+
+
 #ifdef _WIN32
 # include <windows.h>
 # include <time.h>
@@ -221,10 +233,10 @@ static TY_STATUS updateDevicesParallel(std::vector<TY_INTERFACE_HANDLE> &ifaces,
 {
     if(ifaces.size() != 0) {
         TYThread *updateThreads = new TYThread[ifaces.size()];
-        for(int i = 0; i < ifaces.size(); i++) {
+        for(size_t i = 0; i < ifaces.size(); i++) {
             updateThreads[i].create(updateThreadFunc, ifaces[i]);
         }
-        for(int i = 0; i < ifaces.size(); i++) {
+        for(size_t i = 0; i < ifaces.size(); i++) {
            updateThreads[i].destroy();
         }
         delete [] updateThreads;
@@ -331,8 +343,9 @@ static inline TY_STATUS get_feature_enum_list(TY_DEV_HANDLE handle,
 
 static inline TY_STATUS get_image_mode(TY_DEV_HANDLE handle
     , TY_COMPONENT_ID compID
-    , TY_IMAGE_MODE &image_mode, int idx)
+    , TY_IMAGE_MODE &image_mode, int _idx)
 {
+    size_t idx = _idx;
     std::vector<TY_ENUM_ENTRY> image_mode_list;
     ASSERT_OK(get_feature_enum_list(handle, compID, TY_ENUM_IMAGE_MODE, image_mode_list));
     if (image_mode_list.size() == 0 || idx < 0
