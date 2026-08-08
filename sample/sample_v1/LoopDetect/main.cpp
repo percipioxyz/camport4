@@ -1,4 +1,5 @@
 #include "common.hpp"
+#include <vector>
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 {
@@ -115,13 +116,13 @@ int main(int argc, char* argv[])
         }
 
         LOGD("     - Allocate & enqueue buffers");
-        char* frameBuffer[2];
-        frameBuffer[0] = new char[frameSize];
-        frameBuffer[1] = new char[frameSize];
-        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-        ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize));
-        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-        ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize));
+        std::vector<char> frameBuffer[2];
+        frameBuffer[0].resize(frameSize);
+        frameBuffer[1].resize(frameSize);
+        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0].data(), frameSize);
+        ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[0].data(), frameSize));
+        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1].data(), frameSize);
+        ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[1].data(), frameSize));
 
         bool device_offline = false;;
         LOGD("=== Register event callback");
@@ -140,8 +141,7 @@ int main(int argc, char* argv[])
                 LOGD("Set trigger mode failed!");
                 ASSERT_OK(TYCloseDevice(hDevice));
                 ASSERT_OK(TYCloseInterface(hIface));
-                delete frameBuffer[0];
-                delete frameBuffer[1];
+
                 continue;
             }
         }
@@ -152,8 +152,7 @@ int main(int argc, char* argv[])
             LOGD("Start capture failed!");
             ASSERT_OK(TYCloseDevice(hDevice));
             ASSERT_OK(TYCloseInterface(hIface));
-            delete frameBuffer[0];
-            delete frameBuffer[1];            
+
             continue;
         }
 
@@ -204,8 +203,7 @@ int main(int argc, char* argv[])
         CHECK_RET(TYStopCapture(hDevice));
         CHECK_RET(TYCloseDevice(hDevice));
         ASSERT_OK(TYCloseInterface(hIface));
-        delete frameBuffer[0];
-        delete frameBuffer[1];
+
     }
 
     LOGD("=== Deinit lib");

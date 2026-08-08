@@ -1,4 +1,5 @@
 #include "common.hpp"
+#include <vector>
 
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
@@ -100,13 +101,13 @@ int main(int argc, char* argv[])
     ASSERT( frameSize >= 640 * 480 * 2 );
 
     LOGD("     - Allocate & enqueue buffers");
-    char* frameBuffer[2];
-    frameBuffer[0] = new char[frameSize];
-    frameBuffer[1] = new char[frameSize];
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize) );
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize) );
+    std::vector<char> frameBuffer[2];
+    frameBuffer[0].resize(frameSize);
+    frameBuffer[1].resize(frameSize);
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0].data(), frameSize) );
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1].data(), frameSize) );
 
     LOGD("Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
@@ -137,9 +138,9 @@ int main(int argc, char* argv[])
         if( err == TY_STATUS_OK ) {
             LOGD("Get frame %d", ++index);
 
-            int fps = get_fps();
+            float fps = get_fps();
             if (fps > 0){
-                LOGI("fps: %d", fps);
+                LOGI("fps: %.2f", fps);
             }
 
             for (int i = 0; i < frame.validCount; i++){
@@ -155,10 +156,12 @@ int main(int argc, char* argv[])
         TY_CAMERA_STATISTICS st;
         ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_CAM_STATISTICS, &st, sizeof(st)) );
         LOGI("Statistics:");
-        LOGI("  packetReceived: %" PRIu64 " ", st.packetReceived);
-        LOGI("  packetLost    : %" PRIu64 " ", st.packetLost);
-        LOGI("  imageOutputed : %" PRIu64 " ", st.imageOutputed);
-        LOGI("  imageDropped  : %" PRIu64 " ", st.imageDropped);
+        LOGI("  packetReceived      : %" PRIu64 " ", st.packetReceived);
+        LOGI("  packetLost          : %" PRIu64 " ", st.packetLost);
+        LOGI("  imageOutputed       : %" PRIu64 " ", st.imageOutputed);
+        LOGI("  imageDropped        : %" PRIu64 " ", st.imageDropped);
+        LOGI("  resendPacketSent    : %" PRIu64 " ", st.resendPacketSent);
+        LOGI("  resendPacketReceived: %" PRIu64 " ", st.resendPacketReceived);
 
         int key = TYWaitKeyEvents();
         switch(key & 0xff){
@@ -178,8 +181,6 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYCloseDevice(hDevice) );
     ASSERT_OK( TYCloseInterface(hIface) );
     ASSERT_OK( TYDeinitLib() );
-    delete frameBuffer[0];
-    delete frameBuffer[1];
 
     LOGD("Main done!");
     return 0;

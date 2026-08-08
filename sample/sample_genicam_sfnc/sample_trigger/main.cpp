@@ -1,39 +1,5 @@
 #include "../common/common.hpp"
-
-
-#if _WIN32
-#include <conio.h>
-#elif __linux__
-#include <termio.h>
-#define TTY_PATH    "/dev/tty"
-#define STTY_DEF    "stty -raw echo -F"
-#endif
-
-static char GetChar(void)
-{
-    char ch = -1;
-    do {
-#if _WIN32
-    if (kbhit()) //check fifo
-    {
-        ch = getche(); //read fifo
-    }
-#elif __linux__
-    fd_set rfds;
-    struct timeval tv;
-    system(STTY_DEF TTY_PATH);
-    FD_ZERO(&rfds);
-    FD_SET(0, &rfds);
-    tv.tv_sec = 0;
-    tv.tv_usec = 10;
-    if (select(1, &rfds, NULL, NULL, &tv) > 0)
-    {
-        ch = getchar();
-    }
-#endif
-    }while(ch == '\n' || ch == '\r' || ch == ' ');
-    return ch;
-}
+#include <vector>
 
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
@@ -60,16 +26,15 @@ static void it_select_enum(TY_DEV_HANDLE hDevice, std::string name, uint32_t &se
     }
 
     std::cout << "Please select a "<< name <<" according to the above number!" << std::endl;
-    char idx = -1;
+    int idx = -1;
     do {
-        idx = GetChar() & 0xff;
-        if(idx == -1) continue;
-        idx -= '0';
-        if(idx >= 0 && idx < m_Source) break;
+        std::cin >> idx;
+        cin_clear_rest_line();
+        if(idx >= 0 && idx < (int)m_Source) break;
         else std::cout << "Error, please select again!" << std::endl;
     } while(true);
 
-    std::cout << "====== idx = " << (int)(idx) << std::endl;
+    std::cout << "====== idx = " << idx << std::endl;
     ASSERT_OK(idx >= m_Source);
     std::cout << "Select " << modes[idx].name << std::endl;
     ASSERT_OK(TYEnumSetValue(hDevice, name.c_str(), modes[idx].value));
@@ -122,11 +87,9 @@ int main(int argc, char* argv[])
     } else if (mode == 2) {
         std::cout << "Enable Frame Rate Mode ?" << std::endl;
         bool en = false;
-        char idx = -1;
+        int idx = -1;
         do {
-            idx = GetChar() & 0xff;
-            if(idx == -1) continue;
-            idx -= '0';
+            std::cin >> idx;
             if(idx != 0){ en = true;}
             break;
         }while(true);
@@ -145,7 +108,7 @@ int main(int argc, char* argv[])
         }
 
     }
-    char* frameBuffer[2] = {0};
+    std::vector<char> frameBuffer[2];
     if (!exit_main) {
         LOGD("Prepare image buffer");
         uint32_t frameSize;
@@ -154,12 +117,12 @@ int main(int argc, char* argv[])
 
         LOGD("     - Allocate & enqueue buffers");
         
-        frameBuffer[0] = new char[frameSize];
-        frameBuffer[1] = new char[frameSize];
-        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-        ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize) );
-        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-        ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize) );
+        frameBuffer[0].resize(frameSize);
+        frameBuffer[1].resize(frameSize);
+        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0].data(), frameSize);
+        ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0].data(), frameSize) );
+        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1].data(), frameSize);
+        ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1].data(), frameSize) );
 
         LOGD("Register event callback");
         ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
@@ -191,9 +154,9 @@ int main(int argc, char* argv[])
             if( err == TY_STATUS_OK ) {
                 LOGD("Get frame %d", ++index);
 
-                int fps = get_fps();
+                float fps = get_fps();
                 if (fps > 0){
-                    LOGI("fps: %d", fps);
+                    LOGI("fps: %.2f", fps);
                 }
 
                 for (int i = 0; i < frame.validCount; i++){
@@ -220,15 +183,11 @@ int main(int argc, char* argv[])
         ASSERT_OK( TYStopCapture(hDevice) );
         //stop will not release all buffers, need clear
         ASSERT_OK( TYClearBufferQueue(hDevice) );
-        delete frameBuffer[0];
-        delete frameBuffer[1];
     }
 
     ASSERT_OK( TYCloseDevice(hDevice));
     ASSERT_OK( TYCloseInterface(hIface) );
     ASSERT_OK( TYDeinitLib() );
-    //if(frameBuffer[0]) delete frameBuffer[0];
-    //if(frameBuffer[1]) delete frameBuffer[1];
 
     LOGD("Main done!");
     return 0;

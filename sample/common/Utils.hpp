@@ -8,15 +8,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include <string>
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <thread>
 #include <inttypes.h>
 #include "TYApi.h"
 #include "TYParameter.h"
-#include "TYThread.hpp"
 #include "crc32.h"
 #include "ParametersParse.h"
 #include "huffman.h"
@@ -26,7 +27,7 @@
                 if(!(x)) { \
                     LOGE("Assert failed at %s:%d", __FILE__, __LINE__); \
                     LOGE("    : " #x ); \
-                    abort(); \
+                    assert(0); \
                 } \
             }while(0)
 #endif
@@ -37,7 +38,7 @@
                 if(err != TY_STATUS_OK) { \
                     LOGE("Assert failed: error %d(%s) at %s:%d", err, TYErrorString(err), __FILE__, __LINE__); \
                     LOGE("    : " #x ); \
-                    abort(); \
+                    assert(0); \
                 } \
             }while(0)
 #endif
@@ -58,7 +59,7 @@
                 if(err != TY_DECODE_SUCCESS) { \
                     LOGE("Assert decode failed: error %d at %s:%d", err, __FILE__, __LINE__); \
                     LOGE("    : " #x ); \
-                    abort(); \
+                    assert(0); \
                 } \
             }while(0)
 #endif
@@ -221,26 +222,22 @@ static inline const TY_IMAGE_DATA* TYImageInFrame(const TY_FRAME_DATA& frame
     }
     return NULL;
 }
-static void *updateThreadFunc(void *userdata)
+static void updateThreadFunc(TY_INTERFACE_HANDLE iface)
 {
-    TY_INTERFACE_HANDLE iface = (TY_INTERFACE_HANDLE)userdata;
     TYUpdateDeviceList(iface);
-    return NULL;
 }
 
-static TY_STATUS updateDevicesParallel(std::vector<TY_INTERFACE_HANDLE> &ifaces,
-    uint64_t timeout=2000)
+static TY_STATUS updateDevicesParallel(const std::vector<TY_INTERFACE_HANDLE> &ifaces)
 {
-    if(ifaces.size() != 0) {
-        TYThread *updateThreads = new TYThread[ifaces.size()];
+    if(!ifaces.empty()) {
+        std::vector<std::thread> threads;
+        threads.reserve(ifaces.size());
         for(size_t i = 0; i < ifaces.size(); i++) {
-            updateThreads[i].create(updateThreadFunc, ifaces[i]);
+            threads.emplace_back(updateThreadFunc, ifaces[i]);
         }
-        for(size_t i = 0; i < ifaces.size(); i++) {
-           updateThreads[i].destroy();
+        for(auto& t : threads) {
+            t.join();
         }
-        delete [] updateThreads;
-        updateThreads = NULL;
     }
     return TY_STATUS_OK;
 }
@@ -303,7 +300,8 @@ static inline TY_STATUS selectDevice(TY_INTERFACE_TYPE iface
           for(uint32_t j = 0; j < n; j++){
             if(deviceNum > out.size() && ((ID.empty() && IP.empty())
                 || (!ID.empty() && devs[j].id == ID)
-                || (!IP.empty() && IP == devs[j].netInfo.ip)))
+                || (!IP.empty() && IP == devs[j].netInfo.ip))
+              && "InvalidNetCam" != std::string(devs[j].modelName))
             {
               if (devs[j].iface.type == TY_INTERFACE_ETHERNET || devs[j].iface.type == TY_INTERFACE_IEEE80211) {
                 LOGI("*** Select %s on %s, ip %s", devs[j].id, devs[j].iface.id, devs[j].netInfo.ip);

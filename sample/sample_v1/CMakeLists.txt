@@ -40,6 +40,7 @@ set(ALL_SAMPLES
     SimpleView_SGBM
     SimpleView_XYZ48
     SimpleView_SaveLoadConfig
+    SimpleView_TransROI
     )
 
 set(SAMPLES_USED_GLUT

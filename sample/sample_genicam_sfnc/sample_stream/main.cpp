@@ -1,38 +1,5 @@
 #include "../common/common.hpp"
-
-#if _WIN32
-#include <conio.h>
-#elif __linux__
-#include <termio.h>
-#define TTY_PATH    "/dev/tty"
-#define STTY_DEF    "stty -raw echo -F"
-#endif
-
-static char GetChar(void)
-{
-    char ch = -1;
-    do {
-#if _WIN32
-    if (kbhit()) //check fifo
-    {
-        ch = getche(); //read fifo
-    }
-#elif __linux__
-    fd_set rfds;
-    struct timeval tv;
-    system(STTY_DEF TTY_PATH);
-    FD_ZERO(&rfds);
-    FD_SET(0, &rfds);
-    tv.tv_sec = 0;
-    tv.tv_usec = 10;
-    if (select(1, &rfds, NULL, NULL, &tv) > 0)
-    {
-        ch = getchar();
-    }
-#endif
-    }while(ch == '\n' || ch == '\r' || ch == ' ');
-    return ch;
-}
+#include <vector>
 
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
@@ -77,16 +44,15 @@ StreamCtrl::StreamCtrl(const TY_DEV_HANDLE dev,  const char* stream)
 
         std::cout << "Please select a format according to the above number!" << std::endl;
 
-        char idx = -1;
+        int idx = -1;
         do {
-            idx = GetChar() & 0xff;
-            if(idx == -1) continue;
-            idx -= '0';
-            if(idx >= 0 && idx < m_FmtCnt) break;
+            std::cin >> idx;
+            cin_clear_rest_line();
+            if(idx >= 0 && idx < (int)m_FmtCnt) break;
             else std::cout << "Error, please select again!" << std::endl;
         } while(true);
 
-        std::cout << "======format idx = " << (int)(idx) << std::endl;
+        std::cout << "======format idx = " << idx << std::endl;
         ASSERT_OK(idx >= m_FmtCnt);
         std::cout << "Select " << entrys[idx].name << std::endl;
         ASSERT_OK(TYEnumSetValue(hDevice, "PixelFormat", entrys[idx].value));
@@ -105,16 +71,15 @@ StreamCtrl::StreamCtrl(const TY_DEV_HANDLE dev,  const char* stream)
         }
 
         std::cout << "Please select a binning mode according to the above number!" << std::endl;
-        char idx = -1;
+        int idx = -1;
         do {
-            idx = GetChar() & 0xff; 
-            if(idx == -1) continue;
-            idx -= '0';
-            if(idx >= 0 && idx < m_BinningCnt) break;
+            std::cin >> idx;
+            cin_clear_rest_line();
+            if(idx >= 0 && idx < (int)m_BinningCnt) break;
             else std::cout << "Error, please select again!" << std::endl;
         }while(true);
 
-        std::cout << "======binning idx = " << (int)(idx) << std::endl;
+        std::cout << "======binning idx = " << idx << std::endl;
         ASSERT_OK(idx >= m_BinningCnt);
         std::cout << "Select " << entrys[idx].name << std::endl;
         ASSERT_OK(TYEnumSetValue(hDevice, "BinningHorizontal", entrys[idx].value));
@@ -176,7 +141,9 @@ int main(int argc, char* argv[])
 
         bool wait_cmd = true;
         do {
-            char c = GetChar() & 0xff;
+            char c;
+            std::cin >> c;
+            cin_clear_rest_line();
             switch(c) {
                 case 'y':
                 case 'Y':
@@ -202,8 +169,7 @@ int main(int argc, char* argv[])
                     break;
                 }
                 default:
-                    if((int)c != -1 && c != '\n') 
-                        std::cout << "Error, please select again!" << std::endl;
+                    std::cout << "Error, please select again!" << std::endl;
                     break; 
             }
         } while(wait_cmd);
@@ -215,7 +181,7 @@ direct_start:
     }
 
     LOGD("%d-th round\n", round++);
-    char* frameBuffer[2] = {0};
+    std::vector<char> frameBuffer[2];
     if (!exit_main) {
         LOGD("Prepare image buffer");
         uint32_t frameSize;
@@ -224,12 +190,12 @@ direct_start:
 
         LOGD("     - Allocate & enqueue buffers");
         
-        frameBuffer[0] = new char[frameSize];
-        frameBuffer[1] = new char[frameSize];
-        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-        ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize) );
-        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-        ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize) );
+        frameBuffer[0].resize(frameSize);
+        frameBuffer[1].resize(frameSize);
+        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0].data(), frameSize);
+        ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0].data(), frameSize) );
+        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1].data(), frameSize);
+        ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1].data(), frameSize) );
 
         LOGD("Register event callback");
         ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
@@ -254,9 +220,9 @@ direct_start:
             if( err == TY_STATUS_OK ) {
                 LOGD("Get frame %d", ++index);
 
-                int fps = get_fps();
+                float fps = get_fps();
                 if (fps > 0){
-                    LOGI("fps: %d", fps);
+                    LOGI("fps: %.2f", fps);
                 }
                 
                 for (int i = 0; i < frame.validCount; i++){
@@ -284,8 +250,7 @@ direct_start:
         ASSERT_OK( TYStopCapture(hDevice) );
         //stop will not release all buffers, need clear
         ASSERT_OK( TYClearBufferQueue(hDevice) );
-        delete frameBuffer[0];
-        delete frameBuffer[1];
+
         if (!exit_main) {
             goto direct_start;
         }
@@ -294,9 +259,6 @@ direct_start:
     ASSERT_OK( TYCloseDevice(hDevice));
     ASSERT_OK( TYCloseInterface(hIface) );
     ASSERT_OK( TYDeinitLib() );
-    //if(frameBuffer[0]) delete frameBuffer[0];
-    //if(frameBuffer[1]) delete frameBuffer[1];
-    
     LOGD("Main done!");
     return 0;
 }

@@ -1,4 +1,5 @@
 #include "common.hpp"
+#include <vector>
 
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
@@ -103,19 +104,19 @@ int main(int argc, char* argv[])
     LOGD("     - Get size of framebuffer, %d", frameSize);
 
     LOGD("     - Allocate & enqueue buffers");
-    char* frameBuffer[4];
-    frameBuffer[0] = new char[frameSize];
-    frameBuffer[1] = new char[frameSize];
-    frameBuffer[2] = new char[frameSize];
-    frameBuffer[3] = new char[frameSize];
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize) );
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize) );
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[2], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[2], frameSize) );
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[3], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[3], frameSize) );
+    std::vector<char> frameBuffer[4];
+    frameBuffer[0].resize(frameSize);
+    frameBuffer[1].resize(frameSize);
+    frameBuffer[2].resize(frameSize);
+    frameBuffer[3].resize(frameSize);
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0].data(), frameSize) );
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1].data(), frameSize) );
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[2].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[2].data(), frameSize) );
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[3].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[3].data(), frameSize) );
 
     LOGD("=== Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
@@ -198,9 +199,9 @@ int main(int argc, char* argv[])
                     }
                 }
             }
-            int fps = get_fps();
+            float fps = get_fps();
             if (fps > 0){
-                LOGI("fps: %d", fps);
+                LOGI("fps: %.2f", fps);
             }
 
             for (int i = 0; i < frame.validCount; i++){
@@ -267,10 +268,8 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYCloseDevice(hDevice) );
     ASSERT_OK( TYCloseInterface(hIface) );
     ASSERT_OK( TYDeinitLib() );
-    delete frameBuffer[0];
-    delete frameBuffer[1];
-    delete frameBuffer[2];
-    delete frameBuffer[3];
+
+
 
     LOGD("=== Main done!");
     return 0;

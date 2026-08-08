@@ -10,22 +10,30 @@
 #include <memory>
 #include <iostream>
 #include <typeinfo>
+#include <limits>
+#include <chrono>
 
 #include "TYImageProc.h"
 #include "TYCoordinateMapper.h"
 #include "TYFeatureList.h"
 
-#include "TYThread.hpp"
 #include "CommandLineParser.hpp"
 #include "CommandLineFeatureHelper.hpp"
 #include "TYImageShow.h"
 
-static std::string ty_comp_window_name(const TY_COMPONENT_ID compID) {
+static inline void cin_clear_rest_line() {
+    if (!std::cin) {
+        std::cin.clear();
+    }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+static std::string ty_comp_window_name(const TY_COMPONENT_ID compID, const uint32_t RegionID = 0) {
     switch(compID) {
-        case TY_COMPONENT_RGB_CAM: return "Color";
-        case TY_COMPONENT_DEPTH_CAM: return "Depth";
-        case TY_COMPONENT_IR_CAM_LEFT: return "LeftIR";
-        case TY_COMPONENT_IR_CAM_RIGHT: return "RightIR";
+        case TY_COMPONENT_RGB_CAM: return "Color_" + std::to_string(RegionID);
+        case TY_COMPONENT_DEPTH_CAM: return "Depth_" + std::to_string(RegionID);
+        case TY_COMPONENT_IR_CAM_LEFT: return "LeftIR_" + std::to_string(RegionID);
+        case TY_COMPONENT_IR_CAM_RIGHT: return "RightIR_" + std::to_string(RegionID);
         default: return "Unknown";
     }
 }
@@ -80,43 +88,21 @@ static void writePointCloud(const float* pnts, const uint8_t* color, size_t n, c
     fclose(fp);
 }
 
-#ifdef _WIN32
-static int get_fps() {
+static float get_fps() {
     static int fps_counter = 0;
-    static clock_t fps_tm = 0;
-   const int kMaxCounter = 250;
-   fps_counter++;
-   if (fps_counter < kMaxCounter) {
-     return -1;
-   }
-   int elapse = (clock() - fps_tm);
-   int v = (int)(((float)fps_counter) / elapse * CLOCKS_PER_SEC);
-   fps_tm = clock();
-
-   fps_counter = 0;
-   return v;
- }
-#else
-static int get_fps() {
-    static int fps_counter = 0;
-    static clock_t fps_tm = 0;
-    const int kMaxCounter = 200;
-    struct timeval start;
+    static std::chrono::steady_clock::time_point fps_tm = std::chrono::steady_clock::now();
+    const float kIntervalMs = 5000.0f;
     fps_counter++;
-    if (fps_counter < kMaxCounter) {
-        return -1;
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    float elapsed_ms = std::chrono::duration<float, std::milli>(now - fps_tm).count();
+    if (elapsed_ms < kIntervalMs) {
+        return -elapsed_ms;
     }
-
-    gettimeofday(&start, NULL);
-    int elapse = start.tv_sec * 1000 + start.tv_usec / 1000 - fps_tm;
-    int v = (int)(((float)fps_counter) / elapse * 1000);
-    gettimeofday(&start, NULL);
-    fps_tm = start.tv_sec * 1000 + start.tv_usec / 1000;
-
+    float v = fps_counter / (elapsed_ms / 1000.0f);
+    fps_tm = now;
     fps_counter = 0;
     return v;
 }
-#endif
 
 static std::vector<uint8_t> TYReadBinaryFile(const char* filename)
 {
@@ -151,7 +137,7 @@ static inline TY_STATUS decode_and_display_image(const TY_IMAGE_DATA &image, con
 {
     if (image.status != TY_STATUS_OK) return TY_STATUS_ERROR;
     uint32_t destSize;
-    auto win = ty_comp_window_name(image.componentID);
+    auto win = ty_comp_window_name(image.componentID, image.regionID);
     TYImageInfo image_info = ty_image_info(image);
     TYDecodeError err = TYGetDecodeBufferSize(&image_info, &destSize, TY_OUTPUT_FORMAT_AUTO);
     switch (err) {

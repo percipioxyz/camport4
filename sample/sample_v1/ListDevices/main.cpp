@@ -12,6 +12,14 @@ int main(int argc, char* argv[])
 
     // Init lib
     ASSERT_OK(TYInitLib());
+
+    //Redirect SDK internal logs to a local file and disable stdout output,
+    //so that SDK logs and user printf never interleave garbled on terminal.
+    TYDisableLog(TY_LOG_TYPE_STD);
+    TYCfgLogFile("./listdevices.log", 10 * 1024 * 1024, 5);
+    TYEnableLog(TY_LOG_TYPE_FILE);
+    TYSetLogLevel(TY_LOG_TYPE_FILE, TY_LOG_LEVEL_WARNING);
+
     TY_VERSION_INFO ver;
     ASSERT_OK(TYLibVersion(&ver));
     LOGD("=== lib version: %d.%d.%d", ver.major, ver.minor, ver.patch);
@@ -87,13 +95,17 @@ int main(int argc, char* argv[])
                     *output << devs[j].netInfo.ip <<" "<<std::endl;
                 }
             } else {
-                TY_DEV_HANDLE handle;
+                TY_DEV_HANDLE handle = nullptr;
                 int32_t ret = TYOpenDevice(hIface, devs[j].id, &handle);
                 if (ret == 0) {
                     TYGetDeviceInfo(handle, &devs[j]);
                     TYCloseDevice(handle);
                     LOGD("    - device %s:", devs[j].id);
                 } else {
+                    //if handle is valid, close device even err happend
+                    if (handle) {
+                        TYCloseDevice(handle);
+                    }
                     LOGD("    - device %s(open failed, error: %d)", devs[j].id, ret);
                 }
                 if (strlen(devs[j].userDefinedName) != 0) {

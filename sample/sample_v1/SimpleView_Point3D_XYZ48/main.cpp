@@ -1,8 +1,10 @@
 #include <limits>
 #include <cassert>
 #include <cmath>
+#include <thread>
 #include "common.hpp"
 #include "../../cloud_viewer/cloud_viewer.hpp"
+#include <vector>
 
 struct CallbackData {
     int             index;
@@ -60,16 +62,16 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
             const TYImageInfo color_info = ty_image_info(*colorImage);
             uint32_t colorDestSize = 0;
             TYDecodeResult colorDecode;
-            TYDecodeError colorDecodeErr = TYGetDecodeBufferSize(&color_info, &colorDestSize, TY_OUTPUT_FORMAT_BGR);
+            TYDecodeError colorDecodeErr = TYGetDecodeBufferSize(&color_info, &colorDestSize, TY_OUTPUT_FORMAT_RGB);
             if (colorDecodeErr == TY_DECODE_SUCCESS) {
                 pData->colorBuffer.resize(colorDestSize);
-                ASSERT_DEC_OK(TYDecodeImage(&color_info, TY_OUTPUT_FORMAT_BGR, (void*)&pData->colorBuffer[0], colorDestSize, &colorDecode));
+                ASSERT_DEC_OK(TYDecodeImage(&color_info, TY_OUTPUT_FORMAT_RGB, (void*)&pData->colorBuffer[0], colorDestSize, &colorDecode));
 
                 TY_IMAGE_DATA src, dst;
                 src.width = colorImage->width;
                 src.height = colorImage->height;
                 src.size = colorImage->size; // uint16_t
-                src.pixelFormat = TYPixelFormatBGR8; 
+                src.pixelFormat = TYPixelFormatRGB8; 
                 src.buffer = (void*)&pData->colorBuffer[0];
                 
                 std::vector<uint8_t> undistortColorBuffer(colorDestSize);
@@ -77,7 +79,7 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
                 dst.height = colorImage->height;
                 dst.size = colorImage->size;
                 dst.buffer = (void*)&undistortColorBuffer[0];
-                dst.pixelFormat = TYPixelFormatBGR8;
+                dst.pixelFormat = TYPixelFormatRGB8;
 
                 ASSERT_OK(TYUndistortImage(&pData->color_calib, &src, NULL, &dst));
                 pData->colorBuffer = std::move(undistortColorBuffer);
@@ -145,14 +147,13 @@ static int FetchOneFrame(CallbackData &cb){
     return 0;
 }
 
-void* FetchFrameThreadFunc(void* d){
-    CallbackData &cb = *(CallbackData*)d;
+void FetchFrameThreadFunc(CallbackData* d){
+    CallbackData &cb = *d;
     while(!cb.exit_main){
         if (FetchOneFrame(cb) != 0){
             break;
         }
     }
-    return NULL;
 }
 
 bool key_pressed(int key){
@@ -244,13 +245,13 @@ int main(int argc, char* argv[])
     LOGD("     - Get size of framebuffer, %d", frameSize);
 
     LOGD("     - Allocate & enqueue buffers");
-    char* frameBuffer[2];
-    frameBuffer[0] = new char[frameSize];
-    frameBuffer[1] = new char[frameSize];
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize) );
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize) );
+    std::vector<char> frameBuffer[2];
+    frameBuffer[0].resize(frameSize);
+    frameBuffer[1].resize(frameSize);
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0].data(), frameSize) );
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1].data(), frameSize) );
 
     LOGD("=== Read depth intrinsic");
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA
@@ -278,24 +279,21 @@ int main(int argc, char* argv[])
     cb_data.exit_main = false;
 
     //start a thread to fetch image data
-    TYThread fetch_thread;
-    fetch_thread.create(FetchFrameThreadFunc, &cb_data);
+    std::thread fetch_thread(FetchFrameThreadFunc, &cb_data);
 
     LOGD("=== While loop to fetch frame");
     GLPointCloudViewer::ResetViewTranslate();//init view position by first frame
     GLPointCloudViewer::RegisterKeyCallback(key_pressed);//key pressed callback
     GLPointCloudViewer::EnterMainLoop();//start main window 
     cb_data.exit_main = true;//wait work thread to exit
-    fetch_thread.destroy();
+    fetch_thread.join();
 
     ASSERT_OK( TYStopCapture(hDevice) );
     ASSERT_OK( TYCloseDevice(hDevice) );
     ASSERT_OK( TYCloseInterface(hIface) );
     ASSERT_OK( TYDeinitLib() );
-    delete frameBuffer[0];
-    delete frameBuffer[1];
+
     LOGD("=== Main done!");
     GLPointCloudViewer::Deinit();
     return 0;
 }
-

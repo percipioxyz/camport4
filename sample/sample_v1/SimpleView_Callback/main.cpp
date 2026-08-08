@@ -1,4 +1,6 @@
+#include <thread>
 #include "common.hpp"
+#include <vector>
 
 struct CallbackData {
     int             index;
@@ -25,7 +27,7 @@ public:
         _cb = v;
         _userdata = userdata;
         _exit = false;
-        _cbThread.create(&workerThread, this);
+        _cbThread = std::thread(&CallbackWrapper::workerThread, this);
         return TY_STATUS_OK;
     }
 
@@ -33,25 +35,25 @@ public:
     {
         if (!_exit) {
             _exit = true;
-            _cbThread.destroy();
+            if (_cbThread.joinable()) {
+                _cbThread.join();
+            }
         }
     }
 
 private:
-    static void* workerThread(void* userdata)
+    void workerThread()
     {
-        CallbackWrapper* pWrapper = (CallbackWrapper*)userdata;
         TY_FRAME_DATA frame;
 
-        while (!pWrapper->_exit)
+        while (!_exit)
         {
-            int err = TYFetchFrame(pWrapper->_hDevice, &frame, 100);
+            int err = TYFetchFrame(_hDevice, &frame, 100);
             if (!err) {
-                pWrapper->_cb(&frame, pWrapper->_userdata);
+                _cb(&frame, _userdata);
             }
         }
         LOGI("frameCallback exit!");
-        return NULL;
     }
 
     TY_DEV_HANDLE _hDevice;
@@ -59,7 +61,7 @@ private:
     void* _userdata;
 
     bool _exit;
-    TYThread _cbThread;
+    std::thread _cbThread;
 };
 
 void frameCallback(TY_FRAME_DATA* frame, void* userdata)
@@ -67,9 +69,9 @@ void frameCallback(TY_FRAME_DATA* frame, void* userdata)
     CallbackData* pData = (CallbackData*)userdata;
     LOGD("=== Get frame %d", ++pData->index);
 
-    int fps = get_fps();
+    float fps = get_fps();
     if (fps > 0){
-        LOGI("fps: %d", fps);
+        LOGI("fps: %.2f", fps);
     }
 
     for (int i = 0; i < frame->validCount; i++){
@@ -193,13 +195,13 @@ int main(int argc, char* argv[])
     LOGD("     - Get size of framebuffer, %d", frameSize);
 
     LOGD("     - Allocate & enqueue buffers");
-    char* frameBuffer[2];
-    frameBuffer[0] = new char[frameSize];
-    frameBuffer[1] = new char[frameSize];
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-    ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize));
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-    ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize));
+    std::vector<char> frameBuffer[2];
+    frameBuffer[0].resize(frameSize);
+    frameBuffer[1].resize(frameSize);
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0].data(), frameSize);
+    ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[0].data(), frameSize));
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1].data(), frameSize);
+    ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[1].data(), frameSize));
 
     LOGD("Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
@@ -219,16 +221,17 @@ int main(int argc, char* argv[])
     cb_data.hDevice = hDevice;
     cb_data.f_depth_scale_unit = scale_unit;
     cb_data.exit = false;
-    // Register Callback
-    CallbackWrapper cbWrapper;
-    cbWrapper.TYRegisterCallback(hDevice, frameCallback, &cb_data);
-
+    
     TY_COMPONENT_ID componentIDs = 0;
     ASSERT_OK(TYGetEnabledComponents(hDevice, &componentIDs));
 
     LOGD("Start capture");
     ASSERT_OK(TYStartCapture(hDevice));
 
+    // Register Callback
+    CallbackWrapper cbWrapper;
+    cbWrapper.TYRegisterCallback(hDevice, frameCallback, &cb_data);
+    
     LOGD("While loop to fetch frame");
     while (!cb_data.exit) {
         MSLEEP(1000*10);
@@ -239,8 +242,6 @@ int main(int argc, char* argv[])
     ASSERT_OK(TYCloseDevice(hDevice));
     ASSERT_OK(TYCloseInterface(hIface));
     ASSERT_OK(TYDeinitLib());
-    delete frameBuffer[0];
-    delete frameBuffer[1];
 
     LOGD("Main done!");
     return 0;

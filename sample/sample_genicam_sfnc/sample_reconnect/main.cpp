@@ -1,4 +1,5 @@
 #include "../common/common.hpp"
+#include <vector>
 static bool offline = false;
 static int offline_cnt = 0;
 
@@ -59,7 +60,7 @@ do_open:
 
     offline = false;
 
-    char* frameBuffer[2] = {0};
+    std::vector<char> frameBuffer[2];
     LOGD("Prepare image buffer");
     uint32_t frameSize;
     ASSERT_OK( TYGetFrameBufferSize(hDevice, &frameSize) );
@@ -67,12 +68,12 @@ do_open:
 
     LOGD("     - Allocate & enqueue buffers");
     
-    frameBuffer[0] = new char[frameSize];
-    frameBuffer[1] = new char[frameSize];
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize) );
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize) );
+    frameBuffer[0].resize(frameSize);
+    frameBuffer[1].resize(frameSize);
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0].data(), frameSize) );
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1].data(), frameSize) );
 
     LOGD("Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
@@ -90,9 +91,9 @@ do_open:
         if( err == TY_STATUS_OK ) {
             LOGD("Get frame %d, offline cnt %d", ++index, offline_cnt);
 
-            int fps = get_fps();
+            float fps = get_fps();
             if (fps > 0){
-                LOGI("fps: %d", fps);
+                LOGI("fps: %.2f", fps);
             }
 
             for (int i = 0; i < frame.validCount; i++){
@@ -119,8 +120,6 @@ do_open:
     ( TYStopCapture(hDevice) );
     //stop will not release all buffers, need clear
     ( TYClearBufferQueue(hDevice) );
-    delete frameBuffer[0];
-    delete frameBuffer[1];
 
     //Offline close will return err ignore here
     ( TYCloseDevice(hDevice));
@@ -129,8 +128,6 @@ do_open:
     }
     ASSERT_OK( TYCloseInterface(hIface) );
     ASSERT_OK( TYDeinitLib() );
-    //if(frameBuffer[0]) delete frameBuffer[0];
-    //if(frameBuffer[1]) delete frameBuffer[1];
     LOGD("Main done!");
     return 0;
 }

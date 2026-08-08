@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include <signal.h>
+#include <vector>
 
 static bool exit_main = false;
 static bool capture_started = false;

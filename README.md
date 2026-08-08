@@ -3,7 +3,10 @@
 This software development kit provides C/C++ API and sample applications to control and capture images from Percipio camera.
 The samples demonstrate how to get depth image, 3D point cloud , color and ir image from the depth camera.
 
-SDK sample's GUI needs Opencv2.4.8+. opencv dependency can be removed if if you do not need GUI.
+SDK sample's GUI needs OpenCV. The pre-built Windows x64 and x86 samples include the OpenCV 4.10.0 shared runtime (`opencv_world4100.dll`) and the corresponding license files under their architecture-specific directories in `lib/win/hostapp`.
+The pre-built Windows x64 and x86 libraries and samples require the corresponding Microsoft Visual C++ 2015-2022 Redistributable.
+
+When building samples from source, OpenCV remains optional if GUI functionality is not needed.
 
 ## Documents
 
@@ -78,7 +81,7 @@ All executables will be generated in ./bin directory.
 prepare environment
 - install USB driver from lib/win/driver (only required by USB camera)
 - install cmake (https://cmake.org)
-- install opencv (https://opencv.org/) (optional)
+- install opencv (https://opencv.org/) (optional when GUI functionality is not needed)
 - add tycam.dll location to PATH environment variable  or copy to where system can find it
 
 compile source code
@@ -91,5 +94,3 @@ using cmake to generate MSVC vcxproj project files & build with MSVC.
 
 ---
 [www.percipio.xyz](https://www.percipio.xyz)
-
-

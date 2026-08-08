@@ -1,4 +1,5 @@
 #include "common.hpp"
+#include <vector>
 
 
 struct CamInfo

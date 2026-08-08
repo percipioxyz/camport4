@@ -1,4 +1,5 @@
 #include "common.hpp"
+#include <vector>
 
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
@@ -133,13 +134,13 @@ int main(int argc, char* argv[])
     LOGD("     - Get size of framebuffer, %d", frameSize);
 
     LOGD("     - Allocate & enqueue buffers");
-    char* frameBuffer[2];
-    frameBuffer[0] = new char[frameSize];
-    frameBuffer[1] = new char[frameSize];
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize) );
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize) );
+    std::vector<char> frameBuffer[2];
+    frameBuffer[0].resize(frameSize);
+    frameBuffer[1].resize(frameSize);
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0].data(), frameSize) );
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1].data(), frameSize) );
 
     LOGD("Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
@@ -165,9 +166,9 @@ int main(int argc, char* argv[])
         if( err == TY_STATUS_OK ) {
             LOGD("Get frame %d", ++index);
 
-            int fps = get_fps();
+            float fps = get_fps();
             if (fps > 0){
-                LOGI("fps: %d", fps);
+                LOGI("fps: %.2f", fps);
             }
             
             for (int i = 0; i < frame.validCount; i++){
@@ -194,8 +195,6 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYCloseDevice(hDevice));
     ASSERT_OK( TYCloseInterface(hIface) );
     ASSERT_OK( TYDeinitLib() );
-    delete frameBuffer[0];
-    delete frameBuffer[1];
 
     LOGD("Main done!");
     return 0;

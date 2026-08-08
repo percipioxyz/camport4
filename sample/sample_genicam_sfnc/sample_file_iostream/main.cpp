@@ -1,5 +1,6 @@
 #include "../common/common.hpp"
 #include "FileAccessControl.hpp"
+#include <vector>
 
 int main(int argc, char* argv[]) {
     std::string ID, IP, r_file_name, w_file_name, DATA;
@@ -86,7 +87,7 @@ int main(int argc, char* argv[]) {
             printf("Data content (hex):\n");
             for (uint32_t i = 0; i < content.size(); ++i) {
                 if (i % 16 == 0) {
-                    printf("\n%04X: ", i); 
+                    printf("\n%04X: ", i);
                 }
                 printf("%02X ", static_cast<unsigned char>(content[i]));
             }

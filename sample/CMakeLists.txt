@@ -38,8 +38,6 @@ endif()
 
 option(BUILD_SAMPLE_V1 "Enable samle v1 build " ON)
 
-option(BUILD_SAMPLE_V2 "Enable samle v2 build " ON)
-
 option(BUILD_SAMPLE_GENICAM_SFNC "Enable samle genicam SFNC build " ON)
 option (OpenCV_STATIC OFF)
 
@@ -51,10 +49,6 @@ endif()
 if (DEFINED BUILD_SAMPLES AND NOT BUILD_SAMPLES)
     set(BUILD_SAMPLE_V1 OFF)
     set(BUILD_SAMPLE_GENICAM_SFNC OFF)
-endif()
-
-if (DEFINED BUILD_CPLUSPLUS_SAMPLE AND NOT BUILD_CPLUSPLUS_SAMPLE)
-    set(BUILD_SAMPLE_V2 OFF)
 endif()
 
 if (DEFINED BUILD_GENICAM_SFNC_SAMPLE AND NOT BUILD_GENICAM_SFNC_SAMPLE)
@@ -96,7 +90,6 @@ message(STATUS  "COMMON_GUI_LIBS ${COMMON_GUI_LIBS}")
 message(STATUS "COMMON_GUI_SRC ${COMMON_GUI_SRC}")
 set (COMMON_INC ${COMMON_DIR} ${COMMON_GUI_INC})
 set (COMMON_SOURCES
-    ${COMMON_DIR}/TYThread.cpp
     ${COMMON_DIR}/crc32.cpp
     ${COMMON_DIR}/json11.cpp
     ${COMMON_DIR}/ParametersParse.cpp
@@ -116,11 +109,6 @@ set (CLOUD_VIEW_INC ${CLOUD_VIEW_DIR}/freeglut/include)
 if (BUILD_SAMPLE_V1)
     message(STATUS "sample v1 ON ")
     add_subdirectory(sample_v1)
-endif()
-
-if (BUILD_SAMPLE_V2)
-    message(STATUS "sample v2 ON ")
-    add_subdirectory(sample_v2)
 endif()
 
 if (BUILD_SAMPLE_GENICAM_SFNC)

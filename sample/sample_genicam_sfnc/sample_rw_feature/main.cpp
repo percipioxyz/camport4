@@ -1,41 +1,9 @@
 #include "../common/common.hpp"
 #include "../common/json11.hpp"
 
-#if _WIN32
-#include <conio.h>
-#elif __linux__
-#include <termio.h>
-#define TTY_PATH    "/dev/tty"
-#define STTY_DEF    "stty -raw echo -F"
-#endif
 #include <vector>
 
 using namespace json11;
-static char GetChar(void)
-{
-    char ch = -1;
-    do {
-#if _WIN32
-    if (kbhit()) //check fifo
-    {
-        ch = getche(); //read fifo
-    }
-#elif __linux__
-    fd_set rfds;
-    struct timeval tv;
-    system(STTY_DEF TTY_PATH);
-    FD_ZERO(&rfds);
-    FD_SET(0, &rfds);
-    tv.tv_sec = 0;
-    tv.tv_usec = 10;
-    if (select(1, &rfds, NULL, NULL, &tv) > 0)
-    {
-        ch = getchar();
-    }
-#endif
-    }while(ch == '\n' || ch == '\r' || ch == ' ');
-    return ch;
-}
 
 void write_feat(TY_DEV_HANDLE hDevice, const std::string &feat,
     const enum ParamType &type, const std::string &val)
@@ -48,7 +16,7 @@ void write_feat(TY_DEV_HANDLE hDevice, const std::string &feat,
     }
     case Integer:{
         int64_t _v = atoi(val.c_str());
-        printf("%s %" PRId64 "\n", val.c_str(), _v);
+        LOGD("%s %" PRId64, val.c_str(), _v);
         ret = TYIntegerSetValue(hDevice, feat.c_str(), _v);
         break;
     }
@@ -67,7 +35,7 @@ void write_feat(TY_DEV_HANDLE hDevice, const std::string &feat,
     }
     case Enumeration:{
         int32_t _v = atoi(val.c_str());
-        printf("%s %d\n", val.c_str(), _v);
+        LOGD("%s %d", val.c_str(), _v);
         ret = TYEnumSetValue(hDevice, feat.c_str(), _v);
         break;
     }
@@ -295,7 +263,7 @@ int main(int argc, char* argv[])
     } else {
         read_write_feature(hDevice, feat, val, op);
     }
-    char* frameBuffer[2] = {0};
+    std::vector<char> frameBuffer[2];
     uint32_t frameSize;
     TY_FRAME_DATA frame;
     int index = 0;
@@ -313,12 +281,12 @@ int main(int argc, char* argv[])
 
     LOGD("     - Allocate & enqueue buffers");
 
-    frameBuffer[0] = new char[frameSize];
-    frameBuffer[1] = new char[frameSize];
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize) );
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize) );
+    frameBuffer[0].resize(frameSize);
+    frameBuffer[1].resize(frameSize);
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0].data(), frameSize) );
+    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1].data(), frameSize);
+    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1].data(), frameSize) );
     LOGD("Start capture");
     ASSERT_OK( TYStartCapture(hDevice) );
 
@@ -328,9 +296,9 @@ int main(int argc, char* argv[])
         if( err == TY_STATUS_OK ) {
             LOGD("Get frame %d", ++index);
 
-            int fps = get_fps();
+            float fps = get_fps();
             if (fps > 0){
-                LOGI("fps: %d", fps);
+                LOGI("fps: %.2f", fps);
             }
 
             for (int i = 0; i < frame.validCount; i++){
@@ -366,8 +334,7 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYStopCapture(hDevice) );
     //stop will not release all buffers, need clear
     ASSERT_OK( TYClearBufferQueue(hDevice) );
-    delete frameBuffer[0];
-    delete frameBuffer[1];
+
 out:
     ASSERT_OK( TYCloseDevice(hDevice));
     ASSERT_OK( TYCloseInterface(hIface) );
